@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Framework.Managers;
+using Framework.FrameworkCore;
 
 namespace ModdingAPI
 {
@@ -37,6 +39,9 @@ namespace ModdingAPI
         public void Initialize()
         {
             initialized = true;
+            LevelManager.OnLevelLoaded += LevelLoaded;
+            LevelManager.OnBeforeLevelLoad += LevelUnloaded;
+            
             for (int i = 0; i < mods.Count; i++)
             {
                 mods[i].Initialize();
@@ -49,14 +54,25 @@ namespace ModdingAPI
             {
                 mods[i].Dispose();
             }
+
+            LevelManager.OnLevelLoaded -= LevelLoaded;
+            LevelManager.OnBeforeLevelLoad -= LevelUnloaded;
             initialized = false;
         }
 
-        public void LevelLoaded(string oldLevel, string newLevel)
+        public void LevelLoaded(Level oldLevel, Level newLevel)
         {
             for (int i = 0; i < mods.Count; i++)
             {
-                mods[i].LevelLoaded(oldLevel, newLevel);
+                mods[i].LevelLoaded(oldLevel.LevelName, newLevel.LevelName);
+            }
+        }
+
+        public void LevelUnloaded(Level oldLevel, Level newLevel)
+        {
+            for (int i = 0; i < mods.Count; i++)
+            {
+                mods[i].LevelUnloaded(oldLevel.LevelName, newLevel.LevelName);
             }
         }
 

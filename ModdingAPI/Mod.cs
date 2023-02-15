@@ -6,10 +6,10 @@ namespace ModdingAPI
         public string ModName { get; private set; }
         public string ModVersion { get; private set; }
 
-        public Mod(string name, string version)
+        public Mod(string modName, string modVersion)
         {
-            ModName = name;
-            ModVersion = version;
+            ModName = modName;
+            ModVersion = modVersion;
             Main.moddingAPI.registerMod(this);
         }
 
@@ -34,6 +34,11 @@ namespace ModdingAPI
         }
 
         public virtual void LevelLoaded(string oldLevel, string newLevel)
+        {
+
+        }
+
+        public virtual void LevelUnloaded(string oldLevel, string newLevel)
         {
 
         }
