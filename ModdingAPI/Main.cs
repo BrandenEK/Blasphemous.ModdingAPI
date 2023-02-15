@@ -19,8 +19,6 @@ namespace ModdingAPI
             moddingAPI.Awake();
         }
 
-        private void Start() { moddingAPI.Start(); }
-
         private void Update() { moddingAPI.Update(); }
 
         private void LateUpdate() { moddingAPI.LateUpdate(); }
