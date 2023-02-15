@@ -15,30 +15,30 @@ namespace ModdingAPI
 
         public virtual void Update()
         {
-            Log("Update");
+
         }
 
         public virtual void LateUpdate()
         {
-            Log("LateUpdate");
-        }
 
-        // Persistence stuff
+        }
 
         public virtual void Initialize()
         {
-            Log("Initialize");
+
         }
 
         public virtual void Dispose()
         {
-            Log("Dispose");
+
         }
 
         public virtual void LevelLoaded(string oldLevel, string newLevel)
         {
-            Log("Level loaded: " + newLevel);
+
         }
+
+        // Persistent interface
 
         public void Log(string message) { Main.LogMessage(message); }
 

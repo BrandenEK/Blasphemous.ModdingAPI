@@ -6,14 +6,18 @@ namespace ModdingAPI
     public class ModdingAPI
     {
         private List<Mod> mods;
+        private bool initialized;
 
-        public void Awake()
+        public ModdingAPI()
         {
             mods = new List<Mod>();
+            initialized = false;
         }
 
         public void Update()
         {
+            if (!initialized) return;
+
             for (int i = 0; i < mods.Count; i++)
             {
                 mods[i].Update();
@@ -22,6 +26,8 @@ namespace ModdingAPI
 
         public void LateUpdate()
         {
+            if (!initialized) return;
+
             for (int i = 0; i < mods.Count; i++)
             {
                 mods[i].LateUpdate();
@@ -30,6 +36,7 @@ namespace ModdingAPI
 
         public void Initialize()
         {
+            initialized = true;
             for (int i = 0; i < mods.Count; i++)
             {
                 mods[i].Initialize();
@@ -42,6 +49,7 @@ namespace ModdingAPI
             {
                 mods[i].Dispose();
             }
+            initialized = false;
         }
 
         public void LevelLoaded(string oldLevel, string newLevel)

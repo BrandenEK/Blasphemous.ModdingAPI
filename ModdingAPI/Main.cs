@@ -12,18 +12,15 @@ namespace ModdingAPI
 
         private void Awake()
         {
+            moddingAPI = new ModdingAPI();
             instance = this;
             Patch();
-
-            moddingAPI = new ModdingAPI();
-            moddingAPI.Awake();
         }
 
         private void Update() { moddingAPI.Update(); }
 
         private void LateUpdate() { moddingAPI.LateUpdate(); }
 
-        // Patch all modding api methods
         private void Patch()
         {
             Harmony harmony = new Harmony("com.damocles.blasphemous.modding-api");
