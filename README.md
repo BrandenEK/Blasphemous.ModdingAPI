@@ -1,4 +1,4 @@
-# Blasphemoous Modding API
+# Blasphemous Modding API
 
 To create a new project, open the command line and run: <br>
 ```dotnet new bepinex5plugin -n NewModName -T net35 -U 2017.4.40```
@@ -49,3 +49,7 @@ namespace ModName
     }
 }
 ```
+
+### To-do:
+- Add fileutil class
+- Add mod interface (Awake, Init, Dispose, Update, etc.)
