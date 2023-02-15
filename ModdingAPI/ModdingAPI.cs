@@ -64,7 +64,7 @@ namespace ModdingAPI
         {
             for (int i = 0; i < mods.Count; i++)
             {
-                mods[i].LevelLoaded(oldLevel.LevelName, newLevel.LevelName);
+                mods[i].LevelLoaded(oldLevel == null ? string.Empty : oldLevel.LevelName, newLevel == null ? string.Empty : newLevel.LevelName);
             }
         }
 
@@ -72,7 +72,7 @@ namespace ModdingAPI
         {
             for (int i = 0; i < mods.Count; i++)
             {
-                mods[i].LevelUnloaded(oldLevel.LevelName, newLevel.LevelName);
+                mods[i].LevelUnloaded(oldLevel == null ? string.Empty : oldLevel.LevelName, newLevel == null ? string.Empty : newLevel.LevelName);
             }
         }
 
