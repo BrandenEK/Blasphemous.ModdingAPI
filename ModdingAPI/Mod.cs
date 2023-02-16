@@ -43,8 +43,6 @@ namespace ModdingAPI
 
         }
 
-        // Persistent interface
-
         public void Log(string message) { Main.LogMessage(message); }
 
         public void LogWarning(string message) { Main.LogWarning(message); }
