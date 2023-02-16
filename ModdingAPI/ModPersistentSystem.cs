@@ -3,7 +3,7 @@ using Framework.FrameworkCore;
 
 namespace ModdingAPI
 {
-    public class ModPersistentSystem : PersistentInterface
+    internal class ModPersistentSystem : PersistentInterface
     {
         private PersistentMod persistentMod;
 

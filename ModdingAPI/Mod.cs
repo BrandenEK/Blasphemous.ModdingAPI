@@ -26,7 +26,7 @@ namespace ModdingAPI
         public FileUtil FileUtil { get; private set; }
 
         /// <summary>
-        /// Creates, resgisters, and patches a new mod
+        /// Creates, registers, and patches a new mod
         /// </summary>
         /// <param name="modId">The unique id of this mod used for harmony patching</param>
         /// <param name="modName">The name of the mod to be displayed on the main menu</param>
