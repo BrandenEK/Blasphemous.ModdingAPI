@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace ModdingAPI
 {
+    /// <summary>
+    /// A class for handling file IO related operations
+    /// </summary>
     public class FileUtil
     {
         private readonly string configPath = "";

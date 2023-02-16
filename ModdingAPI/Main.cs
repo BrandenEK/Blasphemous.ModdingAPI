@@ -3,32 +3,31 @@ using HarmonyLib;
 
 namespace ModdingAPI
 {
-    [BepInPlugin("com.damocles.blasphemous.modding-api", "Modding API", "1.0.0")]
+    [BepInPlugin(MOD_ID, MOD_NAME, MOD_VERSION)]
     [BepInProcess("Blasphemous.exe")]
-    public class Main : BaseUnityPlugin
+    internal class Main : BaseUnityPlugin
     {
-        public static ModdingAPI moddingAPI;
+        public const string MOD_ID = "com.damocles.blasphemous.modding-api";
+        public const string MOD_NAME = "Modding API";
+        public const string MOD_VERSION = "1.0.0";
+
+        internal static ModdingAPI moddingAPI;
         private static Main instance;
 
         private void Awake()
         {
             moddingAPI = new ModdingAPI();
             instance = this;
-            Patch();
+            Harmony harmony = new Harmony(MOD_ID);
+            harmony.PatchAll();
         }
 
         private void Update() { moddingAPI.Update(); }
 
         private void LateUpdate() { moddingAPI.LateUpdate(); }
 
-        private void Patch()
-        {
-            Harmony harmony = new Harmony("com.damocles.blasphemous.modding-api");
-            harmony.PatchAll();
-        }
-
         // Log messages to unity console
-        public static void LogMessage(string message)
+        internal static void LogMessage(string message)
         {
             instance.logMessage(message);
         }
@@ -38,7 +37,7 @@ namespace ModdingAPI
         }
 
         // Log warnings to unity console
-        public static void LogWarning(string message)
+        internal static void LogWarning(string message)
         {
             instance.logWarning(message);
         }
@@ -48,7 +47,7 @@ namespace ModdingAPI
         }
 
         // Log errors to unity console
-        public static void LogError(string message)
+        internal static void LogError(string message)
         {
             instance.logError(message);
         }
