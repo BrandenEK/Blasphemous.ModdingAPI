@@ -11,7 +11,7 @@ namespace ModdingAPI
 {
     // Initialize mods
     [HarmonyPatch(typeof(AchievementsManager), "AllInitialized")]
-    public class AchievementsManager_InitializePatch
+    internal class AchievementsManager_InitializePatch
     {
         public static void Postfix()
         {
@@ -20,7 +20,7 @@ namespace ModdingAPI
     }
     // Dispose mods
     [HarmonyPatch(typeof(AchievementsManager), "Dispose")]
-    public class AchievementsManager_DisposePatch
+    internal class AchievementsManager_DisposePatch
     {
         public static void Postfix()
         {
@@ -30,13 +30,14 @@ namespace ModdingAPI
 
     // Add mod names to main menu
     [HarmonyPatch(typeof(VersionNumber), "Start")]
-    public class VersionNumber_Patch
+    internal class VersionNumber_Patch
     {
         public static void Postfix(VersionNumber __instance)
         {
             Text version = __instance.GetComponent<Text>();
-
             StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("{0} v{1}\n", Main.MOD_NAME, Main.MOD_VERSION);
+
             foreach (Mod mod in Main.moddingAPI.getMods())
             {
                 sb.AppendFormat("{0} v{1}\n", mod.ModName, mod.ModVersion);
@@ -47,7 +48,7 @@ namespace ModdingAPI
 
     // Allow access to console
     [HarmonyPatch(typeof(ConsoleWidget), "Update")]
-    public class ConsoleWidget_Patch
+    internal class ConsoleWidget_Patch
     {
         public static void Postfix(ConsoleWidget __instance, bool ___isEnabled)
         {
@@ -60,7 +61,7 @@ namespace ModdingAPI
 
     // Allow console commands on the main menu
     [HarmonyPatch(typeof(KeepFocus), "Update")]
-    public class KeepFocus_Patch
+    internal class KeepFocus_Patch
     {
         public static bool Prefix()
         {
@@ -68,7 +69,7 @@ namespace ModdingAPI
         }
     }
     [HarmonyPatch(typeof(ConsoleWidget), "SetEnabled")]
-    public class ConsoleWidgetDisable_Patch
+    internal class ConsoleWidgetDisable_Patch
     {
         public static void Postfix(bool enabled)
         {

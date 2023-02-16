@@ -93,5 +93,130 @@
             <param name="obj">The object to convert into a json string</param>
             <returns>The json string created from the object</returns>
         </member>
+        <member name="T:ModdingAPI.Mod">
+            <summary>
+            An abstract representation of a mod
+            </summary>
+        </member>
+        <member name="P:ModdingAPI.Mod.ModId">
+            <summary>
+            The unique id of this mod used for harmony patching
+            </summary>
+        </member>
+        <member name="P:ModdingAPI.Mod.ModName">
+            <summary>
+            The name of the mod to be displayed on the main menu
+            </summary>
+        </member>
+        <member name="P:ModdingAPI.Mod.ModVersion">
+            <summary>
+            The version of the mod
+            </summary>
+        </member>
+        <member name="P:ModdingAPI.Mod.FileUtil">
+            <summary>
+            The file utility for performing various IO operations
+            </summary>
+        </member>
+        <member name="M:ModdingAPI.Mod.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Creates, registers, and patches a new mod
+            </summary>
+            <param name="modId">The unique id of this mod used for harmony patching</param>
+            <param name="modName">The name of the mod to be displayed on the main menu</param>
+            <param name="modVersion">The version of the mod</param>
+        </member>
+        <member name="M:ModdingAPI.Mod.Update">
+            <summary>
+            Called every frame by the modding API
+            </summary>
+        </member>
+        <member name="M:ModdingAPI.Mod.LateUpdate">
+            <summary>
+            Called at the end of every frame by the modding API
+            </summary>
+        </member>
+        <member name="M:ModdingAPI.Mod.Initialize">
+            <summary>
+            Called at the beginning of the game by the modding API
+            </summary>
+        </member>
+        <member name="M:ModdingAPI.Mod.Dispose">
+            <summary>
+            Called at the end of the game by the modding API
+            </summary>
+        </member>
+        <member name="M:ModdingAPI.Mod.LevelLoaded(System.String,System.String)">
+            <summary>
+            Called when a scene is loaded by the modding API
+            </summary>
+            <param name="oldLevel">The name of the old level</param>
+            <param name="newLevel">The name of the new level</param>
+        </member>
+        <member name="M:ModdingAPI.Mod.LevelUnloaded(System.String,System.String)">
+            <summary>
+            Called when a scene is unloaded by the modding API
+            </summary>
+            <param name="oldLevel">The name of the old level</param>
+            <param name="newLevel">The name of the new level</param>
+        </member>
+        <member name="M:ModdingAPI.Mod.Log(System.String)">
+            <summary>
+            Logs a message to the console
+            </summary>
+            <param name="message">The message to display</param>
+        </member>
+        <member name="M:ModdingAPI.Mod.LogWarning(System.String)">
+            <summary>
+            Logs a warning to the console
+            </summary>
+            <param name="warning">The warning to display</param>
+        </member>
+        <member name="M:ModdingAPI.Mod.LogError(System.String)">
+            <summary>
+            Logs an error to the console
+            </summary>
+            <param name="error">The error to display</param>
+        </member>
+        <member name="T:ModdingAPI.PersistentMod">
+            <summary>
+            An abstract representation of a mod that can save and load game data
+            </summary>
+        </member>
+        <member name="M:ModdingAPI.PersistentMod.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Creates, registers, and patches a new persistent mod
+            </summary>
+            <param name="modId">The unique id of this mod used for harmony patching</param>
+            <param name="modName">The name of the mod to be displayed on the main menu</param>
+            <param name="modVersion">The version of the mod</param>
+        </member>
+        <member name="M:ModdingAPI.PersistentMod.SaveGame">
+            <summary>
+            Called by the modding API whenever the game is saved
+            </summary>
+            <returns>The persistent data to save</returns>
+        </member>
+        <member name="M:ModdingAPI.PersistentMod.LoadGame(Framework.Managers.PersistentManager.PersistentData)">
+            <summary>
+            Called by the modding API whenever the game is loaded
+            </summary>
+            <param name="data">The persistent data that was loaded</param>
+        </member>
+        <member name="M:ModdingAPI.PersistentMod.ResetGame">
+            <summary>
+            Called by the modding API whenever the game is reset
+            </summary>
+        </member>
+        <member name="P:ModdingAPI.PersistentMod.PersistentID">
+            <summary>
+            The unique id of this persistent system
+            </summary>
+        </member>
+        <member name="M:ModdingAPI.PersistentMod.Initialize">
+            <summary>
+            Called at the beginning of the game by the modding API
+            </summary>
+        </member>
     </members>
 </doc>
