@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using HarmonyLib;
+﻿using HarmonyLib;
 
 namespace ModdingAPI
 {
@@ -8,20 +7,19 @@ namespace ModdingAPI
         public string ModId { get; private set; }
         public string ModName { get; private set; }
         public string ModVersion { get; private set; }
+        public FileUtil FileUtil { get; private set; }
 
         public Mod(string modId, string modName, string modVersion)
         {
             ModId = modId;
             ModName = modName;
             ModVersion = modVersion;
+            FileUtil = new FileUtil(this);
 
             // Register and patch this mod
             Main.moddingAPI.registerMod(this);
-            Log("Current: " + Assembly.GetExecutingAssembly().GetName());
-            Log("This mod: " + GetType().Assembly.GetName());
-
             Harmony harmony = new Harmony(ModId);
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            harmony.PatchAll(GetType().Assembly);
         }
 
         public virtual void Update()
@@ -36,7 +34,7 @@ namespace ModdingAPI
 
         public virtual void Initialize()
         {
-
+            
         }
 
         public virtual void Dispose()

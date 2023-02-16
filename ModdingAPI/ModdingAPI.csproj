@@ -35,6 +35,9 @@
     <Reference Include="BepInEx">
       <HintPath>..\lib\BepInEx.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Blasphemous-Multiplayer\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\lib\UnityEngine.dll</HintPath>
     </Reference>
