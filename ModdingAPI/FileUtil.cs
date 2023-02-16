@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -12,7 +11,7 @@ namespace ModdingAPI
         private readonly string logPath = "";
         private readonly string dataPath = "";
 
-        public FileUtil(Mod mod)
+        internal FileUtil(Mod mod)
         {
             configPath = Path.GetFullPath("Modding\\config\\" + mod.ModName + ".cfg");
             logPath = Path.GetFullPath("Modding\\logs\\" + mod.ModName + ".log");
@@ -33,6 +32,11 @@ namespace ModdingAPI
 
         // Config files
 
+        /// <summary>
+        /// Loads the configuration file for this mod from the configs folder
+        /// </summary>
+        /// <typeparam name="T">The type of the config object</typeparam>
+        /// <returns></returns>
         public T loadConfig<T>() where T : new()
         {
             if (read(configPath, out string json))
@@ -45,6 +49,11 @@ namespace ModdingAPI
             return config;
         }
 
+        /// <summary>
+        /// Saves a configuration file for this mod to the configs folder
+        /// </summary>
+        /// <typeparam name="T">The type of the config object</typeparam>
+        /// <param name="config">The configuration object</param>
         public void saveConfig<T>(T config)
         {
             File.WriteAllText(configPath, jsonString(config));
@@ -52,11 +61,18 @@ namespace ModdingAPI
 
         // Log files
 
+        /// <summary>
+        /// Adds a message to the log file for this mod
+        /// </summary>
+        /// <param name="line">The message to add to the log file</param>
         public void appendLog(string line)
         {
             File.AppendAllText(logPath, line);
         }
 
+        /// <summary>
+        /// Clears the log file for this mod
+        /// </summary>
         public void clearLog()
         {
             File.WriteAllText(logPath, string.Empty);
@@ -64,36 +80,26 @@ namespace ModdingAPI
 
         // Data files
 
-        public bool loadData(string fileName, out string text)
+        /// <summary>
+        /// Loads a string from a file in the data folder
+        /// </summary>
+        /// <param name="fileName">The name of the data file</param>
+        /// <param name="output">The data string, or null if the file deosn't exist</param>
+        /// <returns>Whether the data was loaded successfully or not</returns>
+        public bool loadDataText(string fileName, out string output)
         {
-            return read(dataPath + fileName, out text);
+            return read(dataPath + fileName, out output);
         }
 
-        public void saveData(string fileName, string text)
+        /// <summary>
+        /// Loads an array from a file in the data folder
+        /// </summary>
+        /// <param name="fileName">The name of the data file</param>
+        /// <param name="output">The data array, or null if the file deosn't exist</param>
+        /// <returns>Whether the data was loaded successfully or not</returns>
+        public bool loadDataArray(string fileName, out string[] output)
         {
-            File.WriteAllText(dataPath + fileName, text);
-        }
-
-        public bool deleteData(string fileName)
-        {
-            string path = dataPath + fileName;
-            if (File.Exists(path))
-            {
-                try
-                {
-                    File.Delete(path);
-                    return true;
-                }
-                catch (Exception) { }
-            }
-            return false;
-        }
-
-        // Specific data files
-
-        public bool loadArray(string fileName, out string[] output)
-        {
-            if (loadData(fileName, out string text))
+            if (loadDataText(fileName, out string text))
             {
                 text = text.Replace("\r", string.Empty);
                 output = text.Split('\n');
@@ -104,9 +110,15 @@ namespace ModdingAPI
             return false;
         }
 
-        public bool loadDictionary(string fileName, out Dictionary<string, string> output)
+        /// <summary>
+        /// Loads a dictionary from a file in the data folder
+        /// </summary>
+        /// <param name="fileName">The name of the data file</param>
+        /// <param name="output">The data dictionary, or null if the file deosn't exist</param>
+        /// <returns>Whether the data was loaded successfully or not</returns>
+        public bool loadDataDictionary(string fileName, out Dictionary<string, string> output)
         {
-            if (loadArray(fileName, out string[] array))
+            if (loadDataArray(fileName, out string[] array))
             {
                 output = new Dictionary<string, string>();
                 for (int i = 0; i < array.Length; i++)
@@ -121,7 +133,17 @@ namespace ModdingAPI
             return false;
         }
 
-        public bool loadImages(string fileName, int spriteSize, int pixelsPerUnit, int border, bool pointFilter, out Sprite[] output)
+        /// <summary>
+        /// Loads an array of images from an image file in the data folder
+        /// </summary>
+        /// <param name="fileName">The name of the data file</param>
+        /// <param name="spriteSize">The pixel size of each square sprite in the image</param>
+        /// <param name="pixelsPerUnit">The pixels per unit of each square sprite in the image</param>
+        /// <param name="border">The border size of each square sprite in the image</param>
+        /// <param name="pointFilter">Whether a point filter should be applied to the image</param>
+        /// <param name="output">The data images, or null if the file deosn't exist</param>
+        /// <returns>Whether the data was loaded successfully or not</returns>
+        public bool loadDataImages(string fileName, int spriteSize, int pixelsPerUnit, int border, bool pointFilter, out Sprite[] output)
         {
             string path = dataPath + fileName;
             if (!File.Exists(path))
@@ -150,27 +172,38 @@ namespace ModdingAPI
             return true;
         }
 
-        // Json files
+        // Misc. methods
 
-        public bool loadJson<T>(string fileName, out T obj)
+        /// <summary>
+        /// Writes text to a file in the root directory
+        /// </summary>
+        /// <param name="fileName">The name of text file to create</param>
+        /// <param name="text">The text to write to the file</param>
+        public void saveTextFile(string fileName, string text)
         {
-            if (loadData(fileName, out string json))
-            {
-                obj = jsonObject<T>(json);
-                return true;
-            }
-
-            obj = default(T);
-            return false;
+            File.WriteAllText(dataPath + fileName, text);
         }
 
-        public void saveJson<T>(string fileName, T obj)
+        /// <summary>
+        /// Converts a json string into a json object
+        /// </summary>
+        /// <typeparam name="T">The type of object to convert to</typeparam>
+        /// <param name="json">The json string to convert into an object</param>
+        /// <returns>The object created from the json string</returns>
+        public T jsonObject<T>(string json)
         {
-            saveData(fileName, jsonString(obj));
+            return JsonConvert.DeserializeObject<T>(json);
         }
 
-        public T jsonObject<T>(string json) { return JsonConvert.DeserializeObject<T>(json); }
-
-        public string jsonString<T>(T obj) { return JsonConvert.SerializeObject(obj, Formatting.Indented); }
+        /// <summary>
+        /// Converts an object into a json string
+        /// </summary>
+        /// <typeparam name="T">The type of object to convert from</typeparam>
+        /// <param name="obj">The object to convert into a json string</param>
+        /// <returns>The json string created from the object</returns>
+        public string jsonString<T>(T obj)
+        {
+            return JsonConvert.SerializeObject(obj, Formatting.Indented);
+        }
     }
 }

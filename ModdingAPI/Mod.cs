@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using System;
 
 namespace ModdingAPI
 {
@@ -15,6 +16,10 @@ namespace ModdingAPI
             ModName = modName;
             ModVersion = modVersion;
             FileUtil = new FileUtil(this);
+
+            // Set up logging
+            FileUtil.clearLog();
+            FileUtil.appendLog(DateTime.Now.ToString());
 
             // Register and patch this mod
             Main.moddingAPI.registerMod(this);
@@ -34,7 +39,7 @@ namespace ModdingAPI
 
         public virtual void Initialize()
         {
-            
+
         }
 
         public virtual void Dispose()
