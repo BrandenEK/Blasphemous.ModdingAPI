@@ -5,7 +5,7 @@ using Framework.FrameworkCore;
 
 namespace ModdingAPI
 {
-    public class ModdingAPI
+    internal class ModdingAPI
     {
         private List<Mod> mods;
         private bool initialized;
