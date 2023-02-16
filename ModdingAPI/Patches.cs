@@ -5,7 +5,9 @@ using UnityEngine.EventSystems;
 using Framework.Managers;
 using Gameplay.UI.Widgets;
 using Gameplay.UI.Others;
+using Gameplay.GameControllers.Effects.Player.Recolor;
 using System.Text;
+using System.Collections.Generic;
 
 namespace ModdingAPI
 {
@@ -84,6 +86,25 @@ namespace ModdingAPI
                         return;
                     }
                 }
+            }
+        }
+    }
+
+    // Load custom skins from folder
+    [HarmonyPatch(typeof(ColorPaletteManager), "Initialize")]
+    internal class ColorPaletteManager_Patch
+    {
+        public static void Postfix(ColorPaletteDictionary ___palettes)
+        {
+            Dictionary<string, Sprite> customSkins = new FileUtil().loadCustomSkins();
+
+            foreach (string id in customSkins.Keys)
+            {
+                PalettesById palette = new PalettesById();
+                palette.id = id;
+                palette.paletteTex = customSkins[id];
+                ___palettes.PalettesById.Add(palette);
+                Main.LogMessage("Loading skin: " + id);
             }
         }
     }

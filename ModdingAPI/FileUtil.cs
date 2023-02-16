@@ -21,6 +21,29 @@ namespace ModdingAPI
             dataPath = Path.GetFullPath("Modding\\data\\" + mod.ModName + "\\");
         }
 
+        internal FileUtil() { }
+
+        internal Dictionary<string, Sprite> loadCustomSkins()
+        {
+            string skinsPath = Path.GetFullPath("Modding\\skins\\");
+            Dictionary<string, Sprite> customSkins = new Dictionary<string, Sprite>();
+            string[] skinFiles = Directory.GetFiles(skinsPath);
+
+            for (int i = 0; i < skinFiles.Length; i++)
+            {
+                Main.LogWarning(skinFiles[i]);
+                byte[] bytes = File.ReadAllBytes(skinFiles[i]);
+                Texture2D tex = new Texture2D(256, 1, TextureFormat.RGBA32, false);
+                tex.LoadImage(bytes);
+                Sprite skinTexture = Sprite.Create(tex, new Rect(0, 0, 256, 1), new Vector2(0.5f, 0.5f));
+                string skinId = skinFiles[i].Substring(skinFiles[i].LastIndexOf("\\") + 1);
+                Main.LogWarning(skinId.Substring(0, skinId.LastIndexOf(".")));
+                customSkins.Add(skinId.Substring(0, skinId.LastIndexOf(".")), skinTexture);
+            }
+
+            return customSkins;
+        }
+
         private bool read(string path, out string text)
         {
             if (File.Exists(path))
