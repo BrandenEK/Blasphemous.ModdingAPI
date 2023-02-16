@@ -17,14 +17,9 @@ namespace ModdingAPI
             return persistentMod.SaveGame();
         }
 
-        public int GetOrder()
+        public void SetCurrentPersistentState(PersistentManager.PersistentData data, bool isloading, string dataPath)
         {
-            return 0;
-        }
-
-        public string GetPersistenID()
-        {
-            return persistentMod.Id;
+            persistentMod.LoadGame(data);
         }
 
         public void ResetPersistence()
@@ -32,9 +27,14 @@ namespace ModdingAPI
             persistentMod.ResetGame();
         }
 
-        public void SetCurrentPersistentState(PersistentManager.PersistentData data, bool isloading, string dataPath)
+        public int GetOrder()
         {
-            persistentMod.LoadGame(data);
+            return 0;
+        }
+
+        public string GetPersistenID()
+        {
+            return persistentMod.PersistentID;
         }
     }
 }

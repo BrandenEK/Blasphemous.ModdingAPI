@@ -4,7 +4,7 @@ namespace ModdingAPI
 {
     public abstract class PersistentMod : Mod
     {
-        public PersistentMod(string modName, string modVersion) : base(modName, modVersion) { }
+        public PersistentMod(string modId, string modName, string modVersion) : base(modId, modName, modVersion) { }
 
         public abstract PersistentManager.PersistentData SaveGame();
 
@@ -12,7 +12,7 @@ namespace ModdingAPI
 
         public abstract void ResetGame();
 
-        public abstract string Id { get; }
+        public abstract string PersistentID { get; }
 
         public override void Initialize()
         {

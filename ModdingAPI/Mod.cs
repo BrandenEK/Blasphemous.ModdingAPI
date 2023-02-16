@@ -1,16 +1,27 @@
-﻿
+﻿using System.Reflection;
+using HarmonyLib;
+
 namespace ModdingAPI
 {
     public abstract class Mod
     {
+        public string ModId { get; private set; }
         public string ModName { get; private set; }
         public string ModVersion { get; private set; }
 
-        public Mod(string modName, string modVersion)
+        public Mod(string modId, string modName, string modVersion)
         {
+            ModId = modId;
             ModName = modName;
             ModVersion = modVersion;
+
+            // Register and patch this mod
             Main.moddingAPI.registerMod(this);
+            Log("Current: " + Assembly.GetExecutingAssembly().GetName());
+            Log("This mod: " + GetType().Assembly.GetName());
+
+            Harmony harmony = new Harmony(ModId);
+            harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
 
         public virtual void Update()
