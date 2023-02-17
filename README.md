@@ -1,55 +1,57 @@
 # Blasphemous Modding API
 
-To create a new project, open the command line and run: <br>
-```dotnet new bepinex5plugin -n NewModName -T net35 -U 2017.4.40```
+## Creating an example mod
+
+1. Create a folder called "ExampleMod"
+2. Open the command prompt in this folder and run the command:
+```dotnet new bepinex5plugin -n ExampleMod -T net35 -U 2017.4.40```
+3. Open the newly created "ExampleMod.csproj" in Visual Studio
+4. Go to "Project/Add Assembly Reference/Browse" and add a reference to any required assemblies.  This will include "ModdingAPI.dll", "Assembly-CSharp.dll", "UnityEngine.dll", and likely many more
+5. Rename the "Plugin.cs" file to "Main.cs"
+6. Create a new class called "Example.cs"
+7. Copy the template code into these new files
 
 ---
 
-Template project file: <br>
+Template "Main.cs" <br>
 ```C#
 using BepInEx;
-using HarmonyLib;
 
-namespace ModName
+namespace ExampleMod
 {
-    [BepInPlugin("mod-guid", "mod-name", "1.0.0")]
+    [BepInPlugin(MOD_ID, MOD_NAME, MOD_VERSION)]
+    [BepInDependency("com.damocles.blasphemous.modding-api", BepInDependency.DependencyFlags.HardDependency)]
     [BepInProcess("Blasphemous.exe")]
     public class Main : BaseUnityPlugin
     {
-        public static ModName modName;
-        private static Main instance;
+        public const string MOD_ID = "com.author.blasphemous.example-mod";
+        public const string MOD_NAME = "Example";
+        public const string MOD_VERSION = "1.0.0";
 
-        private void Awake()
-        {
-            modName = new ModName();
-            instance = this;
-            Patch();
-        }
-        
-        private void Update()
-        {
-            modName.update()
-        }
+        public static Example Example;
 
-        private void Patch()
+        private void Start()
         {
-            Harmony harmony = new Harmony("mod-guid");
-            harmony.PatchAll();
-        }
-
-        private void UnityLog(string message)
-        {
-            Logger.LogMessage(message);
-        }
-
-        public static void Log(string message)
-        {
-            instance.Log(message);
+            Example = new Example(MOD_ID, MOD_NAME, MOD_VERSION);
         }
     }
 }
 ```
 
-### To-do:
-- Add fileutil class
-- Add mod interface (Awake, Init, Dispose, Update, etc.)
+Template "Example.cs" <br>
+```C#
+using ModdingAPI;
+
+namespace ExampleMod
+{
+    public class Example : Mod
+    {
+        public Example(string modId, string modName, string modVersion) : base(modId, modName, modVersion) { }
+
+        protected override void Initialize()
+        {
+            base.Initialize();
+        }
+    }
+}
+```
