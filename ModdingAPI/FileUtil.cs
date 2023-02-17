@@ -14,6 +14,7 @@ namespace ModdingAPI
         private readonly string logPath = "";
         private readonly string dataPath = "";
 
+        // Constructor called by mods to set up their paths
         internal FileUtil(Mod mod)
         {
             configPath = Path.GetFullPath("Modding\\config\\" + mod.ModName + ".cfg");
@@ -21,7 +22,14 @@ namespace ModdingAPI
             dataPath = Path.GetFullPath("Modding\\data\\" + mod.ModName + "\\");
         }
 
-        internal FileUtil() { }
+        // Constructor called by mod api to create directories
+        internal FileUtil()
+        {
+            Directory.CreateDirectory(Path.GetFullPath("Modding\\config\\"));
+            Directory.CreateDirectory(Path.GetFullPath("Modding\\logs\\"));
+            Directory.CreateDirectory(Path.GetFullPath("Modding\\data\\"));
+            Directory.CreateDirectory(Path.GetFullPath("Modding\\skins\\"));
+        }
 
         internal Dictionary<string, Sprite> loadCustomSkins()
         {

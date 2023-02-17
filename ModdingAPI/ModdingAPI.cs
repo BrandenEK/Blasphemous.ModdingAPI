@@ -11,11 +11,13 @@ namespace ModdingAPI
         private bool initialized;
 
         public SkinLoader skinLoader { get; private set; }
+        public FileUtil fileUtil { get; private set; }
 
         public ModdingAPI()
         {
             mods = new List<Mod>();
             skinLoader = new SkinLoader();
+            fileUtil = new FileUtil();
             initialized = false;
         }
 
@@ -83,7 +85,7 @@ namespace ModdingAPI
         {
             if (!mods.Contains(mod))
             {
-                Main.LogMessage($"Registering mod {mod.ModName} ({mod.ModVersion})");
+                Main.LogMessage($"Registering mod: {mod.ModName} ({mod.ModVersion})");
                 mods.Add(mod);
             }
         }

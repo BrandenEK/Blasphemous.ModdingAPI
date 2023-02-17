@@ -41,12 +41,11 @@ namespace ModdingAPI
 
         public void loadCustomSkins()
         {
-            FileUtil fileUtil = new FileUtil();
-            Dictionary<string, Sprite> skinData = fileUtil.loadCustomSkins();
+            Dictionary<string, Sprite> skinData = Main.moddingAPI.fileUtil.loadCustomSkins();
 
             foreach (string skinText in skinData.Keys)
             {
-                SkinInfo skinInfo = fileUtil.jsonObject<SkinInfo>(skinText);
+                SkinInfo skinInfo = Main.moddingAPI.fileUtil.jsonObject<SkinInfo>(skinText);
                 skinInfo.texture = skinData[skinText];
                 customSkins.Add(skinInfo.id, skinInfo);
                 Main.LogMessage($"Loading custom skin: {skinInfo.id} by {skinInfo.author}");

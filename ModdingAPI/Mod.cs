@@ -40,7 +40,7 @@ namespace ModdingAPI
 
             // Set up logging
             FileUtil.clearLog();
-            FileUtil.appendLog(DateTime.Now.ToString());
+            FileUtil.appendLog(DateTime.Now.ToString() + "\n");
 
             // Register and patch this mod
             Main.moddingAPI.registerMod(this);
