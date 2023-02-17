@@ -65,7 +65,7 @@ namespace ModdingAPI
 
     // Allow console commands on the main menu
     [HarmonyPatch(typeof(KeepFocus), "Update")]
-    internal class KeepFocus_Patch
+    internal class KeepFocusMain_Patch
     {
         public static bool Prefix()
         {
@@ -138,7 +138,7 @@ namespace ModdingAPI
 
             void addEvent(EventsButton button, GameObject obj, int skinIdx)
             {
-                Main.LogMessage("Found event button of selector element " + skinIdx);
+                button.onSelected.RemoveAllListeners();
                 button.onSelected = new EventsButton.ButtonSelectedEvent();
                 button.onSelected.AddListener(delegate
                 {
@@ -171,6 +171,11 @@ namespace ModdingAPI
                         text.name = skinId + "Text";
                         text.text = skinId;
                     }
+                    EventsButton button = newElement.GetComponentInChildren<EventsButton>();
+                    if (button != null)
+                    {
+                        Main.moddingAPI.skinButtons.Add(button.gameObject);
+                    }
 
                     ExtrasMenuWidget.SkinSelectorElement newSkinElement = new ExtrasMenuWidget.SkinSelectorElement();
                     newSkinElement.skinKey = skinId;
@@ -181,27 +186,28 @@ namespace ModdingAPI
         }
     }
 
+    [HarmonyPatch(typeof(KeepFocus), "Update")]
+    internal class KeepFocusSkins_Patch
+    {
+        public static void Prefix(KeepFocus __instance, List<GameObject> ___allowedObjects)
+        {
+            if (!Main.moddingAPI.createdSkinButtons && __instance.name == "Extras_SkinSelector")
+            {
+                foreach (GameObject obj in Main.moddingAPI.skinButtons)
+                    ___allowedObjects.Add(obj);
+            }
+        }
+    }
+
     // Select skin
     [HarmonyPatch(typeof(ExtrasMenuWidget), "Option_OnSelectSkin")]
     internal class SelectSkin_Patch
     {
-        public static bool Prefix(ref int idx, List<string> ___allSkins, string ___optionLastSkinSelected)
+        public static bool Prefix(ExtrasMenuWidget __instance, int idx)
         {
-            Main.LogMessage("Old: " + ___optionLastSkinSelected);
-            Main.LogMessage("New: " + ___allSkins[idx]);
+            Text text = __instance.transform.Find("Options/Extras_SkinSelector/SubText").GetComponent<Text>();
+            text.text = "Created by: TGK";
             return true;
         }
     }
-
-    // Select option
-    [HarmonyPatch(typeof(ExtrasMenuWidget), "Option_OnSelect")]
-    internal class SelectOption_Patch
-    {
-        public static bool Prefix()
-        {
-            Main.LogMessage("Selecting option");
-            return true;
-        }
-    }
-
 }
