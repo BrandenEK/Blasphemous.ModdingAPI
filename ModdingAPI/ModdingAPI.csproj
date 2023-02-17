@@ -46,6 +46,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\Blasphemous-Multiplayer\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Sirenix.Serialization">
+      <HintPath>..\lib\Sirenix.Serialization.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\lib\UnityEngine.dll</HintPath>
     </Reference>

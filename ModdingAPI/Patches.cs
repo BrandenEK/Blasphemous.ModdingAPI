@@ -5,7 +5,9 @@ using UnityEngine.EventSystems;
 using Framework.Managers;
 using Gameplay.UI.Widgets;
 using Gameplay.UI.Others;
+using Gameplay.UI.Others.MenuLogic;
 using Gameplay.GameControllers.Effects.Player.Recolor;
+using Gameplay.UI.Others.Buttons;
 using System.Text;
 using System.Collections.Generic;
 
@@ -94,7 +96,7 @@ namespace ModdingAPI
     [HarmonyPatch(typeof(ColorPaletteManager), "Initialize")]
     internal class ColorPaletteManager_Patch
     {
-        public static void Postfix(ColorPaletteDictionary ___palettes)
+        public static void Postfix(ColorPaletteDictionary ___palettes, Dictionary<string, bool> ___palettesStates)
         {
             Dictionary<string, Sprite> customSkins = new FileUtil().loadCustomSkins();
 
@@ -103,9 +105,103 @@ namespace ModdingAPI
                 PalettesById palette = new PalettesById();
                 palette.id = id;
                 palette.paletteTex = customSkins[id];
+                palette.palettePreview = customSkins[id];
                 ___palettes.PalettesById.Add(palette);
+                if (!___palettesStates.ContainsKey(id))
+                    ___palettesStates.Add(id, true);
                 Main.LogMessage("Loading skin: " + id);
             }
         }
     }
+
+    // Create menu options for custom skins
+    [HarmonyPatch(typeof(ExtrasMenuWidget), "Awake")]
+    internal class ExtrasMenuWidget_Patch
+    {
+        public static void Postfix(List<string> ___allSkins, List<ExtrasMenuWidget.SkinSelectorElement> ___skinSelectorDataElements, List<ExtrasMenuWidget.SkinSelectorElement> ___skinSelectorSelectionElements)
+        {
+            for (int i = 0; i < ___allSkins.Count; i++)
+            {
+                Main.LogMessage(___allSkins[i]);
+                addMissingElements(___allSkins[i], i, ___skinSelectorDataElements);
+                addMissingElements(___allSkins[i], i, ___skinSelectorSelectionElements);
+            }
+
+            for (int i = 0; i < ___skinSelectorSelectionElements.Count; i++)
+            {
+                EventsButton button = ___skinSelectorSelectionElements[i].element.GetComponentInChildren<EventsButton>();
+                if (button != null)
+                {
+                    addEvent(button, ___skinSelectorSelectionElements[i].element, i);
+                }
+            }
+
+            void addEvent(EventsButton button, GameObject obj, int skinIdx)
+            {
+                Main.LogMessage("Found event button of selector element " + skinIdx);
+                button.onSelected = new EventsButton.ButtonSelectedEvent();
+                button.onSelected.AddListener(delegate
+                {
+                    ExtrasMenuWidget widget = Object.FindObjectOfType<ExtrasMenuWidget>();
+                    widget.Option_OnSelect(obj);
+                    widget.Option_OnSelectSkin(skinIdx);
+                });
+            }
+
+            void addMissingElements(string skinId, int skinIndex, List<ExtrasMenuWidget.SkinSelectorElement> skinElements)
+            {
+                bool elementExists = false;
+                foreach (ExtrasMenuWidget.SkinSelectorElement skinElement in skinElements)
+                {
+                    if (skinElement.skinKey == skinId)
+                    {
+                        elementExists = true;
+                        break;
+                    }
+                }
+                if (!elementExists)
+                {
+                    GameObject firstElement = skinElements[0].element;
+                    GameObject newElement = Object.Instantiate(firstElement, firstElement.transform.parent);
+                    newElement.name = skinId;
+
+                    Text text = newElement.GetComponentInChildren<Text>();
+                    if (text != null)
+                    {
+                        text.name = skinId + "Text";
+                        text.text = skinId;
+                    }
+
+                    ExtrasMenuWidget.SkinSelectorElement newSkinElement = new ExtrasMenuWidget.SkinSelectorElement();
+                    newSkinElement.skinKey = skinId;
+                    newSkinElement.element = newElement;
+                    skinElements.Add(newSkinElement);
+                }
+            }
+        }
+    }
+
+    // Select skin
+    [HarmonyPatch(typeof(ExtrasMenuWidget), "Option_OnSelectSkin")]
+    internal class SelectSkin_Patch
+    {
+        public static bool Prefix(ref int idx, List<string> ___allSkins, string ___optionLastSkinSelected)
+        {
+            Main.LogMessage("Old: " + ___optionLastSkinSelected);
+            Main.LogMessage("New: " + ___allSkins[idx]);
+            return true;
+        }
+    }
+
+    // Select option
+    [HarmonyPatch(typeof(ExtrasMenuWidget), "Option_OnSelect")]
+    internal class SelectOption_Patch
+    {
+        public static bool Prefix()
+        {
+            Main.LogMessage("Selecting option");
+            return true;
+        }
+    }
+
 }

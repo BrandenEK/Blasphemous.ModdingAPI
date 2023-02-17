@@ -23,7 +23,7 @@ namespace ModdingAPI
             for (int i = 0; i < mods.Count; i++)
             {
                 mods[i].Update();
-            }
+            }            
         }
 
         public void LateUpdate()
