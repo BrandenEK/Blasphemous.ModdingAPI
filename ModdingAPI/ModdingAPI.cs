@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using Framework.Managers;
 using Framework.FrameworkCore;
+using UnityEngine;
 
 namespace ModdingAPI
 {
@@ -9,6 +10,9 @@ namespace ModdingAPI
     {
         private List<Mod> mods;
         private bool initialized;
+
+        public List<GameObject> skinButtons = new List<GameObject>();
+        public bool createdSkinButtons { get; set; }
 
         public ModdingAPI()
         {
@@ -23,7 +27,7 @@ namespace ModdingAPI
             for (int i = 0; i < mods.Count; i++)
             {
                 mods[i].Update();
-            }            
+            }
         }
 
         public void LateUpdate()
