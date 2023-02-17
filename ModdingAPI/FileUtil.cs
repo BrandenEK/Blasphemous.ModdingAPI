@@ -62,7 +62,7 @@ namespace ModdingAPI
         /// Loads the configuration file for this mod from the configs folder
         /// </summary>
         /// <typeparam name="T">The type of the config object</typeparam>
-        /// <returns></returns>
+        /// <returns>The configuration object</returns>
         public T loadConfig<T>() where T : new()
         {
             if (read(configPath, out string json))
