@@ -98,6 +98,7 @@ namespace ModdingAPI
     {
         public static void Postfix(ColorPaletteDictionary ___palettes, Dictionary<string, bool> ___palettesStates)
         {
+            // Change to load skins into the skin laoder - Then loop through there
             Dictionary<string, Sprite> customSkins = new FileUtil().loadCustomSkins();
 
             foreach (string id in customSkins.Keys)
@@ -109,7 +110,7 @@ namespace ModdingAPI
                 ___palettes.PalettesById.Add(palette);
                 if (!___palettesStates.ContainsKey(id))
                     ___palettesStates.Add(id, true);
-                Main.LogMessage("Loading skin: " + id);
+                Main.LogMessage("Loading custom skin: " + id);
             }
         }
     }
@@ -122,7 +123,6 @@ namespace ModdingAPI
         {
             for (int i = 0; i < ___allSkins.Count; i++)
             {
-                Main.LogMessage(___allSkins[i]);
                 addMissingElements(___allSkins[i], i, ___skinSelectorDataElements);
                 addMissingElements(___allSkins[i], i, ___skinSelectorSelectionElements);
             }
@@ -174,7 +174,7 @@ namespace ModdingAPI
                     EventsButton button = newElement.GetComponentInChildren<EventsButton>();
                     if (button != null)
                     {
-                        Main.moddingAPI.skinButtons.Add(button.gameObject);
+                        Main.moddingAPI.skinLoader.addSkinButton(button.gameObject);
                     }
 
                     ExtrasMenuWidget.SkinSelectorElement newSkinElement = new ExtrasMenuWidget.SkinSelectorElement();
@@ -186,27 +186,30 @@ namespace ModdingAPI
         }
     }
 
+    // Add custom skins button allowed focus objects
     [HarmonyPatch(typeof(KeepFocus), "Update")]
     internal class KeepFocusSkins_Patch
     {
         public static void Prefix(KeepFocus __instance, List<GameObject> ___allowedObjects)
         {
-            if (!Main.moddingAPI.createdSkinButtons && __instance.name == "Extras_SkinSelector")
+            if (!Main.moddingAPI.skinLoader.allowedSkinButtons && __instance.name == "Extras_SkinSelector")
             {
-                foreach (GameObject obj in Main.moddingAPI.skinButtons)
+                foreach (GameObject obj in Main.moddingAPI.skinLoader.allowSkinButtons())
                     ___allowedObjects.Add(obj);
             }
         }
     }
 
-    // Select skin
+    // Display creator of each skin
     [HarmonyPatch(typeof(ExtrasMenuWidget), "Option_OnSelectSkin")]
     internal class SelectSkin_Patch
     {
-        public static bool Prefix(ExtrasMenuWidget __instance, int idx)
+        public static bool Prefix(ExtrasMenuWidget __instance, int idx, List<string> ___allSkins)
         {
             Text text = __instance.transform.Find("Options/Extras_SkinSelector/SubText").GetComponent<Text>();
-            text.text = "Created by: TGK";
+
+            SkinInfo customSkin = Main.moddingAPI.skinLoader.getSkinInfo(___allSkins[idx]);
+            text.text = "Created by: " + (customSkin == null ? "TGK" : customSkin.author);
             return true;
         }
     }

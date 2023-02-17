@@ -34,8 +34,9 @@ namespace ModdingAPI
             {
                 Main.LogWarning(skinFiles[i]);
                 byte[] bytes = File.ReadAllBytes(skinFiles[i]);
-                Texture2D tex = new Texture2D(256, 1, TextureFormat.RGBA32, false);
+                Texture2D tex = new Texture2D(256, 1, TextureFormat.RGB24, false);
                 tex.LoadImage(bytes);
+                tex.filterMode = FilterMode.Point;
                 Sprite skinTexture = Sprite.Create(tex, new Rect(0, 0, 256, 1), new Vector2(0.5f, 0.5f));
                 string skinId = skinFiles[i].Substring(skinFiles[i].LastIndexOf("\\") + 1);
                 Main.LogWarning(skinId.Substring(0, skinId.LastIndexOf(".")));
