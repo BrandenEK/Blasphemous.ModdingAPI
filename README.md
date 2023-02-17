@@ -1,5 +1,14 @@
 # Blasphemous Modding API
 
+## Features
+
+- Enables the console for all registered mods
+- Allows loading custom skins
+- Ensures compatibility between all mods
+- Very simple process of installing new mods
+
+---
+
 ## Creating an example mod
 
 1. Create a folder called "ExampleMod"
