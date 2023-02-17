@@ -1,5 +1,8 @@
 ﻿using BepInEx;
 using HarmonyLib;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace ModdingAPI
 {
@@ -18,8 +21,16 @@ namespace ModdingAPI
         {
             moddingAPI = new ModdingAPI();
             instance = this;
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(loadMissingAssemblies);
             Harmony harmony = new Harmony(MOD_ID);
             harmony.PatchAll();
+        }
+
+        private Assembly loadMissingAssemblies(object send, ResolveEventArgs args)
+        {
+            string assemblyPath = Path.GetFullPath($"Modding\\data\\{args.Name.Substring(0, args.Name.IndexOf(","))}.dll");
+            logMessage("Loading assembly from " + assemblyPath);
+            return File.Exists(assemblyPath) ? Assembly.LoadFrom(assemblyPath) : null;
         }
 
         private void Update() { moddingAPI.Update(); }
