@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Ionic.Zip;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -42,6 +43,20 @@ namespace ModdingAPI
             }
 
             return customSkins;
+        }
+
+        internal bool getSkinFile(string path, out string skinInfo, out Sprite skinTexture)
+        {
+            using (ZipFile zip = ZipFile.Read(path))
+            {
+                foreach (ZipEntry e in zip)
+                {
+                    Main.LogMessage(e.FileName);
+                }
+            }
+            skinInfo = null;
+            skinTexture = null;
+            return true;
         }
 
         private bool read(string path, out string text)

@@ -14,7 +14,7 @@
             Loads the configuration file for this mod from the configs folder
             </summary>
             <typeparam name="T">The type of the config object</typeparam>
-            <returns></returns>
+            <returns>The configuration object</returns>
         </member>
         <member name="M:ModdingAPI.FileUtil.saveConfig``1(``0)">
             <summary>
