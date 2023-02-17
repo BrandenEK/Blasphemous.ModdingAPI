@@ -33,6 +33,25 @@ namespace ModdingAPI
                 return customSkins[id];
             return null;
         }
+
+        public IEnumerable<SkinInfo> getAllSkinInfos()
+        {
+            return customSkins.Values;
+        }
+
+        public void loadCustomSkins()
+        {
+            FileUtil fileUtil = new FileUtil();
+            Dictionary<string, Sprite> skinData = fileUtil.loadCustomSkins();
+
+            foreach (string skinText in skinData.Keys)
+            {
+                SkinInfo skinInfo = fileUtil.jsonObject<SkinInfo>(skinText);
+                skinInfo.texture = skinData[skinText];
+                customSkins.Add(skinInfo.id, skinInfo);
+                Main.LogMessage($"Loading custom skin: {skinInfo.id} by {skinInfo.author}");
+            }
+        }
     }
 
     [System.Serializable]
@@ -42,12 +61,5 @@ namespace ModdingAPI
         public string name;
         public string author;
         public Sprite texture;
-
-        //public SkinInfo(string id, string name, string author)
-        //{
-        //    this.id = id;
-        //    this.name = name;
-        //    this.author = author;
-        //}
     }
 }

@@ -94,23 +94,21 @@ namespace ModdingAPI
 
     // Load custom skins from folder
     [HarmonyPatch(typeof(ColorPaletteManager), "Initialize")]
-    internal class ColorPaletteManager_Patch
+    internal class ColorPaletteManagerInit_Patch
     {
         public static void Postfix(ColorPaletteDictionary ___palettes, Dictionary<string, bool> ___palettesStates)
         {
-            // Change to load skins into the skin laoder - Then loop through there
-            Dictionary<string, Sprite> customSkins = new FileUtil().loadCustomSkins();
+            Main.moddingAPI.skinLoader.loadCustomSkins();
 
-            foreach (string id in customSkins.Keys)
+            foreach (SkinInfo skin in Main.moddingAPI.skinLoader.getAllSkinInfos())
             {
                 PalettesById palette = new PalettesById();
-                palette.id = id;
-                palette.paletteTex = customSkins[id];
-                palette.palettePreview = customSkins[id];
+                palette.id = skin.id;
+                palette.paletteTex = skin.texture;
+                palette.palettePreview = skin.texture;
                 ___palettes.PalettesById.Add(palette);
-                if (!___palettesStates.ContainsKey(id))
-                    ___palettesStates.Add(id, true);
-                Main.LogMessage("Loading custom skin: " + id);
+                if (!___palettesStates.ContainsKey(skin.id))
+                    ___palettesStates.Add(skin.id, true);
             }
         }
     }
@@ -123,8 +121,8 @@ namespace ModdingAPI
         {
             for (int i = 0; i < ___allSkins.Count; i++)
             {
-                addMissingElements(___allSkins[i], i, ___skinSelectorDataElements);
-                addMissingElements(___allSkins[i], i, ___skinSelectorSelectionElements);
+                addMissingElements(___allSkins[i], ___skinSelectorDataElements);
+                addMissingElements(___allSkins[i], ___skinSelectorSelectionElements);
             }
 
             for (int i = 0; i < ___skinSelectorSelectionElements.Count; i++)
@@ -148,7 +146,7 @@ namespace ModdingAPI
                 });
             }
 
-            void addMissingElements(string skinId, int skinIndex, List<ExtrasMenuWidget.SkinSelectorElement> skinElements)
+            void addMissingElements(string skinId, List<ExtrasMenuWidget.SkinSelectorElement> skinElements)
             {
                 bool elementExists = false;
                 foreach (ExtrasMenuWidget.SkinSelectorElement skinElement in skinElements)
@@ -161,15 +159,18 @@ namespace ModdingAPI
                 }
                 if (!elementExists)
                 {
+                    SkinInfo skin = Main.moddingAPI.skinLoader.getSkinInfo(skinId);
+                    string objName = "Skin" + skin.name.Replace(" ", string.Empty);
+
                     GameObject firstElement = skinElements[0].element;
                     GameObject newElement = Object.Instantiate(firstElement, firstElement.transform.parent);
-                    newElement.name = skinId;
+                    newElement.name = objName;
 
                     Text text = newElement.GetComponentInChildren<Text>();
                     if (text != null)
                     {
-                        text.name = skinId + "Text";
-                        text.text = skinId;
+                        text.name = objName + "Text";
+                        text.text = skin.name;
                     }
                     EventsButton button = newElement.GetComponentInChildren<EventsButton>();
                     if (button != null)
@@ -178,7 +179,7 @@ namespace ModdingAPI
                     }
 
                     ExtrasMenuWidget.SkinSelectorElement newSkinElement = new ExtrasMenuWidget.SkinSelectorElement();
-                    newSkinElement.skinKey = skinId;
+                    newSkinElement.skinKey = skin.id;
                     newSkinElement.element = newElement;
                     skinElements.Add(newSkinElement);
                 }
@@ -211,6 +212,21 @@ namespace ModdingAPI
             SkinInfo customSkin = Main.moddingAPI.skinLoader.getSkinInfo(___allSkins[idx]);
             text.text = "Created by: " + (customSkin == null ? "TGK" : customSkin.author);
             return true;
+        }
+    }
+
+    // Use default skin if custom one is removed
+    [HarmonyPatch(typeof(ColorPaletteManager), "GetCurrentColorPaletteId")]
+    internal class ColorPaletteManagerGet_Patch
+    {
+        public static void Postfix(ColorPaletteManager __instance, ColorPaletteDictionary ___palettes, ref string __result)
+        {
+            foreach (PalettesById palette in ___palettes.PalettesById)
+            {
+                if (palette.id == __result) return;
+            }
+            __instance.SetCurrentColorPaletteId("PENITENT_DEFAULT");
+            __result = "PENITENT_DEFAULT";
         }
     }
 }

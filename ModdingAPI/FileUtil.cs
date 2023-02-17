@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Ionic.Zip;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -28,36 +27,32 @@ namespace ModdingAPI
         {
             string skinsPath = Path.GetFullPath("Modding\\skins\\");
             Dictionary<string, Sprite> customSkins = new Dictionary<string, Sprite>();
-            string[] skinFiles = Directory.GetFiles(skinsPath);
+            string[] skinFolders = Directory.GetDirectories(skinsPath);
 
-            for (int i = 0; i < skinFiles.Length; i++)
+            for (int i = 0; i < skinFolders.Length; i++)
             {
-                Main.LogWarning(skinFiles[i]);
-                byte[] bytes = File.ReadAllBytes(skinFiles[i]);
-                Texture2D tex = new Texture2D(256, 1, TextureFormat.RGB24, false);
-                tex.LoadImage(bytes);
-                tex.filterMode = FilterMode.Point;
-                Sprite skinTexture = Sprite.Create(tex, new Rect(0, 0, 256, 1), new Vector2(0.5f, 0.5f));
-                string skinId = skinFiles[i].Substring(skinFiles[i].LastIndexOf("\\") + 1);
-                Main.LogWarning(skinId.Substring(0, skinId.LastIndexOf(".")));
-                customSkins.Add(skinId.Substring(0, skinId.LastIndexOf(".")), skinTexture);
+                if (getSkinFiles(skinFolders[i], out string skinInfo, out Sprite skinTexture))
+                {
+                    customSkins.Add(skinInfo, skinTexture);
+                }
             }
 
             return customSkins;
-        }
 
-        internal bool getSkinFile(string path, out string skinInfo, out Sprite skinTexture)
-        {
-            using (ZipFile zip = ZipFile.Read(path))
+            bool getSkinFiles(string path, out string skinInfo, out Sprite skinTexture)
             {
-                foreach (ZipEntry e in zip)
-                {
-                    Main.LogMessage(e.FileName);
-                }
+                skinInfo = null; skinTexture = null;
+                if (!File.Exists(path + "\\info.txt") || !File.Exists(path + "\\texture.png")) return false;
+
+                skinInfo = File.ReadAllText(path + "\\info.txt");
+                byte[] bytes = File.ReadAllBytes(path + "\\texture.png");
+                Texture2D tex = new Texture2D(256, 1, TextureFormat.RGB24, false);
+                tex.LoadImage(bytes);
+                tex.filterMode = FilterMode.Point;
+                skinTexture = Sprite.Create(tex, new Rect(0, 0, 256, 1), new Vector2(0.5f, 0.5f));
+
+                return true;
             }
-            skinInfo = null;
-            skinTexture = null;
-            return true;
         }
 
         private bool read(string path, out string text)
