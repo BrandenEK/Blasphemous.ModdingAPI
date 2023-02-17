@@ -19,7 +19,7 @@ namespace ModdingAPI
 
         public void SetCurrentPersistentState(PersistentManager.PersistentData data, bool isloading, string dataPath)
         {
-            persistentMod.LoadGame(data);
+            persistentMod.LoadGame((ModPersistentData)data);
         }
 
         public void ResetPersistence()

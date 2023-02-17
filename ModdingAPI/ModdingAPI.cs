@@ -67,17 +67,19 @@ namespace ModdingAPI
 
         public void LevelLoaded(Level oldLevel, Level newLevel)
         {
+            string oLevel = oldLevel == null ? string.Empty : oldLevel.LevelName, nLevel = newLevel == null ? string.Empty : newLevel.LevelName;
             for (int i = 0; i < mods.Count; i++)
             {
-                mods[i].LevelLoaded(oldLevel == null ? string.Empty : oldLevel.LevelName, newLevel == null ? string.Empty : newLevel.LevelName);
+                mods[i].LevelLoaded(oLevel, nLevel);
             }
         }
 
         public void LevelUnloaded(Level oldLevel, Level newLevel)
         {
+            string oLevel = oldLevel == null ? string.Empty : oldLevel.LevelName, nLevel = newLevel == null ? string.Empty : newLevel.LevelName;
             for (int i = 0; i < mods.Count; i++)
             {
-                mods[i].LevelUnloaded(oldLevel == null ? string.Empty : oldLevel.LevelName, newLevel == null ? string.Empty : newLevel.LevelName);
+                mods[i].LevelUnloaded(oLevel, nLevel);
             }
         }
 

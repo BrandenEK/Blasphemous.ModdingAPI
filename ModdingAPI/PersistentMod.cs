@@ -19,13 +19,13 @@ namespace ModdingAPI
         /// Called by the modding API whenever the game is saved
         /// </summary>
         /// <returns>The persistent data to save</returns>
-        public abstract PersistentManager.PersistentData SaveGame();
+        public abstract ModPersistentData SaveGame();
 
         /// <summary>
         /// Called by the modding API whenever the game is loaded
         /// </summary>
         /// <param name="data">The persistent data that was loaded</param>
-        public abstract void LoadGame(PersistentManager.PersistentData data);
+        public abstract void LoadGame(ModPersistentData data);
 
         /// <summary>
         /// Called by the modding API whenever the game is reset

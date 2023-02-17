@@ -178,6 +178,17 @@
             </summary>
             <param name="error">The error to display</param>
         </member>
+        <member name="T:ModdingAPI.ModPersistentData">
+            <summary>
+            A serializable class that contains persistent data related to this mod
+            </summary>
+        </member>
+        <member name="M:ModdingAPI.ModPersistentData.#ctor(System.String)">
+            <summary>
+            Creates new persistent data for this mod
+            </summary>
+            <param name="persistentId">The same persistent id as the persistent mod</param>
+        </member>
         <member name="T:ModdingAPI.PersistentMod">
             <summary>
             An abstract representation of a mod that can save and load game data
@@ -197,7 +208,7 @@
             </summary>
             <returns>The persistent data to save</returns>
         </member>
-        <member name="M:ModdingAPI.PersistentMod.LoadGame(Framework.Managers.PersistentManager.PersistentData)">
+        <member name="M:ModdingAPI.PersistentMod.LoadGame(ModdingAPI.ModPersistentData)">
             <summary>
             Called by the modding API whenever the game is loaded
             </summary>
