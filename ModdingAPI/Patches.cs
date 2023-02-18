@@ -101,7 +101,7 @@ namespace ModdingAPI
         {
             foreach (ModCommand command in Main.moddingAPI.getModCommnds())
             {
-                ___commands.Add(command);
+                ___commands.Add(new ModCommandSystem(command));
             }
         }
     }
