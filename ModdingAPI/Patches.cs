@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Framework.Managers;
 using Gameplay.UI.Widgets;
+using Gameplay.UI.Console;
 using Gameplay.UI.Others;
 using Gameplay.UI.Others.MenuLogic;
 using Gameplay.GameControllers.Effects.Player.Recolor;
@@ -52,7 +53,7 @@ namespace ModdingAPI
 
     // Allow access to console
     [HarmonyPatch(typeof(ConsoleWidget), "Update")]
-    internal class ConsoleWidget_Patch
+    internal class ConsoleWidgetEnable_Patch
     {
         public static void Postfix(ConsoleWidget __instance, bool ___isEnabled)
         {
@@ -88,6 +89,19 @@ namespace ModdingAPI
                         return;
                     }
                 }
+            }
+        }
+    }
+
+    // Add custom mod commands to the console
+    [HarmonyPatch(typeof(ConsoleWidget), "InitializeCommands")]
+    internal class ConsoleWidgetInitialize_Patch
+    {
+        public static void Postfix(List<ConsoleCommand> ___commands)
+        {
+            foreach (ModCommand command in Main.moddingAPI.getModCommnds())
+            {
+                ___commands.Add(command);
             }
         }
     }

@@ -101,6 +101,15 @@ namespace ModdingAPI
         }
 
         /// <summary>
+        /// Registers a command to be used in the debug console for this mod
+        /// </summary>
+        /// <param name="command">The new command to be added</param>
+        protected void RegisterCommand(ModCommand command)
+        {
+            Main.moddingAPI.registerCommand(command);
+        }
+
+        /// <summary>
         /// Logs a message to the console
         /// </summary>
         /// <param name="message">The message to display</param>

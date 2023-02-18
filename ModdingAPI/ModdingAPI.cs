@@ -8,6 +8,7 @@ namespace ModdingAPI
     internal class ModdingAPI
     {
         private List<Mod> mods;
+        private List<ModCommand> modCommands;
         private bool initialized;
 
         public SkinLoader skinLoader { get; private set; }
@@ -16,6 +17,7 @@ namespace ModdingAPI
         public ModdingAPI()
         {
             mods = new List<Mod>();
+            modCommands = new List<ModCommand>();
             skinLoader = new SkinLoader();
             fileUtil = new FileUtil();
             initialized = false;
@@ -101,9 +103,22 @@ namespace ModdingAPI
             }
         }
 
+        public void registerCommand(ModCommand command)
+        {
+            if (!modCommands.Contains(command))
+            {
+                modCommands.Add(command);
+            }
+        }
+
         public ReadOnlyCollection<Mod> getMods()
         {
             return mods.AsReadOnly();
+        }
+
+        public ReadOnlyCollection<ModCommand> getModCommnds()
+        {
+            return modCommands.AsReadOnly();
         }
     }
 }
