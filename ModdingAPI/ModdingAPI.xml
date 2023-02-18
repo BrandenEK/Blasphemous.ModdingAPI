@@ -219,6 +219,11 @@
             Called by the modding API whenever the game is reset
             </summary>
         </member>
+        <member name="M:ModdingAPI.PersistentMod.NewGame">
+            <summary>
+            Called by the modding API whenever a new game is started
+            </summary>
+        </member>
         <member name="P:ModdingAPI.PersistentMod.PersistentID">
             <summary>
             The unique id of this persistent system

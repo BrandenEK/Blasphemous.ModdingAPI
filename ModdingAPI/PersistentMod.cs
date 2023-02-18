@@ -33,6 +33,11 @@ namespace ModdingAPI
         public abstract void ResetGame();
 
         /// <summary>
+        /// Called by the modding API whenever a new game is started
+        /// </summary>
+        public abstract void NewGame();
+
+        /// <summary>
         /// The unique id of this persistent system
         /// </summary>
         public abstract string PersistentID { get; }

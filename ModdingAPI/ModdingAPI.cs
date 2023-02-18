@@ -83,6 +83,15 @@ namespace ModdingAPI
             }
         }
 
+        public void NewGame()
+        {
+            for (int i = 0; i < mods.Count; i++)
+            {
+                if (mods[i] is PersistentMod mod)
+                    mod.NewGame();
+            }
+        }
+
         public void registerMod(Mod mod)
         {
             if (!mods.Contains(mod))

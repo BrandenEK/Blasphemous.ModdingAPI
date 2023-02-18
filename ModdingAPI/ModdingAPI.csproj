@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Users\Damocles\Documents\Speedrunning\Blasphemous\Blasphemous-Modding-API\ModdingAPI\ModdingAPI.xml</DocumentationFile>
+    <DocumentationFile>C:\Users\Brand\source\repos\BrandenEK\Blasphemous-Modding-API\ModdingAPI\ModdingAPI.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

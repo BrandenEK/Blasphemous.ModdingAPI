@@ -92,6 +92,17 @@ namespace ModdingAPI
         }
     }
 
+    // Call new game when game is first started
+    [HarmonyPatch(typeof(NewMainMenu), "InternalPlay")]
+    internal class NewMainMenu_Patch
+    {
+        public static void Postfix(bool ___isContinue)
+        {
+            if (!___isContinue)
+                Main.moddingAPI.NewGame();
+        }
+    }
+
     // Load custom skins from folder
     [HarmonyPatch(typeof(ColorPaletteManager), "Initialize")]
     internal class ColorPaletteManagerInit_Patch
