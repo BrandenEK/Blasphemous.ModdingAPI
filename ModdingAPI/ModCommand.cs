@@ -1,4 +1,6 @@
-﻿using Gameplay.UI.Widgets;
+﻿using System;
+using System.Collections.Generic;
+using Gameplay.UI.Widgets;
 
 namespace ModdingAPI
 {
@@ -7,6 +9,10 @@ namespace ModdingAPI
     /// </summary>
     public abstract class ModCommand
     {
+        private ConsoleWidget console;
+
+        private Dictionary<string, Action<string[]>> availableCommands;
+
         /// <summary>
         /// The prefix used to call this command
         /// </summary>
@@ -17,26 +23,19 @@ namespace ModdingAPI
         /// </summary>
         protected internal abstract bool AllowUppercase { get; }
 
-        /// <summary>
-        /// Perform an action based on the command and parameters passed in by the user
-        /// </summary>
-        /// <param name="command">The command entered</param>
-        /// <param name="parameters">The list of parameters passed in</param>
-        protected internal abstract void ProcessCommand(string command, string[] parameters);
 
         /// <summary>
         /// Validates the number of parameters passed in and displays an error if incorrect
         /// </summary>
-        /// <param name="command">The name of the command</param>
         /// <param name="parameters">The list of paramaters</param>
         /// <param name="amount">The correct amount of parameters</param>
-        /// <returns></returns>
-        protected bool ValidateParameterList(string command, string[] parameters, int amount)
+        /// <returns>Whether the parameter list is valid or not"</returns>
+        protected bool ValidateParameterList(string[] parameters, int amount)
         {
             bool result = amount == parameters.Length;
             if (!result)
             {
-                Write($"The {CommandName} command {command} takes {amount} parameters.  You passed {parameters.Length}");
+                Write($"This command takes {amount} parameters.  You passed {parameters.Length}");
             }
             return result;
         }
@@ -103,7 +102,24 @@ namespace ModdingAPI
             console.Write(text);
         }
 
-        private ConsoleWidget console;
-        internal void setConsole(ConsoleWidget console) { this.console = console; }
+        /// <summary>
+        /// Initializes a mapping of command names to functionality
+        /// </summary>
+        /// <returns>The command mapping</returns>
+        protected abstract Dictionary<string, Action<string[]>> AddSubCommands();
+
+        internal void ProcessCommand(ConsoleWidget console, string command, string[] parameters)
+        {
+            this.console = console;
+            if (availableCommands == null)
+                availableCommands = AddSubCommands();
+
+            if (command == null || !availableCommands.ContainsKey(command))
+            {
+                Write($"Command unknown, use {CommandName} help");
+                return;
+            }
+            availableCommands[command](parameters);
+        }
     }
 }

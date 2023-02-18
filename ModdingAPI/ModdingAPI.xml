@@ -199,21 +199,13 @@
             Whether to keep uppercase letters in the command or convert everything to lowercase
             </summary>
         </member>
-        <member name="M:ModdingAPI.ModCommand.ProcessCommand(System.String,System.String[])">
-            <summary>
-            Perform an action based on the command and parameters passed in by the user
-            </summary>
-            <param name="command">The command entered</param>
-            <param name="parameters">The list of parameters passed in</param>
-        </member>
-        <member name="M:ModdingAPI.ModCommand.ValidateParameterList(System.String,System.String[],System.Int32)">
+        <member name="M:ModdingAPI.ModCommand.ValidateParameterList(System.String[],System.Int32)">
             <summary>
             Validates the number of parameters passed in and displays an error if incorrect
             </summary>
-            <param name="command">The name of the command</param>
             <param name="parameters">The list of paramaters</param>
             <param name="amount">The correct amount of parameters</param>
-            <returns></returns>
+            <returns>Whether the parameter list is valid or not"</returns>
         </member>
         <member name="M:ModdingAPI.ModCommand.ValidateIntParameter(System.String,System.Int32,System.Int32,System.Int32@)">
             <summary>
@@ -249,6 +241,12 @@
             Writes a line of text to the console
             </summary>
             <param name="text">The text to write</param>
+        </member>
+        <member name="M:ModdingAPI.ModCommand.AddSubCommands">
+            <summary>
+            Initializes a mapping of command names to functionality
+            </summary>
+            <returns>The command mapping</returns>
         </member>
         <member name="T:ModdingAPI.ModPersistentData">
             <summary>

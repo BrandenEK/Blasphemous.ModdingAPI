@@ -10,7 +10,6 @@ namespace ModdingAPI
         public ModCommandSystem(ModCommand command)
         {
             this.command = command;
-            command.setConsole(Console);
         }
 
         public override string GetName()
@@ -28,13 +27,7 @@ namespace ModdingAPI
             if (command == null || command != this.command.CommandName) return;
 
             string subcommand = GetSubcommand(parameters, out List<string> paramList);
-            if (subcommand == null)
-            {
-                Console.Write($"Command unknown, use {this.command.CommandName} help");
-                return;
-            }
-
-            this.command.ProcessCommand(subcommand, paramList.ToArray());
+            this.command.ProcessCommand(Console, subcommand, paramList.ToArray());
         }
     }
 }
