@@ -67,11 +67,9 @@ namespace ExampleMod
 
 ## Documentation
 
-### Mod
+### The mod class
 
 Every mod should derive from this class, as it has many useful features and handles most of the repitive parts of the code.  When calling the the constructor for this class, the modding api automatically registers the mod and patches all harmony functions in its assembly.
-
-#### Virtual methods
 
 ```cs
 public class Example : Mod
@@ -110,7 +108,7 @@ public class Example : Mod
 }
 ```
 
-#### Logging
+### Logging
 
 Every mod has public methods for logging messages to the unity console.  There is a separate one for logging messages, warnings, and errors.
 
@@ -137,7 +135,7 @@ public class Example : Mod
 }
 ```
 
-#### File Utility
+### File Utility
 
 Every mod has a public property called FileUtil, which allows the mod to perform various IO related activities, such as loading data or configuration from a file, saving a text document, or converting to/from JSON.
 
@@ -174,4 +172,30 @@ public class ExampleConfig
 }
 ```
 
+### Persistent Data
+
+Some mods need to save data with the save file, and that can be accomplished by deriving from the PersistentMod class.  This class is dervied from the base Mod class and contains additional methods for saving and loading through a ModPersistentData object.
+
+```cs
+public class Example : PersistentMod
+{
+    public Example(string modId, string modName, string modVersion) : base(modId, modName, modVersion) { }
+    
+    public override ModPersistentData SaveGame()
+    {
+    
+    }
+    
+    public override void LoadGame(ModPersistentData data)
+    {
+    
+    }
+}
+
+[System.Serializable]
+public class ExamplePersistentData : ModPersistentData
+{
+
+}
+```
 
