@@ -52,6 +52,8 @@ namespace ModdingAPI
             for (int i = 0; i < mods.Count; i++)
             {
                 mods[i].Initialize();
+                if (mods[i] is PersistentMod mod)
+                    Core.Persistence.AddPersistentManager(new ModPersistentSystem(mod));
             }
         }
 

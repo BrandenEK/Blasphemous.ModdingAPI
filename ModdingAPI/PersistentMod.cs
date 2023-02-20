@@ -41,14 +41,5 @@ namespace ModdingAPI
         /// The unique id of this persistent system
         /// </summary>
         public abstract string PersistentID { get; }
-
-        /// <summary>
-        /// Called at the beginning of the game by the modding API
-        /// </summary>
-        protected internal override void Initialize()
-        {
-            base.Initialize();
-            Core.Persistence.AddPersistentManager(new ModPersistentSystem(this));
-        }
     }
 }
