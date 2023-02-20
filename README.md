@@ -23,7 +23,7 @@
 ---
 
 Template "Main.cs" <br>
-```C#
+```cs
 using BepInEx;
 
 namespace ExampleMod
@@ -48,7 +48,7 @@ namespace ExampleMod
 ```
 
 Template "Example.cs" <br>
-```C#
+```cs
 using ModdingAPI;
 
 namespace ExampleMod
@@ -64,3 +64,83 @@ namespace ExampleMod
     }
 }
 ```
+
+## Documentation
+
+### Mod
+
+Every mod should derive from this class, as it has many useful features and handles most of the repitive parts of the code.  When calling the the constructor for this class, the modding api automatically registers the mod and patches all harmony functions in its assembly.
+
+#### Virtual functions
+
+```cs
+public class Example : Mod
+{
+    protected override void Initialize()
+    {
+        // Called when the game is first started up
+    }
+    
+    protected override void Dispose()
+    {
+        // Called when the game is ended
+    }
+    
+    protected override void Update()
+    {
+        // Called every frame
+    }
+    
+    protected override void LateUpdate()
+    {
+        // Called at the end of every frame
+    }
+    
+    protected override void LevelLoaded(string oldLevel, string newLevel)
+    {
+        // Called right after a scene is loaded
+    }
+    
+    protected override void LevelUnloaded(string oldLevel, string newLevel)
+    {
+        // Called right before a scene is unloaded
+    }
+}
+```
+
+#### Logging
+
+
+#### File Utility
+
+Every mod has a public property called FileUtil, which allows the mod to perform various IO related activities, such as loading data or configuration from a file, saving a text document, or converting to/from JSON.
+
+```cs
+public class Example : Mod
+{
+    protected override void Initialize()
+    {
+        // Load configuration from file
+        ExampleConfig config = FileUtil.loadConfig<ExampleConfig>();
+        
+        // Load array of enemy names from data folder
+        if (FileUtil.loadDataArray("enemyNames", out string[] enemyNames))
+        {
+            Log("Enemy names successfully loaded!");
+        }
+        else
+        {
+            LogError("Enemy names could not be loaded!");
+        }
+    }
+}
+
+[System.Serializable]
+public class ExampleConfig
+{
+    public int number;
+    public string text;
+}
+```
+
+
