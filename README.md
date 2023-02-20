@@ -71,11 +71,13 @@ namespace ExampleMod
 
 Every mod should derive from this class, as it has many useful features and handles most of the repitive parts of the code.  When calling the the constructor for this class, the modding api automatically registers the mod and patches all harmony functions in its assembly.
 
-#### Virtual functions
+#### Virtual methods
 
 ```cs
 public class Example : Mod
 {
+    public Example(string modId, string modName, string modVersion) : base(modId, modName, modVersion) { }
+
     protected override void Initialize()
     {
         // Called when the game is first started up
@@ -110,6 +112,30 @@ public class Example : Mod
 
 #### Logging
 
+Every mod has public methods for logging messages to the unity console.  There is a separate one for logging messages, warnings, and errors.
+
+```cs
+public class Example : Mod
+{
+    public Example(string modId, string modName, string modVersion) : base(modId, modName, modVersion) { }
+    
+    protected override void LevelLoaded(string oldLevel, string newLevel)
+    {
+        if (newLevel == "D17Z01S01")
+        {
+            Log("This is a message");
+        }
+        else if (newLevel == "D01Z02S01")
+        {
+            LogWarning("This is a warning");
+        }
+        else
+        {
+            LogError("This is an error");
+        }
+    }
+}
+```
 
 #### File Utility
 
@@ -118,6 +144,8 @@ Every mod has a public property called FileUtil, which allows the mod to perform
 ```cs
 public class Example : Mod
 {
+    public Example(string modId, string modName, string modVersion) : base(modId, modName, modVersion) { }
+    
     protected override void Initialize()
     {
         // Load configuration from file
@@ -132,6 +160,9 @@ public class Example : Mod
         {
             LogError("Enemy names could not be loaded!");
         }
+        
+        // Write to the log file
+        FileUtil.appendLog("Initialization complete");
     }
 }
 
