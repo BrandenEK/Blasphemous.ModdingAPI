@@ -98,7 +98,8 @@ namespace ModdingAPI
         {
             if (!mods.Contains(mod))
             {
-                Main.LogMessage($"Registering mod: {mod.ModName} ({mod.ModVersion})");
+                Main.LogMessage(Main.MOD_NAME, $"Registering mod: {mod.ModName} ({mod.ModVersion})");
+                Main.AddLogger(mod.ModName);
                 mods.Add(mod);
             }
         }

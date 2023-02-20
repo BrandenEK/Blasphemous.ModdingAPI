@@ -48,7 +48,7 @@ namespace ModdingAPI
                 SkinInfo skinInfo = Main.moddingAPI.fileUtil.jsonObject<SkinInfo>(skinText);
                 skinInfo.texture = skinData[skinText];
                 customSkins.Add(skinInfo.id, skinInfo);
-                Main.LogMessage($"Loading custom skin: {skinInfo.id} by {skinInfo.author}");
+                Main.LogMessage(Main.MOD_NAME, $"Loading custom skin: {skinInfo.id} by {skinInfo.author}");
             }
         }
     }

@@ -113,18 +113,18 @@ namespace ModdingAPI
         /// Logs a message to the console
         /// </summary>
         /// <param name="message">The message to display</param>
-        public void Log(string message) { Main.LogMessage(message); }
+        public void Log(string message) { Main.LogMessage(ModName, message); }
 
         /// <summary>
         /// Logs a warning to the console
         /// </summary>
         /// <param name="warning">The warning to display</param>
-        public void LogWarning(string warning) { Main.LogWarning(warning); }
+        public void LogWarning(string warning) { Main.LogWarning(ModName, warning); }
 
         /// <summary>
         /// Logs an error to the console
         /// </summary>
         /// <param name="error">The error to display</param>
-        public void LogError(string error) { Main.LogError(error); }
+        public void LogError(string error) { Main.LogError(ModName, error); }
     }
 }
