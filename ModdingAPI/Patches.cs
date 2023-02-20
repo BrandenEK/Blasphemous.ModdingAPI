@@ -47,6 +47,8 @@ namespace ModdingAPI
             {
                 sb.AppendFormat("{0} v{1}\n", mod.ModName, mod.ModVersion);
             }
+
+            version.alignment = TextAnchor.UpperRight;
             version.text = sb.ToString();
         }
     }
