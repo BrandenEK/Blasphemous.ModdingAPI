@@ -167,8 +167,8 @@ public class Example : Mod
 [System.Serializable]
 public class ExampleConfig
 {
-    public int number;
-    public string text;
+    public int numberSetting;
+    public string textSetting;
 }
 ```
 
@@ -181,21 +181,104 @@ public class Example : PersistentMod
 {
     public Example(string modId, string modName, string modVersion) : base(modId, modName, modVersion) { }
     
+    public abstract string PersistentID => "ID_EXAMPLE";
+    
     public override ModPersistentData SaveGame()
     {
-    
+        // Called whenever game data is saved
     }
     
     public override void LoadGame(ModPersistentData data)
     {
+        // Called whenever game data is loaded
+    }
     
+    public abstract void ResetGame()
+    {
+        // Called whenever game data is reset
+    }
+
+    public abstract void NewGame()
+    {
+        // Called whenever a new save game is started
     }
 }
 
 [System.Serializable]
 public class ExamplePersistentData : ModPersistentData
 {
-
+    public ExamplePersistentData() : base("ID_EXAMPLE") { }
+    
+    public int numberToSave;
+    public string textToSave;
 }
 ```
+
+### Commands
+
+Some mods may want to add a command that can be executed through the debug console.  This is done by creating a class that derives from ModCommand and registering the command in the main Mod class.
+
+```cs
+public class Example : Mod
+{
+    public Example(string modId, string modName, string modVersion) : base(modId, modName, modVersion) { }
+    
+    protected override void Initialize()
+    {
+        RegisterCommand(new ExampleCommand());
+    }
+}
+
+public class ExampleCommand : ModCommand
+{
+    protected override string CommandName => "example";
+
+    protected override bool AllowUppercase => false;
+
+    protected override Dictionary<string, Action<string[]>> AddSubCommands()
+    {
+        return new Dictionary<string, Action<string[]>>()
+        {
+            { "help", Help },
+            { "status", Status },
+            { "test", Test },
+            { "use", Use }
+        };
+    }
+
+    private void Help(string[] parameters)
+    {
+        if (!ValidateParameterList(parameters, 0)) return;
+
+        Write("Available EXAMPLE commands:");
+        Write("example status: Display status");
+        Write("example test: Test something");
+        Write("example use ID: Use something with the given id");
+    }
+    
+    private void Status(string[] parameters)
+    {
+        if (!ValidateParameterList(parameters, 0)) return;
+        
+        // Display status
+    }
+    
+    private void Test(string[] parameters)
+    {
+        if (!ValidateParameterList(parameters, 0)) return;
+        
+        // Test something
+    }
+    
+    private void Use(string[] parameters)
+    {
+        if (!ValidateParameterList(parameters, 1) || !ValidateIntParameter(parameters[0], 1, 100, out int objectId)) return;
+        
+        // Use object with objectId
+    }
+}
+```
+
+### Harmony Patching
+
 
