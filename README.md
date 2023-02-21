@@ -9,7 +9,31 @@
 
 ---
 
-## Creating an example mod
+## Table of Contents
+
+[How to use]()
+- [Installation]()
+- [Gameplay]()
+- [Custom skins]()
+[Creating a mod](https://github.com/BrandenEK/Blasphemous-Modding-API/blob/main/README.md#creating-an-example-mod)
+[Documentation]()
+- the rest
+
+## How to use
+
+### Installation
+
+- extract this to blas root folder, all other mods go right into the Modding folder
+
+### Gameplay
+
+- backslash for debug console, should see all registered mods in top right corner of main menu
+
+### Custom skins
+
+- Extract them into the Modding > skins folder, should be a single folder per skin
+
+## Creating a mod
 
 1. Create a folder called "ExampleMod"
 2. Open the command prompt in this folder and run the command:
@@ -21,6 +45,8 @@
 7. Copy the template code into these new files
 
 ---
+
+- remove these templates, they will be in the examples section
 
 Template "Main.cs" <br>
 ```cs
@@ -281,4 +307,13 @@ public class ExampleCommand : ModCommand
 
 ### Harmony Patching
 
+Most mods will want to patch game functions with harmony.  The actual patching is already handled by the modding api, so all the mod has to do is create the patch functions.
 
+## Examples
+
+- Main class
+- Mod class
+- Persistent mod
+- Command
+- File util functions
+- Harmony patches
