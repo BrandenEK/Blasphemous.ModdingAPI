@@ -17,83 +17,53 @@
 - [Custom skins]()
 [Creating a mod](https://github.com/BrandenEK/Blasphemous-Modding-API/blob/main/README.md#creating-an-example-mod)
 [Documentation]()
-- the rest
+- [The Mod Class]()
+- [Logging]()
+- [File Utility]()
+- [Persistent Data]()
+- [Commands]()
+- [Harmony Patching]()
+[Examples]()
+
+---
 
 ## How to use
 
 ### Installation
 
-- extract this to blas root folder, all other mods go right into the Modding folder
+1. Navigate to the game's root directory, which should be in "C:\Program Files (x86)\Steam\steamapps\common\Blasphemous"
+2. Copy everything in this folder (There should be five items) to a new location, to be used specifically for modding
+3. Name this folder something unique, such as "Blasphemous Modded"
+4. Download the latest release of the Modding API from the releases page
+5. Extract the contents of the zip file into the new folder that you just created
+6. Verify that a new folder called "Modding" now exists same folder as "Blasphemous.exe"
 
-### Gameplay
+### Usage
 
-- backslash for debug console, should see all registered mods in top right corner of main menu
+- Press 'backslash' at any time to open the debug console and enter commands
+- All registered mods should be displayed in the top right corner of the main menu
 
 ### Custom skins
 
-- Extract them into the Modding > skins folder, should be a single folder per skin
+- Extract the contents of each skin's zip file into the Modding/skins folder.  There should be one folder for each skin in the Modding/skins folder
 
-## Creating a mod
+---
+
+## Creating an example mod
 
 1. Create a folder called "ExampleMod"
 2. Open the command prompt in this folder and run the command:
 ```dotnet new bepinex5plugin -n ExampleMod -T net35 -U 2017.4.40```
 3. Open the newly created "ExampleMod.csproj" in Visual Studio
-4. Go to "Project/Add Assembly Reference/Browse" and add a reference to any required assemblies.  This will include "ModdingAPI.dll", "Assembly-CSharp.dll", "UnityEngine.dll", and likely many more
+4. Go to "Project/Add Assembly Reference/Browse" and add a reference to any required assemblies.  This will include "ModdingAPI.dll", "BepInEx.dll", "Assembly-CSharp.dll", "UnityEngine.dll", and likely many more
 5. Rename the "Plugin.cs" file to "Main.cs"
-6. Create a new class called "Example.cs"
-7. Copy the template code into these new files
+6. Create a new file called "Example.cs" that contains a class that derives from Mod
 
 ---
 
-- remove these templates, they will be in the examples section
-
-Template "Main.cs" <br>
-```cs
-using BepInEx;
-
-namespace ExampleMod
-{
-    [BepInPlugin(MOD_ID, MOD_NAME, MOD_VERSION)]
-    [BepInDependency("com.damocles.blasphemous.modding-api", BepInDependency.DependencyFlags.HardDependency)]
-    [BepInProcess("Blasphemous.exe")]
-    public class Main : BaseUnityPlugin
-    {
-        public const string MOD_ID = "com.author.blasphemous.example-mod";
-        public const string MOD_NAME = "Example";
-        public const string MOD_VERSION = "1.0.0";
-
-        public static Example Example;
-
-        private void Start()
-        {
-            Example = new Example(MOD_ID, MOD_NAME, MOD_VERSION);
-        }
-    }
-}
-```
-
-Template "Example.cs" <br>
-```cs
-using ModdingAPI;
-
-namespace ExampleMod
-{
-    public class Example : Mod
-    {
-        public Example(string modId, string modName, string modVersion) : base(modId, modName, modVersion) { }
-
-        protected override void Initialize()
-        {
-            base.Initialize();
-        }
-    }
-}
-```
-
 ## Documentation
 
-### The mod class
+### The Mod Class
 
 Every mod should derive from this class, as it has many useful features and handles most of the repitive parts of the code.  When calling the the constructor for this class, the modding api automatically registers the mod and patches all harmony functions in its assembly.
 
@@ -307,7 +277,7 @@ public class ExampleCommand : ModCommand
 
 ### Harmony Patching
 
-Most mods will want to patch game functions with harmony.  The actual patching is already handled by the modding api, so all the mod has to do is create the patch functions.
+Most mods will want to patch game functions with harmony.  The actual patching is already handled by the modding api, so all the mod has to do is create the patch functions.  Refer to the harmony docs on how to implement patches: ***Link to harmony***.
 
 ## Examples
 
@@ -317,3 +287,80 @@ Most mods will want to patch game functions with harmony.  The actual patching i
 - Command
 - File util functions
 - Harmony patches
+
+Template "Main.cs" <br>
+```cs
+using BepInEx;
+
+namespace ExampleMod
+{
+    [BepInPlugin(MOD_ID, MOD_NAME, MOD_VERSION)]
+    [BepInDependency("com.damocles.blasphemous.modding-api", BepInDependency.DependencyFlags.HardDependency)]
+    [BepInProcess("Blasphemous.exe")]
+    public class Main : BaseUnityPlugin
+    {
+        public const string MOD_ID = "com.author.blasphemous.example-mod";
+        public const string MOD_NAME = "Example";
+        public const string MOD_VERSION = "1.0.0";
+
+        public static Example Example;
+
+        private void Start()
+        {
+            Example = new Example(MOD_ID, MOD_NAME, MOD_VERSION);
+        }
+    }
+}
+```
+
+Template "Example.cs" <br>
+```cs
+using ModdingAPI;
+
+namespace ExampleMod
+{
+    public class Example : PersistentMod
+    {
+        public Example(string modId, string modName, string modVersion) : base(modId, modName, modVersion) { }
+		
+		public abstract string PersistentID => "ID_EXAMPLE";
+
+        protected override void Initialize()
+        {
+            base.Initialize();
+        }
+		
+		public override ModPersistentData SaveGame()
+		{
+			return new ExamplePersistentData()
+			{
+				numberToSave = 5,
+				textToSave = "some text"
+			};
+		}
+		
+		public override void LoadGame(ModPersistentData data)
+		{
+			ExamplePersistentData exampleData = (ExamplePersistentData)data;
+			*** Do something with values ***
+		}
+		
+		public abstract void ResetGame()
+		{
+			numberToSave = 0;
+			textToSave = "";
+		}
+
+		public abstract void NewGame() { }
+    }
+	
+	[System.Serializable]
+	public class ExamplePersistentData : ModPersistentData
+	{
+		public ExamplePersistentData() : base("ID_EXAMPLE") { }
+		
+		public int numberToSave;
+		public string textToSave;
+	}
+}
+```
