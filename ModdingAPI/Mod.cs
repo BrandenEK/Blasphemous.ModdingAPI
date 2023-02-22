@@ -110,6 +110,21 @@ namespace ModdingAPI
         }
 
         /// <summary>
+        /// Checks whether a specific mod has been loaded or not
+        /// </summary>
+        /// <param name="modId">The unique id of the mod</param>
+        /// <returns>Whether or not the mod has been loaded</returns>
+        protected bool IsModLoaded(string modId)
+        {
+            foreach (Mod mod in Main.moddingAPI.getMods())
+            {
+                if (mod.ModId == ModId)
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Logs a message to the console
         /// </summary>
         /// <param name="message">The message to display</param>
