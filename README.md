@@ -1,17 +1,11 @@
 # Blasphemous Modding API
 
-## Features
 
-- Enables the console for all registered mods
-- Allows loading custom skins
-- Ensures compatibility between all mods
-- Very simple process of installing new mods
-
----
 
 ## Table of Contents
 
-- [How to use]()
+- [Features](https://github.com/BrandenEK/Blasphemous-Modding-API#features)
+- [How to use](https://github.com/BrandenEK/Blasphemous-Modding-API#how-to-use)
   - [Installation](https://github.com/BrandenEK/Blasphemous-Modding-API#installation)
   - [Usage](https://github.com/BrandenEK/Blasphemous-Modding-API#usage)
   - [Custom skins](https://github.com/BrandenEK/Blasphemous-Modding-API#custom-skins)
@@ -24,6 +18,15 @@
   - [Commands](https://github.com/BrandenEK/Blasphemous-Modding-API#commands)
   - [Harmony Patching](https://github.com/BrandenEK/Blasphemous-Modding-API#harmony-patching)
 - [Examples](https://github.com/BrandenEK/Blasphemous-Modding-API#examples)
+
+---
+
+## Features
+
+- Enables the console for all registered mods
+- Allows loading custom skins
+- Ensures compatibility between all mods
+- Very simple process of installing new mods
 
 ---
 
