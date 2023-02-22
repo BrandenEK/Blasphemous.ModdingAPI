@@ -11,22 +11,19 @@
 
 ## Table of Contents
 
-[How to use]()
-- [Installation](https://github.com/BrandenEK/Blasphemous-Modding-API#installation)
-- [Usage](https://github.com/BrandenEK/Blasphemous-Modding-API#usage)
-- [Custom skins](https://github.com/BrandenEK/Blasphemous-Modding-API#custom-skins)
-
-[Creating a mod](https://github.com/BrandenEK/Blasphemous-Modding-API#creating-an-example-mod)
-
-[Documentation](https://github.com/BrandenEK/Blasphemous-Modding-API#documentation)
-- [The Mod Class](https://github.com/BrandenEK/Blasphemous-Modding-API#the-mod-class)
-- [Logging](https://github.com/BrandenEK/Blasphemous-Modding-API#logging)
-- [File Utility](https://github.com/BrandenEK/Blasphemous-Modding-API#file-utility)
-- [Persistent Data](https://github.com/BrandenEK/Blasphemous-Modding-API#persistent-data)
-- [Commands](https://github.com/BrandenEK/Blasphemous-Modding-API#commands)
-- [Harmony Patching](https://github.com/BrandenEK/Blasphemous-Modding-API#harmony-patching)
-
-[Examples](https://github.com/BrandenEK/Blasphemous-Modding-API#examples)
+- [How to use]()
+  - [Installation](https://github.com/BrandenEK/Blasphemous-Modding-API#installation)
+  - [Usage](https://github.com/BrandenEK/Blasphemous-Modding-API#usage)
+  - [Custom skins](https://github.com/BrandenEK/Blasphemous-Modding-API#custom-skins)
+- [Creating a mod](https://github.com/BrandenEK/Blasphemous-Modding-API#creating-an-example-mod)
+- [Documentation](https://github.com/BrandenEK/Blasphemous-Modding-API#documentation)
+  - [The Mod Class](https://github.com/BrandenEK/Blasphemous-Modding-API#the-mod-class)
+  - [Logging](https://github.com/BrandenEK/Blasphemous-Modding-API#logging)
+  - [File Utility](https://github.com/BrandenEK/Blasphemous-Modding-API#file-utility)
+  - [Persistent Data](https://github.com/BrandenEK/Blasphemous-Modding-API#persistent-data)
+  - [Commands](https://github.com/BrandenEK/Blasphemous-Modding-API#commands)
+  - [Harmony Patching](https://github.com/BrandenEK/Blasphemous-Modding-API#harmony-patching)
+- [Examples](https://github.com/BrandenEK/Blasphemous-Modding-API#examples)
 
 ---
 
@@ -49,7 +46,8 @@
 
 ### Custom skins
 
-- Extract the contents of each skin's zip file into the Modding/skins folder.  There should be one folder for each skin in the Modding/skins folder
+- Skins can be downloaded from https://github.com/BrandenEK/Blasphemous-Custom-Skins
+- Extract the contents of each skin's zip file into the "Modding/skins" folder.  There should be one folder for each skin in the "Modding/skins" folder
 
 ---
 
