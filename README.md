@@ -33,6 +33,7 @@
 ## How to use
 
 ### Installation
+**Note:** *If you have played with other mods before, make sure to delete the BepInEx folder before installing the modding api!*
 
 1. Navigate to the game's root directory, which should be in 
 ```C:\Program Files (x86)\Steam\steamapps\common\Blasphemous```
