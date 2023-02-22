@@ -12,18 +12,21 @@
 ## Table of Contents
 
 [How to use]()
-- [Installation]()
-- [Gameplay]()
-- [Custom skins]()
-[Creating a mod](https://github.com/BrandenEK/Blasphemous-Modding-API/blob/main/README.md#creating-an-example-mod)
-[Documentation]()
-- [The Mod Class]()
-- [Logging]()
-- [File Utility]()
-- [Persistent Data]()
-- [Commands]()
-- [Harmony Patching]()
-[Examples]()
+- [Installation](https://github.com/BrandenEK/Blasphemous-Modding-API#installation)
+- [Usage](https://github.com/BrandenEK/Blasphemous-Modding-API#usage)
+- [Custom skins](https://github.com/BrandenEK/Blasphemous-Modding-API#custom-skins)
+
+[Creating a mod](https://github.com/BrandenEK/Blasphemous-Modding-API#creating-an-example-mod)
+
+[Documentation](https://github.com/BrandenEK/Blasphemous-Modding-API#documentation)
+- [The Mod Class](https://github.com/BrandenEK/Blasphemous-Modding-API#the-mod-class)
+- [Logging](https://github.com/BrandenEK/Blasphemous-Modding-API#logging)
+- [File Utility](https://github.com/BrandenEK/Blasphemous-Modding-API#file-utility)
+- [Persistent Data](https://github.com/BrandenEK/Blasphemous-Modding-API#persistent-data)
+- [Commands](https://github.com/BrandenEK/Blasphemous-Modding-API#commands)
+- [Harmony Patching](https://github.com/BrandenEK/Blasphemous-Modding-API#harmony-patching)
+
+[Examples](https://github.com/BrandenEK/Blasphemous-Modding-API#examples)
 
 ---
 
@@ -31,7 +34,8 @@
 
 ### Installation
 
-1. Navigate to the game's root directory, which should be in "C:\Program Files (x86)\Steam\steamapps\common\Blasphemous"
+1. Navigate to the game's root directory, which should be in 
+```C:\Program Files (x86)\Steam\steamapps\common\Blasphemous```
 2. Copy everything in this folder (There should be five items) to a new location, to be used specifically for modding
 3. Name this folder something unique, such as "Blasphemous Modded"
 4. Download the latest release of the Modding API from the releases page
@@ -323,44 +327,44 @@ namespace ExampleMod
     {
         public Example(string modId, string modName, string modVersion) : base(modId, modName, modVersion) { }
 		
-		public abstract string PersistentID => "ID_EXAMPLE";
+	public abstract string PersistentID => "ID_EXAMPLE";
 
         protected override void Initialize()
         {
             base.Initialize();
         }
 		
-		public override ModPersistentData SaveGame()
+	public override ModPersistentData SaveGame()
+	{
+		return new ExamplePersistentData()
 		{
-			return new ExamplePersistentData()
-			{
-				numberToSave = 5,
-				textToSave = "some text"
-			};
-		}
+			numberToSave = 5,
+			textToSave = "some text"
+		};
+	}
 		
-		public override void LoadGame(ModPersistentData data)
-		{
-			ExamplePersistentData exampleData = (ExamplePersistentData)data;
-			*** Do something with values ***
-		}
+	public override void LoadGame(ModPersistentData data)
+	{
+		ExamplePersistentData exampleData = (ExamplePersistentData)data;
+		*** Do something with values ***
+	}
 		
-		public abstract void ResetGame()
-		{
-			numberToSave = 0;
-			textToSave = "";
-		}
+	public abstract void ResetGame()
+	{
+		numberToSave = 0;
+		textToSave = "";
+	}
 
-		public abstract void NewGame() { }
+	public abstract void NewGame() { }
     }
 	
-	[System.Serializable]
-	public class ExamplePersistentData : ModPersistentData
-	{
-		public ExamplePersistentData() : base("ID_EXAMPLE") { }
-		
-		public int numberToSave;
-		public string textToSave;
-	}
+    [System.Serializable]
+    public class ExamplePersistentData : ModPersistentData
+    {
+        public ExamplePersistentData() : base("ID_EXAMPLE") { }
+	
+	public int numberToSave;
+	public string textToSave;
+    }
 }
 ```
