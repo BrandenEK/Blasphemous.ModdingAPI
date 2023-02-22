@@ -22,6 +22,11 @@ namespace ModdingAPI
             return !command.AllowUppercase;
         }
 
+        public override bool HasLowerParameters()
+        {
+            return !command.AllowUppercase;
+        }
+
         public override void Execute(string command, string[] parameters)
         {
             if (command == null || command != this.command.CommandName) return;
