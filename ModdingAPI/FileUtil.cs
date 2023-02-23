@@ -28,8 +28,9 @@ namespace ModdingAPI
         internal FileUtil()
         {
             Directory.CreateDirectory(Path.GetFullPath("Modding\\config\\"));
-            Directory.CreateDirectory(Path.GetFullPath("Modding\\logs\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\data\\"));
+            Directory.CreateDirectory(Path.GetFullPath("Modding\\docs\\"));
+            Directory.CreateDirectory(Path.GetFullPath("Modding\\logs\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\skins\\"));
         }
 
