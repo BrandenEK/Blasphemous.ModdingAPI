@@ -10,6 +10,7 @@ namespace ModdingAPI
     /// </summary>
     public class FileUtil
     {
+        private readonly string rootPath = "";
         private readonly string configPath = "";
         private readonly string logPath = "";
         private readonly string dataPath = "";
@@ -17,6 +18,7 @@ namespace ModdingAPI
         // Constructor called by mods to set up their paths
         internal FileUtil(Mod mod)
         {
+            rootPath = Directory.GetCurrentDirectory() + "\\";
             configPath = Path.GetFullPath("Modding\\config\\" + mod.ModName + ".cfg");
             logPath = Path.GetFullPath("Modding\\logs\\" + mod.ModName + ".log");
             dataPath = Path.GetFullPath("Modding\\data\\" + mod.ModName + "\\");
@@ -226,7 +228,7 @@ namespace ModdingAPI
         /// <param name="text">The text to write to the file</param>
         public void saveTextFile(string fileName, string text)
         {
-            File.WriteAllText(dataPath + fileName, text);
+            File.WriteAllText(rootPath + fileName, text);
         }
 
         /// <summary>
