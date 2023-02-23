@@ -39,9 +39,9 @@
 ```C:\Program Files (x86)\Steam\steamapps\common\Blasphemous```
 2. Copy everything in this folder (There should be five items) to a new location, to be used specifically for modding
 3. Name this folder something unique, such as "Blasphemous Modded"
-4. Download the latest release of the Modding API from the releases page
+4. Download the latest release of the Modding API from the releases page: [Releases](https://github.com/BrandenEK/Blasphemous-Modding-API/releases)
 5. Extract the contents of the zip file into the new folder that you just created
-6. Verify that a new folder called "Modding" now exists same folder as "Blasphemous.exe"
+6. Verify that a new folder called "Modding" now exists in the same folder as "Blasphemous.exe"
 
 ### Usage
 
