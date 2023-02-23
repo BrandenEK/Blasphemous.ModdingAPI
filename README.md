@@ -72,7 +72,7 @@
 
 ### Exporting
 
-Each mod must export the ExampleMod.dll, and it can also export any config files, data files, and required dll files.  The exported zip file should follow this file format so that it can be extracted into the "Modding" folder.
+Each mod must export the ExampleMod.dll, and it can also export any config files, doc files, data files, and required dll files.  The exported zip file should follow this file format so that it can be extracted into the "Modding" folder.
 
 ```
 ExampleMod.zip
@@ -83,6 +83,8 @@ ExampleMod.zip
 │   │   ├── dataFileOne.dat
 │   │   └── dataFileTwo.dat
 │   └── RequiredDLL.dll
+├── docs
+│   └── ExampleMod.txt
 └── plugins
     └── ExampleMod.dll
 ```
