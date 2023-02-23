@@ -10,6 +10,8 @@
   - [Usage](https://github.com/BrandenEK/Blasphemous-Modding-API#usage)
   - [Custom skins](https://github.com/BrandenEK/Blasphemous-Modding-API#custom-skins)
 - [Creating a mod](https://github.com/BrandenEK/Blasphemous-Modding-API#creating-an-example-mod)
+  - [Project Setup](https://github.com/BrandenEK/Blasphemous-Modding-API#project-setup)
+  - [Exporting](https://github.com/BrandenEK/Blasphemous-Modding-API#exporting)
 - [Documentation](https://github.com/BrandenEK/Blasphemous-Modding-API#documentation)
   - [The Mod Class](https://github.com/BrandenEK/Blasphemous-Modding-API#the-mod-class)
   - [Logging](https://github.com/BrandenEK/Blasphemous-Modding-API#logging)
@@ -57,13 +59,33 @@
 
 ## Creating an example mod
 
+### Project Setup
+
 1. Create a folder called "ExampleMod"
 2. Open the command prompt in this folder and run the command:
 ```dotnet new bepinex5plugin -n ExampleMod -T net35 -U 2017.4.40```
 3. Open the newly created "ExampleMod.csproj" in Visual Studio
-4. Go to "Project/Add Assembly Reference/Browse" and add a reference to any required assemblies.  This will include "ModdingAPI.dll", "BepInEx.dll", "Assembly-CSharp.dll", "UnityEngine.dll", and likely many more
+4. Go to "Project > Add Assembly Reference > Browse" and add a reference to any required assemblies.  This will include "ModdingAPI.dll", "BepInEx.dll", "Assembly-CSharp.dll", "UnityEngine.dll", and likely many more
 5. Rename the "Plugin.cs" file to "Main.cs"
 6. Create a new file called "Example.cs" that contains a class that derives from Mod
+7. Follow the [Examples](https://github.com/BrandenEK/Blasphemous-Modding-API#examples) section on how to program the mod
+
+### Exporting
+
+Each mod must export the ExampleMod.dll, and it can also export any config files, data files, and required dll files.  The exported zip file should follow this file format so that it can be extracted into the "Modding" folder.
+
+```
+ExampleMod.zip
+├── config
+│   └── ExampleMod.cfg
+├── data
+│   ├── ExampleMod
+│   │   ├── dataFileOne.dat
+│   │   └── dataFileTwo.dat
+│   └── RequiredDLL.dll
+└── plugins
+    └── ExampleMod.dll
+```
 
 ---
 
