@@ -83,6 +83,8 @@ ExampleMod.zip
 │   │   ├── dataFileOne.dat
 │   │   └── dataFileTwo.dat
 │   └── RequiredDLL.dll
+├── localization
+│   └── ExampleMod.txt
 ├── docs
 │   └── ExampleMod.txt
 └── plugins
