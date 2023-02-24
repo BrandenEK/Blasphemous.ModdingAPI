@@ -8,6 +8,8 @@ namespace ModdingAPI
     /// </summary>
     public abstract class Mod
     {
+        private Localizer localizer;
+
         /// <summary>
         /// The unique id of this mod used for harmony patching
         /// </summary>
@@ -37,6 +39,9 @@ namespace ModdingAPI
             ModName = modName;
             ModVersion = modVersion;
             FileUtil = new FileUtil(this);
+
+            // Set up localization
+            localizer = new Localizer(FileUtil.loadLocalization());
 
             // Set up logging
             FileUtil.clearLog();
@@ -122,6 +127,16 @@ namespace ModdingAPI
                     return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Localizes text based on a key into the game's current language
+        /// </summary>
+        /// <param name="key">The key of the text to localize</param>
+        /// <returns>The localized text</returns>
+        public string Localize(string key)
+        {
+            return localizer.Localize(key);
         }
 
         /// <summary>

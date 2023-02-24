@@ -12,16 +12,18 @@ namespace ModdingAPI
     {
         private readonly string rootPath = "";
         private readonly string configPath = "";
-        private readonly string logPath = "";
         private readonly string dataPath = "";
+        private readonly string localizationPath = "";
+        private readonly string logPath = "";
 
         // Constructor called by mods to set up their paths
         internal FileUtil(Mod mod)
         {
             rootPath = Directory.GetCurrentDirectory() + "\\";
             configPath = Path.GetFullPath("Modding\\config\\" + mod.ModName + ".cfg");
-            logPath = Path.GetFullPath("Modding\\logs\\" + mod.ModName + ".log");
             dataPath = Path.GetFullPath("Modding\\data\\" + mod.ModName + "\\");
+            logPath = Path.GetFullPath("Modding\\logs\\" + mod.ModName + ".log");
+            localizationPath = Path.GetFullPath("Modding\\localization\\" + mod.ModName + ".txt");
         }
 
         // Constructor called by mod api to create directories
@@ -30,8 +32,10 @@ namespace ModdingAPI
             Directory.CreateDirectory(Path.GetFullPath("Modding\\config\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\data\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\docs\\"));
+            Directory.CreateDirectory(Path.GetFullPath("Modding\\localization\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\logs\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\skins\\"));
+            localizationPath = Path.GetFullPath("Modding\\localization\\Modding API.txt");
         }
 
         internal Dictionary<string, Sprite> loadCustomSkins()
@@ -64,6 +68,15 @@ namespace ModdingAPI
 
                 return true;
             }
+        }
+
+        internal string[] loadLocalization()
+        {
+            if (File.Exists(localizationPath))
+            {
+                return File.ReadAllLines(localizationPath);
+            }
+            return null;
         }
 
         private bool read(string path, out string text)

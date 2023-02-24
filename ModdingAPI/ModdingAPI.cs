@@ -13,6 +13,7 @@ namespace ModdingAPI
 
         public SkinLoader skinLoader { get; private set; }
         public FileUtil fileUtil { get; private set; }
+        public Localizer localizer { get; private set; }
 
         public ModdingAPI()
         {
@@ -20,6 +21,7 @@ namespace ModdingAPI
             modCommands = new List<ModCommand>();
             skinLoader = new SkinLoader();
             fileUtil = new FileUtil();
+            localizer = new Localizer(fileUtil.loadLocalization());
             initialized = false;
         }
 

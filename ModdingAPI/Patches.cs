@@ -11,6 +11,7 @@ using Gameplay.GameControllers.Effects.Player.Recolor;
 using Gameplay.UI.Others.Buttons;
 using System.Text;
 using System.Collections.Generic;
+using I2.Loc;
 
 namespace ModdingAPI
 {
@@ -196,6 +197,7 @@ namespace ModdingAPI
                     Text text = newElement.GetComponentInChildren<Text>();
                     if (text != null)
                     {
+                        Object.Destroy(text.GetComponent<Localize>());
                         text.name = objName + "Text";
                         text.text = skin.name;
                     }
@@ -237,7 +239,7 @@ namespace ModdingAPI
             Text text = __instance.transform.Find("Options/Extras_SkinSelector/SubText").GetComponent<Text>();
 
             SkinInfo customSkin = Main.moddingAPI.skinLoader.getSkinInfo(___allSkins[idx]);
-            text.text = "Created by: " + (customSkin == null ? "TGK" : customSkin.author);
+            text.text = Main.moddingAPI.localizer.Localize("cr") + ": " + (customSkin == null ? "TGK" : customSkin.author);
             return true;
         }
     }
