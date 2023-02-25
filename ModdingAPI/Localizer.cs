@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Framework.Managers;
 
 namespace ModdingAPI
@@ -37,7 +34,7 @@ namespace ModdingAPI
             if (!localizationByLanguage.ContainsKey(langKey))
             {
                 if (!localizationByLanguage.ContainsKey("en"))
-                    return "!LOC_ERROR!";
+                    return "LOC_ERROR";
                 langKey = "en";
             }
 
@@ -48,11 +45,11 @@ namespace ModdingAPI
             {
                 if (keyTerms[i] == key)
                 {
-                    return (i < langTerms.Length && langTerms[i] != null && langTerms[i] != "") ? langTerms[i] : "!LOC_ERROR!";
+                    return (i < langTerms.Length && langTerms[i] != null && langTerms[i] != "") ? langTerms[i] : "LOC_ERROR";
                 }
             }
 
-            return "!LOC_ERROR!";
+            return "LOC_ERROR";
         }
     }
 }
