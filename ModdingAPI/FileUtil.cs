@@ -122,19 +122,12 @@ namespace ModdingAPI
 
         // Log files
 
-        /// <summary>
-        /// Adds a message to the log file for this mod
-        /// </summary>
-        /// <param name="line">The message to add to the log file</param>
-        public void appendLog(string line)
+        internal void appendLog(string line)
         {
-            File.AppendAllText(logPath, line);
+            File.AppendAllText(logPath, line + "\n");
         }
 
-        /// <summary>
-        /// Clears the log file for this mod
-        /// </summary>
-        public void clearLog()
+        internal void clearLog()
         {
             File.WriteAllText(logPath, string.Empty);
         }

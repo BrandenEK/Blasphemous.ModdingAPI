@@ -2,6 +2,7 @@
 using HarmonyLib;
 using System;
 using System.IO;
+using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
 
@@ -65,6 +66,28 @@ namespace ModdingAPI
         {
             if (loggers.ContainsKey(mod))
                 loggers[mod].LogError(message);
+        }
+
+        // Logs special message to unity console
+        internal static void LogSpecial(string message)
+        {
+            // Create line text
+            StringBuilder sb = new StringBuilder();
+            int length = message.Length;
+            while (length > 0)
+            {
+                sb.Append('=');
+                length--;
+            }
+            string line = sb.ToString();
+
+            // Create final message
+            BepInEx.Logging.ManualLogSource logger = loggers[MOD_NAME];
+            logger.LogMessage("");
+            logger.LogMessage(line);
+            logger.LogMessage(message);
+            logger.LogMessage(line);
+            logger.LogMessage("");
         }
     }
 }

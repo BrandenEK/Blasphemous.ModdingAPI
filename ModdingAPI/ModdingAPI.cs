@@ -9,11 +9,12 @@ namespace ModdingAPI
     {
         private List<Mod> mods;
         private List<ModCommand> modCommands;
-        private bool initialized;
 
         public SkinLoader skinLoader { get; private set; }
         public FileUtil fileUtil { get; private set; }
         public Localizer localizer { get; private set; }
+
+        private bool initialized;
 
         public ModdingAPI()
         {
@@ -50,7 +51,8 @@ namespace ModdingAPI
             initialized = true;
             LevelManager.OnLevelLoaded += LevelLoaded;
             LevelManager.OnBeforeLevelLoad += LevelUnloaded;
-            
+
+            Main.LogSpecial("Initialization");
             for (int i = 0; i < mods.Count; i++)
             {
                 mods[i].Initialize();
@@ -74,6 +76,8 @@ namespace ModdingAPI
         public void LevelLoaded(Level oldLevel, Level newLevel)
         {
             string oLevel = oldLevel == null ? string.Empty : oldLevel.LevelName, nLevel = newLevel == null ? string.Empty : newLevel.LevelName;
+
+            Main.LogSpecial("Loaded level " + nLevel);
             for (int i = 0; i < mods.Count; i++)
             {
                 mods[i].LevelLoaded(oLevel, nLevel);
