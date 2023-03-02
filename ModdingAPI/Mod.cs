@@ -1,6 +1,7 @@
 ﻿using System;
 using HarmonyLib;
 using Framework.Managers;
+using Gameplay.UI;
 
 namespace ModdingAPI
 {
@@ -174,6 +175,16 @@ namespace ModdingAPI
         {
             Main.LogError(ModName, error);
             LogFile("** " + error);
+        }
+
+        /// <summary>
+        /// Displays a message with a UI text box
+        /// </summary>
+        /// <param name="message">The text to display</param>
+        public void LogDisplay(string message)
+        {
+            Log(message);
+            UIController.instance.ShowPopUp(message, "", 0, false);
         }
 
         internal void LogFile(string text)
