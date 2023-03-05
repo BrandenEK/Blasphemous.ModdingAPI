@@ -48,7 +48,8 @@ namespace ModdingAPI
             {
                 if (getSkinFiles(skinFolders[i], out string skinInfo, out Sprite skinTexture))
                 {
-                    customSkins.Add(skinInfo, skinTexture);
+                    if (!customSkins.ContainsKey(skinInfo))
+                        customSkins.Add(skinInfo, skinTexture);
                 }
             }
 

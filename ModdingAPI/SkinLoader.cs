@@ -46,9 +46,16 @@ namespace ModdingAPI
             foreach (string skinText in skinData.Keys)
             {
                 SkinInfo skinInfo = Main.moddingAPI.fileUtil.jsonObject<SkinInfo>(skinText);
-                skinInfo.texture = skinData[skinText];
-                customSkins.Add(skinInfo.id, skinInfo);
-                Main.LogMessage(Main.MOD_NAME, $"Loading custom skin: {skinInfo.id} by {skinInfo.author}");
+                if (customSkins.ContainsKey(skinInfo.id))
+                {
+                    Main.LogWarning(Main.MOD_NAME, $"Rejecting duplicate skin: {skinInfo.id}");
+                }
+                else
+                {
+                    skinInfo.texture = skinData[skinText];
+                    customSkins.Add(skinInfo.id, skinInfo);
+                    Main.LogMessage(Main.MOD_NAME, $"Loading custom skin: {skinInfo.id} by {skinInfo.author}");
+                }
             }
         }
     }
