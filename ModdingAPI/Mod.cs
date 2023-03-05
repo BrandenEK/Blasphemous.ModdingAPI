@@ -131,7 +131,7 @@ namespace ModdingAPI
         {
             foreach (Mod mod in Main.moddingAPI.getMods())
             {
-                if (mod.ModId == ModId)
+                if (mod.ModId == modId)
                     return true;
             }
             return false;
