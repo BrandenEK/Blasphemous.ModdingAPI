@@ -192,13 +192,14 @@ namespace ModdingAPI
         /// Loads an array of images from an image file in the data folder
         /// </summary>
         /// <param name="fileName">The name of the data file</param>
-        /// <param name="spriteSize">The pixel size of each square sprite in the image</param>
-        /// <param name="pixelsPerUnit">The pixels per unit of each square sprite in the image</param>
-        /// <param name="border">The border size of each square sprite in the image</param>
+        /// <param name="spriteWidth">The pixel width of each sprite in the image</param>
+        /// <param name="spriteHeight">The pixel height of each sprite in the image</param>
+        /// <param name="pixelsPerUnit">The pixels per unit of each sprite in the image</param>
+        /// <param name="border">The border size of each sprite in the image</param>
         /// <param name="pointFilter">Whether a point filter should be applied to the image</param>
         /// <param name="output">The data images, or null if the file deosn't exist</param>
         /// <returns>Whether the data was loaded successfully or not</returns>
-        public bool loadDataImages(string fileName, int spriteSize, int pixelsPerUnit, int border, bool pointFilter, out Sprite[] output)
+        public bool loadDataImages(string fileName, int spriteWidth, int spriteHeight, int pixelsPerUnit, int border, bool pointFilter, out Sprite[] output)
         {
             string path = dataPath + fileName;
             if (!File.Exists(path))
@@ -208,18 +209,18 @@ namespace ModdingAPI
             }
 
             byte[] bytes = File.ReadAllBytes(path);
-            Texture2D tex = new Texture2D(spriteSize, spriteSize, TextureFormat.RGBA32, false);
+            Texture2D tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
             tex.LoadImage(bytes);
             if (pointFilter) tex.filterMode = FilterMode.Point;
             int w = tex.width, h = tex.height;
-            output = new Sprite[w * h / (spriteSize * spriteSize)];
+            output = new Sprite[w * h / spriteWidth / spriteHeight];
 
             int count = 0;
-            for (int i = h - spriteSize; i >= 0; i -= spriteSize)
+            for (int i = h - spriteHeight; i >= 0; i -= spriteHeight)
             {
-                for (int j = 0; j < w; j += spriteSize)
+                for (int j = 0; j < w; j += spriteWidth)
                 {
-                    Sprite sprite = Sprite.Create(tex, new Rect(j, i, spriteSize, spriteSize), new Vector2(0.5f, 0.5f), pixelsPerUnit, 0, SpriteMeshType.Tight, new Vector4(border, border, border, border));
+                    Sprite sprite = Sprite.Create(tex, new Rect(j, i, spriteWidth, spriteHeight), new Vector2(0.5f, 0.5f), pixelsPerUnit, 0, SpriteMeshType.Tight, new Vector4(border, border, border, border));
                     output[count] = sprite;
                     count++;
                 }
