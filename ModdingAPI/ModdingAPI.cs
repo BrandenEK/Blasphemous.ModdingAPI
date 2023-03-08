@@ -9,8 +9,10 @@ namespace ModdingAPI
     {
         private List<Mod> mods;
         private List<ModCommand> modCommands;
+        private List<ModPenitence> modPenitences;
 
         public SkinLoader skinLoader { get; private set; }
+        public PenitenceLoader penitenceLoader { get; private set; }
         public FileUtil fileUtil { get; private set; }
         public Localizer localizer { get; private set; }
 
@@ -20,7 +22,9 @@ namespace ModdingAPI
         {
             mods = new List<Mod>();
             modCommands = new List<ModCommand>();
+            modPenitences = new List<ModPenitence>();
             skinLoader = new SkinLoader();
+            penitenceLoader = new PenitenceLoader();
             fileUtil = new FileUtil();
             localizer = new Localizer(fileUtil.loadLocalization());
             initialized = false;
@@ -104,20 +108,34 @@ namespace ModdingAPI
 
         public void registerMod(Mod mod)
         {
-            if (!mods.Contains(mod))
+            foreach (Mod modMod in mods)
             {
-                Main.LogMessage(Main.MOD_NAME, $"Registering mod: {mod.ModName} ({mod.ModVersion})");
-                Main.AddLogger(mod.ModName);
-                mods.Add(mod);
+                if (modMod.ModId == mod.ModId)
+                    return;
             }
+            Main.LogMessage(Main.MOD_NAME, $"Registering mod: {mod.ModName} ({mod.ModVersion})");
+            Main.AddLogger(mod.ModName);
+            mods.Add(mod);
         }
 
         public void registerCommand(ModCommand command)
         {
-            if (!modCommands.Contains(command))
+            foreach (ModCommand modCommand in modCommands)
             {
-                modCommands.Add(command);
+                if (modCommand.CommandName == command.CommandName)
+                    return;
             }
+            modCommands.Add(command);
+        }
+
+        public void registerPenitence(ModPenitence penitence)
+        {
+            foreach (ModPenitence modPenitence in modPenitences)
+            {
+                if (modPenitence.Id == penitence.Id)
+                    return;
+            }
+            modPenitences.Add(penitence);
         }
 
         public ReadOnlyCollection<Mod> getMods()
@@ -128,6 +146,11 @@ namespace ModdingAPI
         public ReadOnlyCollection<ModCommand> getModCommnds()
         {
             return modCommands.AsReadOnly();
+        }
+
+        public ReadOnlyCollection<ModPenitence> GetModPenitences()
+        {
+            return modPenitences.AsReadOnly();
         }
     }
 }
