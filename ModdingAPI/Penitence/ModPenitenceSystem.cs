@@ -6,7 +6,7 @@ namespace ModdingAPI
     internal class ModPenitenceSystem : IPenitence
     {
         public string Id => m_Id;
-        private string m_Id;
+        public string m_Id;
 
         public bool Completed { get; set; }
         public bool Abandoned { get; set; }

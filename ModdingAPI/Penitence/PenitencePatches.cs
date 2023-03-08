@@ -155,8 +155,8 @@ namespace ModdingAPI
                 {
                     GameObject left = UnityEngine.Object.Instantiate(buttonHolder.GetChild(0).gameObject, parent);
                     GameObject right = UnityEngine.Object.Instantiate(buttonHolder.GetChild(1).gameObject, parent);
-                    left.GetComponent<RectTransform>().anchoredPosition = new Vector2(-15, 20);
-                    right.GetComponent<RectTransform>().anchoredPosition = new Vector2(15, 20);
+                    left.GetComponent<RectTransform>().anchoredPosition = new Vector2(-5, 10);
+                    right.GetComponent<RectTransform>().anchoredPosition = new Vector2(5, 10);
                 }
             }
         }
