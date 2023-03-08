@@ -123,6 +123,15 @@ namespace ModdingAPI
         }
 
         /// <summary>
+        /// Registers a penitence that can be selected from the Brotherhood statue
+        /// </summary>
+        /// <param name="penitence">The new penitence to be added</param>
+        protected void RegisterPenitence(ModPenitence penitence)
+        {
+            Main.moddingAPI.registerPenitence(penitence);
+        }
+
+        /// <summary>
         /// Checks whether a specific mod has been loaded or not
         /// </summary>
         /// <param name="modId">The unique id of the mod</param>

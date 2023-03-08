@@ -63,6 +63,9 @@ namespace ModdingAPI
                 if (mods[i] is PersistentMod mod)
                     Core.Persistence.AddPersistentManager(new ModPersistentSystem(mod));
             }
+
+            if (modPenitences.Count > 0)
+                Core.PenitenceManager.ResetPersistence();
         }
 
         public void Dispose()
