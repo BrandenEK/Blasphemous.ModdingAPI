@@ -37,6 +37,11 @@ namespace ModdingAPI
         public abstract void Deactivate();
 
         /// <summary>
+        /// Called when the penitence is completed
+        /// </summary>
+        public abstract void OnCompletion();
+
+        /// <summary>
         /// Creates a new custom penitence and stores all of its images
         /// </summary>
         /// <param name="inProgress">The menu icon for an activated penitence</param>

@@ -31,6 +31,18 @@ namespace ModdingAPI
             }
         }
 
+        public void CompleteCurrentPenitence()
+        {
+            if (Core.PenitenceManager.GetCurrentPenitence() is ModPenitenceSystem modPenitence)
+            {
+                foreach (ModPenitence penitence in Main.moddingAPI.GetModPenitences())
+                {
+                    if (penitence.Id == modPenitence.Id)
+                        penitence.OnCompletion();
+                }
+            }
+        }
+
         public ModPenitence GetPenitence(string id)
         {
             foreach (ModPenitence penitence in Main.moddingAPI.GetModPenitences())
