@@ -38,6 +38,7 @@ namespace ModdingAPI
             {
                 mods[i].Update();
             }
+            penitenceLoader.Update();
         }
 
         public void LateUpdate()

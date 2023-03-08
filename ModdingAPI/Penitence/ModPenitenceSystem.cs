@@ -2,6 +2,7 @@
 
 namespace ModdingAPI
 {
+    [System.Serializable]
     internal class ModPenitenceSystem : IPenitence
     {
         public string Id => m_Id;

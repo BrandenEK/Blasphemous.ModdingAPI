@@ -49,6 +49,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\Blasphemous-Multiplayer\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Rewired_Core">
+      <HintPath>..\lib\Rewired_Core.dll</HintPath>
+    </Reference>
     <Reference Include="Sirenix.Serialization">
       <HintPath>..\lib\Sirenix.Serialization.dll</HintPath>
     </Reference>
