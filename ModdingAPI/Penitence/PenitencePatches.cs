@@ -140,7 +140,7 @@ namespace ModdingAPI
     [HarmonyPatch(typeof(ChoosePenitenceWidget), "Open", typeof(Action), typeof(Action))]
     internal class ChoosePenitenceWidgetOpen_Patch
     {
-        public static void Postfix(ChoosePenitenceWidget __instance, Action onChoosingPenitence)
+        public static void Postfix(Action onChoosingPenitence)
         {
             Main.moddingAPI.penitenceLoader.chooseAction = onChoosingPenitence;
 
@@ -200,7 +200,7 @@ namespace ModdingAPI
     {
         public static bool Prefix(PenitenceCheckCurrent __instance)
         {
-            if (Core.PenitenceManager.GetCurrentPenitence() is ModPenitenceSystem modPenitence)
+            if (Core.PenitenceManager.GetCurrentPenitence() is ModPenitenceSystem)
             {
                 __instance.Fsm.Event(__instance.noPenitenceActive);
                 __instance.Finish();

@@ -299,6 +299,11 @@
             Should perform any necessary actions to deactivate this penitence's functionality
             </summary>
         </member>
+        <member name="M:ModdingAPI.ModPenitence.OnCompletion">
+            <summary>
+            Called when this penitence is completed
+            </summary>
+        </member>
         <member name="M:ModdingAPI.ModPenitence.#ctor(UnityEngine.Sprite,UnityEngine.Sprite,UnityEngine.Sprite,UnityEngine.Sprite,UnityEngine.Sprite)">
             <summary>
             Creates a new custom penitence and stores all of its images

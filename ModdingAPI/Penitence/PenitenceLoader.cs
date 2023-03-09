@@ -106,21 +106,6 @@ namespace ModdingAPI
             }
         }
 
-        private Image m_SelectPenitenceImage;
-        public Image SelectPenitenceImage
-        {
-            get
-            {
-                if (m_SelectPenitenceImage == null)
-                {
-                    Transform image = Object.FindObjectOfType<ChoosePenitenceWidget>().transform.Find("Options/NoPenitence/Image/Selected/SelectedIconWithBorder");
-                    if (image == null) return null;
-                    m_SelectPenitenceImage = image.GetComponent<Image>();
-                }
-                return m_SelectPenitenceImage;
-            }
-        }
-
         private bool m_SelectingCustomPenitence;
         public bool SelectingCustomPenitence
         {
@@ -154,6 +139,21 @@ namespace ModdingAPI
                     m_CurrentSelectedCustomPenitence = Main.moddingAPI.GetModPenitences().Count;
                 else
                     m_CurrentSelectedCustomPenitence = value;
+            }
+        }
+
+        private Image m_SelectPenitenceImage;
+        public Image SelectPenitenceImage
+        {
+            get
+            {
+                if (m_SelectPenitenceImage == null)
+                {
+                    Transform image = Object.FindObjectOfType<ChoosePenitenceWidget>().transform.Find("Options/NoPenitence/Image/Selected/SelectedIconWithBorder");
+                    if (image == null) return null;
+                    m_SelectPenitenceImage = image.GetComponent<Image>();
+                }
+                return m_SelectPenitenceImage;
             }
         }
 

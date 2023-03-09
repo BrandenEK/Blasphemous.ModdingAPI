@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ModdingAPI
 {
@@ -14,32 +10,32 @@ namespace ModdingAPI
         /// <summary>
         /// The unique id of this penitence (PEXX...)
         /// </summary>
-        public abstract string Id { get; }
+        protected internal abstract string Id { get; }
 
         /// <summary>
         /// The descriptive name of this penitence
         /// </summary>
-        public abstract string Name { get; }
+        protected internal abstract string Name { get; }
 
         /// <summary>
         /// The full description of this penitence
         /// </summary>
-        public abstract string Description { get; }
+        protected internal abstract string Description { get; }
 
         /// <summary>
         /// Should perform any necessary actions to activate this penitence's functionality
         /// </summary>
-        public abstract void Activate();
+        protected internal abstract void Activate();
 
         /// <summary>
         /// Should perform any necessary actions to deactivate this penitence's functionality
         /// </summary>
-        public abstract void Deactivate();
+        protected internal abstract void Deactivate();
 
         /// <summary>
-        /// Called when the penitence is completed
+        /// Called when this penitence is completed
         /// </summary>
-        public abstract void OnCompletion();
+        protected internal abstract void OnCompletion();
 
         /// <summary>
         /// Creates a new custom penitence and stores all of its images
