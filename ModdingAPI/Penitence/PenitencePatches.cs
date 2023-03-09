@@ -87,15 +87,13 @@ namespace ModdingAPI
                     ModPenitence currentPenitence = Main.moddingAPI.GetModPenitences()[currPenitenceIdx - 1];
                     ___penitenceTitle.text = currentPenitence.Name;
                     ___penitenceInfoText.text = currentPenitence.Description;
-                    if (Main.moddingAPI.penitenceLoader.SelectPenitenceImage != null)
-                        Main.moddingAPI.penitenceLoader.SelectPenitenceImage.sprite = currentPenitence.SelectionImage;
+                    Main.moddingAPI.penitenceLoader.SelectedButtonImage.sprite = currentPenitence.ChooseSelectedImage;
                 }
                 else
                 {
                     ___penitenceTitle.text = ScriptLocalization.UI_Penitences.NO_PENITENCE;
                     ___penitenceInfoText.text = ScriptLocalization.UI_Penitences.NO_PENITENCE_INFO;
-                    if (Main.moddingAPI.penitenceLoader.SelectPenitenceImage != null)
-                        Main.moddingAPI.penitenceLoader.SelectPenitenceImage.sprite = Main.moddingAPI.penitenceLoader.NoPenitenceImage;
+                    Main.moddingAPI.penitenceLoader.SelectedButtonImage.sprite = Main.moddingAPI.penitenceLoader.NoPenitenceImage;
                 }
                 ___penitenceScroll.NewContentSetted();
                 return false;
@@ -146,10 +144,8 @@ namespace ModdingAPI
 
             // Add lb/rb buttons
             Transform buttonHolder = UnityEngine.Object.FindObjectOfType<NewInventoryWidget>().transform.Find("External/Background/Headers/Inventory/Caption/Selector_Help/");
-            Image selectionImage = Main.moddingAPI.penitenceLoader.SelectPenitenceImage;
-            if (buttonHolder == null || selectionImage == null) return;
 
-            Transform parent = selectionImage.transform.parent.parent;
+            Transform parent = Main.moddingAPI.penitenceLoader.UnselectedButtonImage.transform;
             if (parent.childCount == 1)
             {
                 GameObject left = UnityEngine.Object.Instantiate(buttonHolder.GetChild(0).gameObject, parent);
@@ -173,7 +169,7 @@ namespace ModdingAPI
 
                 Image medalImage = ___PE02Medal.GetComponentInChildren<Image>();
                 Main.moddingAPI.penitenceLoader.Penitence2Image = medalImage.sprite;
-                medalImage.sprite = currPenitence.SelectionImage;
+                medalImage.sprite = currPenitence.ChooseSelectedImage;
                 ___penitenceTitle.text = currPenitence.Name;
                 ___penitenceInfoText.text = currPenitence.Description;
 

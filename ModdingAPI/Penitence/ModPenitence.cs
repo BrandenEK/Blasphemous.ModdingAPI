@@ -44,20 +44,23 @@ namespace ModdingAPI
         /// <param name="completed">The menu icon for a completed penitence</param>
         /// <param name="abandoned">The menu icon for an abandoned penitence</param>
         /// <param name="gameplay">The gameplay icon for an activated penitence</param>
-        /// <param name="selection">The large penitence selection icon</param>
-        public ModPenitence(Sprite inProgress, Sprite completed, Sprite abandoned, Sprite gameplay, Sprite selection)
+        /// <param name="chooseSelected">The selected icon when choosing a penitence</param>
+        /// <param name="chooseUnselected">The unselected icon when chooseing a penitence</param>
+        public ModPenitence(Sprite inProgress, Sprite completed, Sprite abandoned, Sprite gameplay, Sprite chooseSelected, Sprite chooseUnselected)
         {
             InProgressImage = inProgress;
             CompletedImage = completed;
             AbandonedImage = abandoned;
             GameplayImage = gameplay;
-            SelectionImage = selection;
+            ChooseSelectedImage = chooseSelected;
+            ChooseUnselectedImage = chooseUnselected;
         }
 
         internal Sprite InProgressImage { get; private set; }
         internal Sprite CompletedImage { get; private set; }
         internal Sprite AbandonedImage { get; private set; }
         internal Sprite GameplayImage { get; private set; }
-        internal Sprite SelectionImage { get; private set; }
+        internal Sprite ChooseSelectedImage { get; private set; }
+        internal Sprite ChooseUnselectedImage { get; private set; }
     }
 }

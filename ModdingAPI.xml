@@ -304,7 +304,7 @@
             Called when this penitence is completed
             </summary>
         </member>
-        <member name="M:ModdingAPI.ModPenitence.#ctor(UnityEngine.Sprite,UnityEngine.Sprite,UnityEngine.Sprite,UnityEngine.Sprite,UnityEngine.Sprite)">
+        <member name="M:ModdingAPI.ModPenitence.#ctor(UnityEngine.Sprite,UnityEngine.Sprite,UnityEngine.Sprite,UnityEngine.Sprite,UnityEngine.Sprite,UnityEngine.Sprite)">
             <summary>
             Creates a new custom penitence and stores all of its images
             </summary>
@@ -312,7 +312,8 @@
             <param name="completed">The menu icon for a completed penitence</param>
             <param name="abandoned">The menu icon for an abandoned penitence</param>
             <param name="gameplay">The gameplay icon for an activated penitence</param>
-            <param name="selection">The large penitence selection icon</param>
+            <param name="chooseSelected">The selected icon when choosing a penitence</param>
+            <param name="chooseUnselected">The unselected icon when chooseing a penitence</param>
         </member>
         <member name="T:ModdingAPI.ModPersistentData">
             <summary>

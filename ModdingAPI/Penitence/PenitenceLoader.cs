@@ -115,13 +115,12 @@ namespace ModdingAPI
                 m_SelectingCustomPenitence = value;
                 if (value)
                 {
-                    if (SelectPenitenceImage != null)
-                        NoPenitenceImage = SelectPenitenceImage.sprite;
+                    NoPenitenceImage = SelectedButtonImage.sprite;
                 }
                 else
                 {
-                    if (NoPenitenceImage != null && SelectPenitenceImage != null)
-                        SelectPenitenceImage.sprite = NoPenitenceImage;
+                    if (NoPenitenceImage != null)
+                        SelectedButtonImage.sprite = NoPenitenceImage;
                     CurrentSelectedCustomPenitence = 0;
                 }
             }
@@ -142,18 +141,29 @@ namespace ModdingAPI
             }
         }
 
-        private Image m_SelectPenitenceImage;
-        public Image SelectPenitenceImage
+        private Image m_UnselectedButtonImage;
+        public Image UnselectedButtonImage
         {
             get
             {
-                if (m_SelectPenitenceImage == null)
+                if (m_UnselectedButtonImage == null)
                 {
-                    Transform image = Object.FindObjectOfType<ChoosePenitenceWidget>().transform.Find("Options/NoPenitence/Image/Selected/SelectedIconWithBorder");
-                    if (image == null) return null;
-                    m_SelectPenitenceImage = image.GetComponent<Image>();
+                    m_UnselectedButtonImage = Object.FindObjectOfType<ChoosePenitenceWidget>().transform.Find("Options/NoPenitence/Image").GetComponent<Image>();
                 }
-                return m_SelectPenitenceImage;
+                return m_UnselectedButtonImage;
+            }
+        }
+
+        private Image m_SelectedButtonImage;
+        public Image SelectedButtonImage
+        {
+            get
+            {
+                if (m_SelectedButtonImage == null)
+                {
+                    m_SelectedButtonImage = UnselectedButtonImage.transform.Find("Selected/SelectedIconWithBorder").GetComponent<Image>();
+                }
+                return m_SelectedButtonImage;
             }
         }
 
