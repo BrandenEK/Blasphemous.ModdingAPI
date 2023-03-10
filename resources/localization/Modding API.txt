@@ -1,4 +1,8 @@
-keys: cr
-en: Created by
-es: Creado por
-zh: 作者
+lang: en
+cr: Created by
+
+lang: es
+cr: Creado por
+
+lang: zh
+cr: 作者
