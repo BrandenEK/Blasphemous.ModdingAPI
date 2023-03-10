@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using Framework.Managers;
 using Framework.Penitences;
+using Framework.Inventory;
 using Gameplay.UI;
 using Gameplay.UI.Others.MenuLogic;
 using Gameplay.UI.Widgets;
@@ -188,24 +189,63 @@ namespace ModdingAPI
         }
     }
 
-    // Call no penitence event when checking
+    // Complete penitence and give item on completion
     [HarmonyPatch(typeof(PenitenceCheckCurrent), "OnEnter")]
     internal class CurrentPenitence_Patch
     {
         public static bool Prefix(PenitenceCheckCurrent __instance)
         {
-            if (Core.PenitenceManager.GetCurrentPenitence() is ModPenitenceSystem)
+            if (Core.PenitenceManager.GetCurrentPenitence() is ModPenitenceSystem modPenitence)
             {
                 // I am assuming that this method is only used when the game is over to complete the penitence
-                Main.moddingAPI.penitenceLoader.CompleteCurrentPenitence();
+                Main.LogMessage(Main.MOD_NAME, "Completing custom penitence: " + modPenitence.Id);
                 Core.PenitenceManager.MarkCurrentPenitenceAsCompleted();
-                Core.Persistence.SaveGame(true);
+                ModPenitence currPenitence = Main.moddingAPI.penitenceLoader.GetPenitence(modPenitence.Id);
 
-                __instance.Fsm.Event(__instance.noPenitenceActive);
-                __instance.Finish();
+                // If there is not item to give, save and finish
+                if (currPenitence.ItemIdToGive == null || currPenitence.ItemIdToGive == string.Empty)
+                {
+                    FinishAction();
+                    return false;
+                }
+
+                // If the item is not valid or already owned, save and finish
+                BaseInventoryObject obj = Core.InventoryManager.GetBaseObject(currPenitence.ItemIdToGive, currPenitence.ItemTypeToGive);
+                if (obj == null || isItemOwned(currPenitence.ItemIdToGive, currPenitence.ItemTypeToGive))
+                {
+                    FinishAction();
+                    return false;
+                }
+
+                // Give the item, and once finished, save and finish
+                PopUpWidget.OnDialogClose += FinishAction;
+                obj = Core.InventoryManager.AddBaseObjectOrTears(obj);
+                UIController.instance.ShowObjectPopUp(UIController.PopupItemAction.GetObejct, obj.caption, obj.picture, obj.GetItemType(), 3f, true);
                 return false;
             }
             return true;
+
+            void FinishAction()
+            {
+                PopUpWidget.OnDialogClose -= FinishAction;
+                Core.Persistence.SaveGame(true);
+                __instance.Fsm.Event(__instance.noPenitenceActive);
+                __instance.Finish();
+            }
+
+            bool isItemOwned(string itemId, InventoryManager.ItemType itemType)
+            {
+                switch (itemType)
+                {
+                    case InventoryManager.ItemType.Bead: return Core.InventoryManager.IsRosaryBeadOwned(itemId);
+                    case InventoryManager.ItemType.Prayer: return Core.InventoryManager.IsPrayerOwned(itemId);
+                    case InventoryManager.ItemType.Relic: return Core.InventoryManager.IsRelicOwned(itemId);
+                    case InventoryManager.ItemType.Sword: return Core.InventoryManager.IsSwordOwned(itemId);
+                    case InventoryManager.ItemType.Quest: return Core.InventoryManager.IsQuestItemOwned(itemId);
+                    case InventoryManager.ItemType.Collectible: return Core.InventoryManager.IsCollectibleItemOwned(itemId);
+                }
+                return false;
+            }
         }
     }
 }
