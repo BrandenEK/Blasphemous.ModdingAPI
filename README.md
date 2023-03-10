@@ -328,7 +328,7 @@ using BepInEx;
 namespace ExampleMod
 {
     [BepInPlugin(MOD_ID, MOD_NAME, MOD_VERSION)]
-    [BepInDependency("com.damocles.blasphemous.modding-api", BepInDependency.DependencyFlags.HardDependency)]
+    [BepInDependency("com.damocles.blasphemous.modding-api", "1.2.0")]
     [BepInProcess("Blasphemous.exe")]
     public class Main : BaseUnityPlugin
     {
