@@ -5,48 +5,59 @@ namespace ModdingAPI
 {
     internal class Localizer
     {
-        private Dictionary<string, string[]> localizationByLanguage;
+        private Dictionary<string, Dictionary<string, string>> localizationByLanguage;
 
         public Localizer(string[] localizationText)
         {
-            localizationByLanguage = new Dictionary<string, string[]>();
+            localizationByLanguage = new Dictionary<string, Dictionary<string, string>>();
             if (localizationText != null)
                 setupLocalization(localizationText);
-            
-            if (!localizationByLanguage.ContainsKey("keys"))
-                localizationByLanguage.Add("keys", new string[0]);
         }
 
         private void setupLocalization(string[] localizationText)
         {
+            string currLangKey = null;
             for (int i = 0; i < localizationText.Length; i++)
             {
+                // Skip lines without colon
                 int colonIdx = localizationText[i].IndexOf(':');
-                string langKey = localizationText[i].Substring(0, colonIdx);
-                string[] langTerms = localizationText[i].Substring(colonIdx + 1).Trim().Split('~');
-                localizationByLanguage.Add(langKey, langTerms);
+                if (colonIdx < 0)
+                    continue;
+
+                // Get key and term of each pair
+                string key = localizationText[i].Substring(0, colonIdx);
+                string term = localizationText[i].Substring(colonIdx + 1).Trim();
+
+                // Set new language
+                if (key == "lang")
+                {
+                    currLangKey = term;
+                    localizationByLanguage.Add(term, new Dictionary<string, string>());
+                    continue;
+                }
+
+                // If currently on a language, add the key term pair
+                if (currLangKey != null)
+                {
+                    localizationByLanguage[currLangKey].Add(key, term);
+                }
             }
         }
 
         public string Localize(string key)
         {
             string langKey = Core.Localization.GetCurrentLanguageCode();
-            if (!localizationByLanguage.ContainsKey(langKey))
+
+            // The language exists and contains the specified key
+            if (localizationByLanguage.ContainsKey(langKey) && localizationByLanguage[langKey].ContainsKey(key))
             {
-                if (!localizationByLanguage.ContainsKey("en"))
-                    return "LOC_ERROR";
-                langKey = "en";
+                return localizationByLanguage[langKey][key];
             }
 
-            string[] keyTerms = localizationByLanguage["keys"];
-            string[] langTerms = localizationByLanguage[langKey];
-
-            for (int i = 0; i < keyTerms.Length; i++)
+            // The language doesn't exist - default to english
+            if (localizationByLanguage.ContainsKey("en") && localizationByLanguage["en"].ContainsKey(key))
             {
-                if (keyTerms[i] == key)
-                {
-                    return (i < langTerms.Length && langTerms[i] != null && langTerms[i] != "") ? langTerms[i] : "LOC_ERROR";
-                }
+                return localizationByLanguage["en"][key];
             }
 
             return "LOC_ERROR";
