@@ -44,7 +44,7 @@ namespace ModdingAPI
         protected internal abstract void Deactivate();
 
         /// <summary>
-        /// Creates a new custom penitence and stores all of its images
+        /// Stores all of the images for a custom penitence
         /// </summary>
         /// <param name="inProgress">The menu icon for an activated penitence</param>
         /// <param name="completed">The menu icon for a completed penitence</param>
@@ -52,7 +52,7 @@ namespace ModdingAPI
         /// <param name="gameplay">The gameplay icon for an activated penitence</param>
         /// <param name="chooseSelected">The selected icon when choosing a penitence</param>
         /// <param name="chooseUnselected">The unselected icon when chooseing a penitence</param>
-        public ModPenitence(Sprite inProgress, Sprite completed, Sprite abandoned, Sprite gameplay, Sprite chooseSelected, Sprite chooseUnselected)
+        public ModPenitence SetImages(Sprite inProgress, Sprite completed, Sprite abandoned, Sprite gameplay, Sprite chooseSelected, Sprite chooseUnselected)
         {
             InProgressImage = inProgress;
             CompletedImage = completed;
@@ -60,6 +60,7 @@ namespace ModdingAPI
             GameplayImage = gameplay;
             ChooseSelectedImage = chooseSelected;
             ChooseUnselectedImage = chooseUnselected;
+            return this;
         }
 
         internal Sprite InProgressImage { get; private set; }
