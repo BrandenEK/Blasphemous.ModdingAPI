@@ -289,6 +289,16 @@
             The full description of this penitence
             </summary>
         </member>
+        <member name="P:ModdingAPI.ModPenitence.ItemIdToGive">
+            <summary>
+            The ID of the item to give for completing the penitence
+            </summary>
+        </member>
+        <member name="P:ModdingAPI.ModPenitence.ItemTypeToGive">
+            <summary>
+            The type of the item to give for completing the penitence
+            </summary>
+        </member>
         <member name="M:ModdingAPI.ModPenitence.Activate">
             <summary>
             Should perform any necessary actions to activate this penitence's functionality
@@ -297,11 +307,6 @@
         <member name="M:ModdingAPI.ModPenitence.Deactivate">
             <summary>
             Should perform any necessary actions to deactivate this penitence's functionality
-            </summary>
-        </member>
-        <member name="M:ModdingAPI.ModPenitence.OnCompletion">
-            <summary>
-            Called when this penitence is completed
             </summary>
         </member>
         <member name="M:ModdingAPI.ModPenitence.#ctor(UnityEngine.Sprite,UnityEngine.Sprite,UnityEngine.Sprite,UnityEngine.Sprite,UnityEngine.Sprite,UnityEngine.Sprite)">
