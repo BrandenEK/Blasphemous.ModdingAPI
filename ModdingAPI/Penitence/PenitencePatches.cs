@@ -54,84 +54,22 @@ namespace ModdingAPI
     [HarmonyPatch(typeof(ChoosePenitenceWidget), "Option_SelectPE01")]
     internal class ChoosePenitenceWidgetSelect1_Patch
     {
-        public static void Postfix() { Main.moddingAPI.penitenceLoader.SelectingCustomPenitence = false; }
+        public static void Postfix() { Main.moddingAPI.penitenceLoader.CurrentSelection = PenitenceLoader.Selection.Normal; }
     }
     [HarmonyPatch(typeof(ChoosePenitenceWidget), "Option_SelectPE02")]
     internal class ChoosePenitenceWidgetSelect2_Patch
     {
-        public static void Postfix() { Main.moddingAPI.penitenceLoader.SelectingCustomPenitence = false; }
+        public static void Postfix() { Main.moddingAPI.penitenceLoader.CurrentSelection = PenitenceLoader.Selection.Normal; }
     }
     [HarmonyPatch(typeof(ChoosePenitenceWidget), "Option_SelectPE03")]
     internal class ChoosePenitenceWidgetSelect3_Patch
     {
-        public static void Postfix() { Main.moddingAPI.penitenceLoader.SelectingCustomPenitence = false; }
+        public static void Postfix() { Main.moddingAPI.penitenceLoader.CurrentSelection = PenitenceLoader.Selection.Normal; }
     }
     [HarmonyPatch(typeof(ChoosePenitenceWidget), "OnClose")]
     internal class ChoosePenitenceWidgetClose_Patch
     {
-        public static void Postfix() { Main.moddingAPI.penitenceLoader.SelectingCustomPenitence = false; }
-    }
-
-    // Update selection status when selecting normally or changing custom penitences
-    [HarmonyPatch(typeof(ChoosePenitenceWidget), "Option_SelectNoPenitence")]
-    internal class ChoosePenitenceWidgetSelectNone_Patch
-    {
-        public static bool Prefix(Text ___penitenceTitle, Text ___penitenceInfoText, CustomScrollView ___penitenceScroll)
-        {
-            if (Main.moddingAPI.penitenceLoader.customStatus)
-            {
-                // Pressed lb/rb to update custom penitence
-                int currPenitenceIdx = Main.moddingAPI.penitenceLoader.CurrentSelectedCustomPenitence;
-                if (currPenitenceIdx > 0)
-                {
-                    ModPenitence currentPenitence = Main.moddingAPI.GetModPenitences()[currPenitenceIdx - 1];
-                    ___penitenceTitle.text = currentPenitence.Name;
-                    ___penitenceInfoText.text = currentPenitence.Description;
-                    Main.moddingAPI.penitenceLoader.SelectedButtonImage.sprite = currentPenitence.ChooseSelectedImage;
-                }
-                else
-                {
-                    ___penitenceTitle.text = ScriptLocalization.UI_Penitences.NO_PENITENCE;
-                    ___penitenceInfoText.text = ScriptLocalization.UI_Penitences.NO_PENITENCE_INFO;
-                    Main.moddingAPI.penitenceLoader.SelectedButtonImage.sprite = Main.moddingAPI.penitenceLoader.NoPenitenceImage;
-                }
-                ___penitenceScroll.NewContentSetted();
-                return false;
-            }
-            else
-            {
-                // First time selecting this slot
-                Main.moddingAPI.penitenceLoader.SelectingCustomPenitence = true;
-                return true;
-            }
-        }
-    }
-
-    // Display choose penitence confirmation when choosing custom one
-    [HarmonyPatch(typeof(UIController), "ShowConfirmationWidget", typeof(string), typeof(Action), typeof(Action))]
-    internal class UIController_Patch
-    {
-        public static void Prefix(ref string infoMessage)
-        {
-            if (Main.moddingAPI.penitenceLoader.CurrentSelectedCustomPenitence > 0)
-                infoMessage = ScriptLocalization.UI_Penitences.CHOOSE_PENITENCE_CONFIRMATION;
-        }
-    }
-
-    // When confirming a custom penitence, activate it
-    [HarmonyPatch(typeof(ChoosePenitenceWidget), "ContinueWithNoPenitenceAndClose")]
-    internal class ChoosePenitenceWidgetActivate_Patch
-    {
-        public static bool Prefix(ChoosePenitenceWidget __instance)
-        {
-            if (Main.moddingAPI.penitenceLoader.CurrentSelectedCustomPenitence > 0)
-            {
-                Main.moddingAPI.penitenceLoader.ConfirmCustomPenitence();
-                __instance.Close();
-                return false;
-            }
-            return true;
-        }
+        public static void Postfix() { Main.moddingAPI.penitenceLoader.CurrentSelection = PenitenceLoader.Selection.Normal; }
     }
 
     // Display buttons and store action when opening widget
@@ -141,6 +79,9 @@ namespace ModdingAPI
         public static void Postfix(Action onChoosingPenitence)
         {
             Main.moddingAPI.penitenceLoader.chooseAction = onChoosingPenitence;
+            Main.moddingAPI.penitenceLoader.NoPenitenceUnselectedImage = Main.moddingAPI.penitenceLoader.UnselectedButtonImage.sprite;
+            Main.moddingAPI.penitenceLoader.NoPenitenceSelectedImage = Main.moddingAPI.penitenceLoader.SelectedButtonImage.sprite;
+            Main.moddingAPI.penitenceLoader.CurrentSelectedCustomPenitence = 0;
 
             // Add lb/rb buttons
             Transform buttonHolder = UnityEngine.Object.FindObjectOfType<NewInventoryWidget>().transform.Find("External/Background/Headers/Inventory/Caption/Selector_Help/");
@@ -153,6 +94,63 @@ namespace ModdingAPI
                 left.GetComponent<RectTransform>().anchoredPosition = new Vector2(-5, 10);
                 right.GetComponent<RectTransform>().anchoredPosition = new Vector2(5, 10);
             }
+        }
+    }
+
+    // Update selection status when selecting normally or changing custom penitences
+    [HarmonyPatch(typeof(ChoosePenitenceWidget), "Option_SelectNoPenitence")]
+    internal class ChoosePenitenceWidgetSelectNone_Patch
+    {
+        public static bool Prefix(Text ___penitenceTitle, Text ___penitenceInfoText, CustomScrollView ___penitenceScroll)
+        {
+
+            int currPenitenceIdx = Main.moddingAPI.penitenceLoader.CurrentSelectedCustomPenitence;
+            if (currPenitenceIdx > 0)
+            {
+                Main.moddingAPI.penitenceLoader.CurrentSelection = PenitenceLoader.Selection.Custom;
+                ModPenitence currentPenitence = Main.moddingAPI.GetModPenitences()[currPenitenceIdx - 1];
+                ___penitenceTitle.text = currentPenitence.Name;
+                ___penitenceInfoText.text = currentPenitence.Description;
+                Main.moddingAPI.penitenceLoader.SelectedButtonImage.sprite = currentPenitence.ChooseSelectedImage;
+                Main.moddingAPI.penitenceLoader.UnselectedButtonImage.sprite = currentPenitence.ChooseUnselectedImage;
+            }
+            else
+            {
+                ___penitenceTitle.text = ScriptLocalization.UI_Penitences.NO_PENITENCE;
+                Main.moddingAPI.penitenceLoader.CurrentSelection = PenitenceLoader.Selection.Bottom;
+                ___penitenceInfoText.text = ScriptLocalization.UI_Penitences.NO_PENITENCE_INFO;
+                Main.moddingAPI.penitenceLoader.SelectedButtonImage.sprite = Main.moddingAPI.penitenceLoader.NoPenitenceSelectedImage;
+                Main.moddingAPI.penitenceLoader.UnselectedButtonImage.sprite = Main.moddingAPI.penitenceLoader.NoPenitenceUnselectedImage;
+            }
+            ___penitenceScroll.NewContentSetted();
+            return false;
+        }
+    }
+
+    // Display choose penitence confirmation when choosing custom one
+    [HarmonyPatch(typeof(UIController), "ShowConfirmationWidget", typeof(string), typeof(Action), typeof(Action))]
+    internal class UIController_Patch
+    {
+        public static void Prefix(ref string infoMessage)
+        {
+            if (Main.moddingAPI.penitenceLoader.CurrentSelection == PenitenceLoader.Selection.Custom)
+                infoMessage = ScriptLocalization.UI_Penitences.CHOOSE_PENITENCE_CONFIRMATION;
+        }
+    }
+
+    // When confirming a custom penitence, activate it
+    [HarmonyPatch(typeof(ChoosePenitenceWidget), "ContinueWithNoPenitenceAndClose")]
+    internal class ChoosePenitenceWidgetActivate_Patch
+    {
+        public static bool Prefix(ChoosePenitenceWidget __instance)
+        {
+            if (Main.moddingAPI.penitenceLoader.CurrentSelection == PenitenceLoader.Selection.Custom)
+            {
+                Main.moddingAPI.penitenceLoader.ConfirmCustomPenitence();
+                __instance.Close();
+                return false;
+            }
+            return true;
         }
     }
 
@@ -198,21 +196,16 @@ namespace ModdingAPI
         {
             if (Core.PenitenceManager.GetCurrentPenitence() is ModPenitenceSystem)
             {
+                // I am assuming that this method is only used when the game is over to complete the penitence
+                Main.moddingAPI.penitenceLoader.CompleteCurrentPenitence();
+                Core.PenitenceManager.MarkCurrentPenitenceAsCompleted();
+                Core.Persistence.SaveGame(true);
+
                 __instance.Fsm.Event(__instance.noPenitenceActive);
                 __instance.Finish();
                 return false;
             }
             return true;
-        }
-    }
-
-    // Call penitence complete when completing the penitence
-    [HarmonyPatch(typeof(PenitenceCompleteCurrent), "OnEnter")]
-    internal class CompletePenitence_Patch
-    {
-        public static void Postfix()
-        {
-            Main.moddingAPI.penitenceLoader.CompleteCurrentPenitence();
         }
     }
 }

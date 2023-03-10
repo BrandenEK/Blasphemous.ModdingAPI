@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Framework.Managers;
 
 namespace ModdingAPI
 {
@@ -21,6 +22,16 @@ namespace ModdingAPI
         /// The full description of this penitence
         /// </summary>
         protected internal abstract string Description { get; }
+
+        /// <summary>
+        /// The ID of the item to give for completing the penitence
+        /// </summary>
+        protected internal abstract string ItemIdToGive { get; }
+
+        /// <summary>
+        /// The type of the item to give for completing the penitence
+        /// </summary>
+        protected internal abstract InventoryManager.ItemType ItemTypeToGive { get; }
 
         /// <summary>
         /// Should perform any necessary actions to activate this penitence's functionality

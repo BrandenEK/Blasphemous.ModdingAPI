@@ -9,7 +9,9 @@ namespace ModdingAPI
 {
     internal class PenitenceLoader
     {
-        public bool customStatus { get; private set; }
+        public enum Selection { Normal, Bottom, Custom }
+        public Selection CurrentSelection { get; set; }
+
         public System.Action chooseAction { get; set; }
         private Player rewired;
 
@@ -80,7 +82,7 @@ namespace ModdingAPI
 
         public void Update()
         {
-            if (SelectingCustomPenitence)
+            if (CurrentSelection != Selection.Normal)
             {
                 if (rewired == null)
                 {
@@ -89,39 +91,12 @@ namespace ModdingAPI
                 if (rewired.GetButtonDown(23))
                 {
                     CurrentSelectedCustomPenitence--;
-                    selectCustomPenitence();
+                    Object.FindObjectOfType<ChoosePenitenceWidget>().Option_SelectNoPenitence();
                 }
                 else if (rewired.GetButtonDown(38))
                 {
                     CurrentSelectedCustomPenitence++;
-                    selectCustomPenitence();
-                }
-            }
-
-            void selectCustomPenitence()
-            {
-                customStatus = true;
-                Object.FindObjectOfType<ChoosePenitenceWidget>().Option_SelectNoPenitence();
-                customStatus = false;
-            }
-        }
-
-        private bool m_SelectingCustomPenitence;
-        public bool SelectingCustomPenitence
-        {
-            get { return m_SelectingCustomPenitence; }
-            set
-            {
-                m_SelectingCustomPenitence = value;
-                if (value)
-                {
-                    NoPenitenceImage = SelectedButtonImage.sprite;
-                }
-                else
-                {
-                    if (NoPenitenceImage != null)
-                        SelectedButtonImage.sprite = NoPenitenceImage;
-                    CurrentSelectedCustomPenitence = 0;
+                    Object.FindObjectOfType<ChoosePenitenceWidget>().Option_SelectNoPenitence();
                 }
             }
         }
@@ -167,14 +142,25 @@ namespace ModdingAPI
             }
         }
 
-        private Sprite m_NoPenitenceImage;
-        public Sprite NoPenitenceImage
+        private Sprite m_NoPenitenceSelectedImage;
+        public Sprite NoPenitenceSelectedImage
         {
-            get { return m_NoPenitenceImage; }
+            get { return m_NoPenitenceSelectedImage; }
             set
             {
-                if (m_NoPenitenceImage == null)
-                    m_NoPenitenceImage = value;
+                if (m_NoPenitenceSelectedImage == null)
+                    m_NoPenitenceSelectedImage = value;
+            }
+        }
+
+        private Sprite m_NoPenitenceUnselectedImage;
+        public Sprite NoPenitenceUnselectedImage
+        {
+            get { return m_NoPenitenceUnselectedImage; }
+            set
+            {
+                if (m_NoPenitenceUnselectedImage == null)
+                    m_NoPenitenceUnselectedImage = value;
             }
         }
 
