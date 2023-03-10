@@ -70,7 +70,13 @@ namespace ModdingAPI
     [HarmonyPatch(typeof(ChoosePenitenceWidget), "OnClose")]
     internal class ChoosePenitenceWidgetClose_Patch
     {
-        public static void Postfix() { Main.moddingAPI.penitenceLoader.CurrentSelection = PenitenceLoader.Selection.Normal; }
+        public static void Postfix()
+        {
+            Main.moddingAPI.penitenceLoader.CurrentSelection = PenitenceLoader.Selection.Normal;
+            Main.moddingAPI.penitenceLoader.SelectedButtonImage.sprite = Main.moddingAPI.penitenceLoader.NoPenitenceSelectedImage;
+            Main.moddingAPI.penitenceLoader.UnselectedButtonImage.sprite = Main.moddingAPI.penitenceLoader.NoPenitenceUnselectedImage;
+            Main.moddingAPI.penitenceLoader.CurrentSelectedCustomPenitence = 0;
+        }
     }
 
     // Display buttons and store action when opening widget
