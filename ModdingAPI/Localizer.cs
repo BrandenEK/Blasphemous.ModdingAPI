@@ -39,7 +39,7 @@ namespace ModdingAPI
                 // If currently on a language, add the key term pair
                 if (currLangKey != null)
                 {
-                    localizationByLanguage[currLangKey].Add(key, term);
+                    localizationByLanguage[currLangKey].Add(key, term.Replace("\\n", "\n"));
                 }
             }
         }
