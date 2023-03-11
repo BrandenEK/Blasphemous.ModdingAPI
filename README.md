@@ -1,7 +1,5 @@
 # Blasphemous Modding API
 
-
-
 ## Table of Contents
 
 - [Features](https://github.com/BrandenEK/Blasphemous-Modding-API#features)
@@ -9,6 +7,10 @@
   - [Installation](https://github.com/BrandenEK/Blasphemous-Modding-API#installation)
   - [Usage](https://github.com/BrandenEK/Blasphemous-Modding-API#usage)
   - [Custom skins](https://github.com/BrandenEK/Blasphemous-Modding-API#custom-skins)
+- [Translations](https://github.com/BrandenEK/Blasphemous-Modding-API#translations)
+
+<br>
+
 - [Creating a mod](https://github.com/BrandenEK/Blasphemous-Modding-API#creating-an-example-mod)
   - [Project Setup](https://github.com/BrandenEK/Blasphemous-Modding-API#project-setup)
   - [Exporting](https://github.com/BrandenEK/Blasphemous-Modding-API#exporting)
@@ -28,6 +30,7 @@
 - Enables the console for all registered mods
 - Allows loading custom skins
 - Ensures compatibility between all mods
+- Adds support for custom penitences and items
 - Very simple process of installing new mods
 
 ---
@@ -35,7 +38,7 @@
 ## How to use
 
 ### Installation
-**Note:** *If you have played with other mods before, make sure to delete the BepInEx folder before installing the modding api!*
+**Note:** *If you have used other mods before without the API, make sure to delete the BepInEx folder and restore any modified files before installing the modding api!*
 
 1. Navigate to the game's root directory, which should be in 
 ```C:\Program Files (x86)\Steam\steamapps\common\Blasphemous```
@@ -57,6 +60,17 @@
 - Extract the contents of each skin's zip file into the "Modding/skins" folder.  There should be one folder for each skin in the "Modding/skins" folder
 
 ---
+
+## Translations
+
+The Modding API is available in these other languages in addition to English:
+- Spanish (Thanks to Rodol J. "ConanCimmerio" Pérez (Ro))
+- Chinese (Thanks to NewbieElton)
+
+---
+
+<br>
+<br>
 
 ## Creating an example mod
 
@@ -84,9 +98,9 @@ ExampleMod.zip
 │   │   ├── dataFileOne.dat
 │   │   └── dataFileTwo.dat
 │   └── RequiredDLL.dll
-├── localization
-│   └── ExampleMod.txt
 ├── docs
+│   └── ExampleMod.txt
+├── localization
 │   └── ExampleMod.txt
 └── plugins
     └── ExampleMod.dll
