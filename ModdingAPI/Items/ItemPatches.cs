@@ -1,5 +1,7 @@
 ﻿using HarmonyLib;
 using Framework.Managers;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace ModdingAPI
 {

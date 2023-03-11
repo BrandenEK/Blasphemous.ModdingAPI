@@ -76,12 +76,12 @@ namespace ModdingAPI
                 {
                     rewired = ReInput.players.GetPlayer(0);
                 }
-                if (rewired.GetButtonDown(23))
+                if (rewired.GetButtonDown(28))
                 {
                     CurrentSelectedCustomPenitence--;
                     Object.FindObjectOfType<ChoosePenitenceWidget>().Option_SelectNoPenitence();
                 }
-                else if (rewired.GetButtonDown(38))
+                else if (rewired.GetButtonDown(29))
                 {
                     CurrentSelectedCustomPenitence++;
                     Object.FindObjectOfType<ChoosePenitenceWidget>().Option_SelectNoPenitence();
