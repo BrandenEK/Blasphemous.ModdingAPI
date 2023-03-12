@@ -10,6 +10,7 @@ namespace ModdingAPI
         private List<Mod> mods;
         private List<ModCommand> modCommands;
         private List<ModPenitence> modPenitences;
+        private List<ModItem> modItems;
 
         public SkinLoader skinLoader { get; private set; }
         public PenitenceLoader penitenceLoader { get; private set; }

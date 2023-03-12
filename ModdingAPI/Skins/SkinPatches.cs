@@ -9,7 +9,7 @@ using Gameplay.UI.Others.Buttons;
 using System.Collections.Generic;
 using I2.Loc;
 
-namespace ModdingAPI
+namespace ModdingAPI.Patches
 {
     // Load custom skins from folder
     [HarmonyPatch(typeof(ColorPaletteManager), "Initialize")]

@@ -8,7 +8,7 @@ using Gameplay.UI.Console;
 using Gameplay.UI.Others;
 using System.Collections.Generic;
 
-namespace ModdingAPI
+namespace ModdingAPI.Patches
 {
     // Allow access to console
     [HarmonyPatch(typeof(ConsoleWidget), "Update")]
