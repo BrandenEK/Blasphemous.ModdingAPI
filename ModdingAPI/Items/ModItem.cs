@@ -32,7 +32,7 @@ namespace ModdingAPI
             return this;
         }
 
-        public ModItem()
+        internal ModItem()
         {
             Effects = new List<ModItemEffect>();
             LoadImages(out Sprite picture);

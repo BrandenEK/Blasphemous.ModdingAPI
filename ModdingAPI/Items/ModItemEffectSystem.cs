@@ -9,7 +9,6 @@ namespace ModdingAPI
         {
             modEffect = effect;
             modEffect.Awake();
-            modEffect.Start();
         }
 
         protected override void OnAwake()

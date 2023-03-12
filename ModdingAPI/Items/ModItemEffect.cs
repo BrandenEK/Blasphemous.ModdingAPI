@@ -4,7 +4,7 @@ namespace ModdingAPI
 {
     public abstract class ModItemEffect
     {
-        protected internal abstract ObjectEffect.EffectType effectType { get; }
+        protected internal abstract ObjectEffect.EffectType EffectType { get; }
 
         protected internal virtual void Awake()
         {
@@ -29,5 +29,7 @@ namespace ModdingAPI
         protected internal abstract void ApplyEffect();
 
         protected internal abstract void RemoveEffect();
+
+        internal ModItemEffect() { }
     }
 }
