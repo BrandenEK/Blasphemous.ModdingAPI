@@ -36,7 +36,7 @@ namespace ModdingAPI.Patches
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{0} v{1}\n", Main.MOD_NAME, Main.MOD_VERSION);
 
-            foreach (Mod mod in Main.moddingAPI.getMods())
+            foreach (Mod mod in Main.moddingAPI.GetMods())
             {
                 sb.AppendFormat("{0} v{1}\n", mod.ModName, mod.ModVersion);
             }

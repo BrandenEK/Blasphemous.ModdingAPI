@@ -20,6 +20,22 @@ namespace ModdingAPI.Patches
                 
             }
 
+            //displayItemComponents(___mainObject.transform.Find("Prayer"));
+            //displayItemComponents(___mainObject.transform.Find("Relic"));
+            //displayItemComponents(___mainObject.transform.Find("Sword"));
+            //displayItemComponents(___mainObject.transform.Find("QuestItem"));
+            //displayItemComponents(___mainObject.transform.Find("CollectibleItem"));
+
+            //void displayItemComponents(Transform parent)
+            //{
+            //    foreach (Transform child in parent)
+            //    {
+            //        Main.LogError(Main.MOD_NAME, child.name);
+            //        foreach (Component c in child.GetComponents<Component>())
+            //            Main.LogWarning(Main.MOD_NAME, c.ToString());
+            //    }
+            //}
+
             void setBaseProperties(BaseInventoryObject obj, ModItem item)
             {
                 obj.id = item.Id;

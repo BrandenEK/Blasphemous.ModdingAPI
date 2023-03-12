@@ -1,30 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace ModdingAPI
 {
-    public class ModItem
+    public abstract class ModItem
     {
-        protected internal string Id { get; }
+        protected internal abstract string Id { get; }
 
-        protected internal string Name { get; }
+        protected internal abstract string Name { get; }
 
-        protected internal string Description { get; }
+        protected internal abstract string Description { get; }
 
-        protected internal string Lore { get; }
+        protected internal abstract string Lore { get; }
 
-        protected internal bool CarryOnStart { get; }
+        protected internal abstract bool CarryOnStart { get; }
 
-        protected internal bool PreserveInNGPlus { get; }
+        protected internal abstract bool PreserveInNGPlus { get; }
+
+        protected internal abstract bool AddToPercentageCompletion { get; }
 
         internal Sprite Picture { get; private set; }
 
-        protected void SetPicture(Sprite picture)
+        internal List<ModItemEffect> Effects { get; private set; }
+
+        protected abstract Sprite GetImage();
+
+        protected void AddEffect<T>() where T : ModItemEffect, new()
         {
-            Picture = picture;
+            Effects.Add(new T());
+        }
+
+        public ModItem()
+        {
+            Effects = new List<ModItemEffect>();
+            Picture = GetImage();
         }
     }
 }
