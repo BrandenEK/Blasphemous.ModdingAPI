@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using Framework.Inventory;
+using System.Collections.Generic;
 
 namespace ModdingAPI
 {
@@ -36,6 +37,31 @@ namespace ModdingAPI
             Effects = new List<ModItemEffect>();
             LoadImages(out Sprite picture);
             Picture = picture;
+        }
+
+        internal T CreateBaseObject<T>(GameObject itemHolder) where T : BaseInventoryObject
+        {
+            // Create object
+            GameObject obj = new GameObject(Id);
+            obj.transform.SetParent(itemHolder.transform.Find(typeof(T).Name));
+
+            // Set properties
+            T item = obj.AddComponent<T>();
+            item.id = Id;
+            item.caption = Name;
+            item.description = Description;
+            item.lore = Lore;
+            item.picture = Picture;
+            item.carryonstart = CarryOnStart;
+            item.preserveInNewGamePlus = PreserveInNGPlus;
+
+            // Add effects
+            foreach (ModItemEffect effect in Effects)
+            {
+                item.gameObject.AddComponent<ModItemEffectSystem>().SetEffect(effect);
+            }
+
+            return item;
         }
     }
 }
