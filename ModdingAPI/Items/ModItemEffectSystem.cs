@@ -8,16 +8,20 @@ namespace ModdingAPI
         public void SetEffect(ModItemEffect effect)
         {
             modEffect = effect;
+            modEffect.Awake();
+            modEffect.Start();
         }
 
         protected override void OnAwake()
         {
-            modEffect.Awake();
+            if (modEffect != null)
+                modEffect.Awake();
         }
 
         protected override void OnStart()
         {
-            modEffect.Start();
+            if (modEffect != null)
+                modEffect.Start();
         }
 
         protected override void OnUpdate()
