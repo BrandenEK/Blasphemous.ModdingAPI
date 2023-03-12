@@ -58,7 +58,7 @@ namespace ModdingAPI.Patches
     {
         public static void Postfix(List<ConsoleCommand> ___commands)
         {
-            foreach (ModCommand command in Main.moddingAPI.getModCommnds())
+            foreach (ModCommand command in Main.moddingAPI.GetModCommands())
             {
                 ___commands.Add(new ModCommandSystem(command));
             }

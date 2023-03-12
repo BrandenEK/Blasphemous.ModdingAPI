@@ -132,13 +132,22 @@ namespace ModdingAPI
         }
 
         /// <summary>
+        /// Registers a custom item to be loaded into the game
+        /// </summary>
+        /// <param name="item"></param>
+        protected void RegisterItem(ModItem item)
+        {
+            Main.moddingAPI.registerItem(item);
+        }
+
+        /// <summary>
         /// Checks whether a specific mod has been loaded or not
         /// </summary>
         /// <param name="modId">The unique id of the mod</param>
         /// <returns>Whether or not the mod has been loaded</returns>
         protected bool IsModLoaded(string modId)
         {
-            foreach (Mod mod in Main.moddingAPI.getMods())
+            foreach (Mod mod in Main.moddingAPI.GetMods())
             {
                 if (mod.ModId == modId)
                     return true;

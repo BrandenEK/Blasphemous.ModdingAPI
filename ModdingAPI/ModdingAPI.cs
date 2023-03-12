@@ -24,6 +24,8 @@ namespace ModdingAPI
             mods = new List<Mod>();
             modCommands = new List<ModCommand>();
             modPenitences = new List<ModPenitence>();
+            modItems = new List<ModItem>();
+
             skinLoader = new SkinLoader();
             penitenceLoader = new PenitenceLoader();
             fileUtil = new FileUtil();
@@ -141,14 +143,26 @@ namespace ModdingAPI
                     return;
             }
             modPenitences.Add(penitence);
+            Main.LogMessage(Main.MOD_NAME, $"Registering custom penitence: {penitence.Name} ({penitence.Id})");
         }
 
-        public ReadOnlyCollection<Mod> getMods()
+        public void registerItem(ModItem item)
+        {
+            foreach (ModItem modItem in modItems)
+            {
+                if (modItem.Id == item.Id)
+                    return;
+            }
+            modItems.Add(item);
+            Main.LogMessage(Main.MOD_NAME, $"Registering custom item: {item.Name} ({item.Id})");
+        }
+
+        public ReadOnlyCollection<Mod> GetMods()
         {
             return mods.AsReadOnly();
         }
 
-        public ReadOnlyCollection<ModCommand> getModCommnds()
+        public ReadOnlyCollection<ModCommand> GetModCommands()
         {
             return modCommands.AsReadOnly();
         }
@@ -156,6 +170,11 @@ namespace ModdingAPI
         public ReadOnlyCollection<ModPenitence> GetModPenitences()
         {
             return modPenitences.AsReadOnly();
+        }
+
+        public ReadOnlyCollection<ModItem> GetModItems()
+        {
+            return modItems.AsReadOnly();
         }
     }
 }
