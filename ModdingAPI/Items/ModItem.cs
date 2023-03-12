@@ -23,9 +23,9 @@ namespace ModdingAPI
 
         internal List<ModItemEffect> Effects { get; private set; }
 
-        protected abstract Sprite GetImage();
+        protected abstract void LoadImages(out Sprite picture);
 
-        protected ModItem AddEffect<T>() where T : ModItemEffect, new()
+        public ModItem AddEffect<T>() where T : ModItemEffect, new()
         {
             Effects.Add(new T());
             return this;
@@ -34,7 +34,8 @@ namespace ModdingAPI
         public ModItem()
         {
             Effects = new List<ModItemEffect>();
-            Picture = GetImage();
+            LoadImages(out Sprite picture);
+            Picture = picture;
         }
     }
 }
