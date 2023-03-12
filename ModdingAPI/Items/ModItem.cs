@@ -25,9 +25,10 @@ namespace ModdingAPI
 
         protected abstract Sprite GetImage();
 
-        protected void AddEffect<T>() where T : ModItemEffect, new()
+        protected ModItem AddEffect<T>() where T : ModItemEffect, new()
         {
             Effects.Add(new T());
+            return this;
         }
 
         public ModItem()

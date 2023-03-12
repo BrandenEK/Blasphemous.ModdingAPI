@@ -17,7 +17,43 @@ namespace ModdingAPI.Patches
         {
             foreach (ModItem item in Main.moddingAPI.GetModItems())
             {
-                
+                if (item is ModRosaryBead bead)
+                {
+                    RosaryBead Bead = CreateRosaryBead(bead);
+
+                    // Add object effects
+                    foreach (ModItemEffect effect in bead.Effects)
+                    {
+                        Bead.gameObject.AddComponent<ModItemEffectSystem>().SetEffect(effect);
+                    }
+
+                    // Add bead to list
+                    ___allBeads.Add(item.Id, Bead);
+                    //if (bead.CarryOnStart && PersistentManager.GetAutomaticSlot() >= 0)
+                    //{
+                    //    __instance.AddRosaryBead(Bead);
+                    //}
+                }
+            }
+
+            RosaryBead CreateRosaryBead(ModRosaryBead bead)
+            {
+                // Create object
+                GameObject obj = new GameObject(bead.Id);
+                obj.transform.SetParent(___mainObject.transform.Find("RosaryBead"));
+
+                // Set properties
+                RosaryBead Bead = obj.AddComponent<RosaryBead>();
+                Bead.id = bead.Id;
+                Bead.caption = bead.Name;
+                Bead.description = bead.Description;
+                Bead.lore = bead.Lore;
+                Bead.picture = bead.Picture;
+                Bead.carryonstart = bead.CarryOnStart;
+                Bead.preserveInNewGamePlus = bead.PreserveInNGPlus;
+                Bead.UsePercentageCompletition = bead.AddToPercentageCompletion;
+
+                return Bead;
             }
 
             //displayItemComponents(___mainObject.transform.Find("Prayer"));
@@ -34,43 +70,6 @@ namespace ModdingAPI.Patches
             //        foreach (Component c in child.GetComponents<Component>())
             //            Main.LogWarning(Main.MOD_NAME, c.ToString());
             //    }
-            //}
-
-            void setBaseProperties(BaseInventoryObject obj, ModItem item)
-            {
-                obj.id = item.Id;
-                obj.caption = item.Name;
-                obj.description = item.Description;
-                obj.lore = item.Lore;
-                obj.picture = item.Picture;
-                obj.carryonstart = item.CarryOnStart;
-                obj.preserveInNewGamePlus = item.PreserveInNGPlus;
-            }
-        }
-
-        void TempBead()
-        {
-            //// Create object
-            //Transform parent = ___mainObject.transform.Find("RosaryBead");
-            //GameObject obj = new GameObject(item.Id);
-            //obj.transform.SetParent(parent);
-
-            //// Set bead properties
-            //RosaryBead bead = obj.AddComponent<RosaryBead>();
-            //setBaseProperties(bead, item);
-            ////bead.UsePercentageCompletition = item.percent;
-
-            //// Add object effects
-            ////foreach (ModItemEffect effect in modBead.effects)
-            ////{
-            ////    obj.AddComponent<ModItemEffectSystem>().SetEffect(effect);
-            ////}
-
-            //// Add bead to list
-            //___allBeads.Add(item.Id, bead);
-            //if (bead.carryonstart && PersistentManager.GetAutomaticSlot() >= 0)
-            //{
-            //    __instance.AddRosaryBead(bead);
             //}
         }
     }
