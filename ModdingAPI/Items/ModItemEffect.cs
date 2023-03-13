@@ -4,7 +4,16 @@ namespace ModdingAPI
 {
     public abstract class ModItemEffect
     {
-        private protected abstract ObjectEffect.EffectType EffectType { get; }
+        private ObjectEffect.EffectType effectType;
+
+        // Only for AbilityCast
+        protected abstract string AbilityName { get; }
+
+        protected abstract bool UseOnPrayerCast { get; }
+
+        // Have to do with if the ability is timed
+        protected abstract float EffectTime { get; }
+        protected abstract bool UsePrayerDurationModifier { get; }
 
         protected internal virtual void Awake()
         {
@@ -30,11 +39,29 @@ namespace ModdingAPI
 
         protected internal abstract void RemoveEffect();
 
-        internal ModItemEffect() { }
+        internal ModItemEffect()
+        {
+            if (AbilityName != null && AbilityName != "")
+            {
+                effectType = ObjectEffect.EffectType.OnAbilityCast;
+            }
+            else if (UseOnPrayerCast)
+            {
+                effectType = ObjectEffect.EffectType.OnUse;
+            }
+            else
+            {
+                effectType = ObjectEffect.EffectType.OnEquip;
+            }
+        }
 
         internal virtual void SetSystemProperties(ModItemEffectSystem system)
         {
-            system.effectType = EffectType;
+            system.effectType = effectType;
+            system.abilityName = AbilityName;
+            system.UseWhenCastingPrayer = UseOnPrayerCast;
+            system.EffectTime = EffectTime;
+            system.UsePrayerDurationAddition = UsePrayerDurationModifier;
         }
     }
 }
