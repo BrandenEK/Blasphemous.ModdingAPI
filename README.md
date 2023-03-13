@@ -369,45 +369,11 @@ namespace ExampleMod
     public class Example : PersistentMod
     {
         public Example(string modId, string modName, string modVersion) : base(modId, modName, modVersion) { }
-		
-	public abstract string PersistentID => "ID_EXAMPLE";
-
+	
         protected override void Initialize()
         {
-            base.Initialize();
+            Log("Example Mod has been initialized!");
         }
-		
-	public override ModPersistentData SaveGame()
-	{
-		return new ExamplePersistentData()
-		{
-			numberToSave = 5,
-			textToSave = "some text"
-		};
-	}
-		
-	public override void LoadGame(ModPersistentData data)
-	{
-		ExamplePersistentData exampleData = (ExamplePersistentData)data;
-		*** Do something with values ***
-	}
-		
-	public abstract void ResetGame()
-	{
-		numberToSave = 0;
-		textToSave = "";
-	}
-
-	public abstract void NewGame() { }
-    }
-	
-    [System.Serializable]
-    public class ExamplePersistentData : ModPersistentData
-    {
-        public ExamplePersistentData() : base("ID_EXAMPLE") { }
-	
-	public int numberToSave;
-	public string textToSave;
     }
 }
 ```
