@@ -4,7 +4,7 @@ namespace ModdingAPI
 {
     public abstract class ModItemEffect
     {
-        internal abstract ObjectEffect.EffectType EffectType { get; }
+        private protected abstract ObjectEffect.EffectType EffectType { get; }
 
         protected internal virtual void Awake()
         {
@@ -31,5 +31,10 @@ namespace ModdingAPI
         protected internal abstract void RemoveEffect();
 
         internal ModItemEffect() { }
+
+        internal virtual void SetSystemProperties(ModItemEffectSystem system)
+        {
+            system.effectType = EffectType;
+        }
     }
 }

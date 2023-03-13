@@ -39,7 +39,7 @@ namespace ModdingAPI
             Picture = picture;
         }
 
-        internal T CreateBaseObject<T>(GameObject itemHolder) where T : BaseInventoryObject
+        private protected T CreateBaseObject<T>(GameObject itemHolder) where T : BaseInventoryObject
         {
             // Create object
             GameObject obj = new GameObject(Id);

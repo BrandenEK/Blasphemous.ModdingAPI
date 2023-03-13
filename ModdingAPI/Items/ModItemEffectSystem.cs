@@ -8,6 +8,7 @@ namespace ModdingAPI
         public void SetEffect(ModItemEffect effect)
         {
             modEffect = effect;
+            modEffect.SetSystemProperties(this);
             modEffect.Awake();
         }
 
