@@ -2,14 +2,12 @@
 using UnityEngine;
 using Framework.Managers;
 using Framework.Inventory;
+using Gameplay.UI.Others.MenuLogic;
 using System.Collections.Generic;
 
 namespace ModdingAPI.Items
 {
-    // Register items on init
-    // Add slots to inventory
-    // Maybe methods for adding them ?
-
+    // Initialize any custom items
     [HarmonyPatch(typeof(InventoryManager), "InitializeObjects")]
     internal class InventoryInitialize_Patch
     {
@@ -72,4 +70,48 @@ namespace ModdingAPI.Items
             //}
         }
     }
+
+    // Add extra slots to inventory tabs based on how many custom items
+    [HarmonyPatch(typeof(NewInventory_LayoutGrid), "Awake")]
+    public class InventoryLayout_Patch
+    {
+        public static void Prefix(ref int ___numGridElements)
+        {
+            Main.LogWarning(Main.MOD_NAME, "Awake for adding slots");
+            if (___numGridElements == 0) // ??
+            {
+                ___numGridElements += CountNumberOfType<ModRosaryBead>();
+            }
+            else if (___numGridElements == 11)
+            {
+                ___numGridElements += CountNumberOfType<ModPrayer>();
+            }
+            else if (___numGridElements == 7)
+            {
+                ___numGridElements += CountNumberOfType<ModRelic>();
+            }
+            else if (___numGridElements == 0) // ??
+            {
+                ___numGridElements += CountNumberOfType<ModSwordHeart>();
+            }
+            else if (___numGridElements == 44)
+            {
+                ___numGridElements += CountNumberOfType<ModCollectible>();
+            }
+            // Don't add any slots for quest items
+
+            int CountNumberOfType<T>() where T : ModItem
+            {
+                int count = 0;
+                foreach (ModItem item in Main.moddingAPI.GetModItems())
+                {
+                    if (item is T)
+                        count++;
+                }
+                return count;
+            }
+        }
+    }
+
+    // Maybe methods for adding them ?
 }
