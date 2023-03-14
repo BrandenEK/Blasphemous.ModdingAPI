@@ -2,28 +2,56 @@
 
 namespace ModdingAPI.Items
 {
-    public abstract class ModItemEffectAbility : ModItemEffect
+    public abstract class ModItemEffectOnEquip : ModItemEffect
     {
-        //private protected override ObjectEffect.EffectType EffectType => ObjectEffect.EffectType.OnAbilityCast;
+        internal override void SetSystemProperties(ModItemEffectSystem system)
+        {
+            system.effectType = ObjectEffect.EffectType.OnEquip;
+        }
+    }
 
+    public abstract class ModItemEffectOnAbility : ModItemEffect
+    {
+        // Change this to enum
+        protected abstract string AbilityName { get; }
+
+        protected abstract float EffectTime { get; }
 
         internal override void SetSystemProperties(ModItemEffectSystem system)
         {
-            base.SetSystemProperties(system);
-            //system.abilityName = AbilityName;
+            system.effectType = ObjectEffect.EffectType.OnAbilityCast;
+            system.abilityName = AbilityName;
+            system.LimitTime = EffectTime > 0; // necessary ?
+            system.EffectTime = EffectTime;
         }
-        // Change this to enum
     }
 
-    public abstract class ModItemEffectEquip : ModItemEffect
+    public abstract class ModItemEffectOnPrayerUse : ModItemEffect
     {
-        //private protected override ObjectEffect.EffectType EffectType => ObjectEffect.EffectType.OnEquip;
+        protected abstract float EffectTime { get; }
+
+        protected abstract bool OnlyWhenPrayerActive { get; }
+
+        protected abstract bool UsePrayerDurationModifier { get; }
+
+        internal override void SetSystemProperties(ModItemEffectSystem system)
+        {
+            system.effectType = ObjectEffect.EffectType.OnUse;
+            system.LimitTime = EffectTime > 0; // necessary ?
+            system.EffectTime = EffectTime;
+            system.OnlyWhenUsingPrayer = OnlyWhenPrayerActive;
+            system.UsePrayerDurationAddition = UsePrayerDurationModifier;
+            system.UseWhenCastingPrayer = true; // ??
+        }
     }
 
-    // Class for enemy interactions ?
+    public abstract class ModItemEffectOnAcquire : ModItemEffect
+    {
+        protected abstract bool ActivateOnce { get; }
 
-    // Set properties of ModItemEffectSystem based on these
+        internal override void SetSystemProperties(ModItemEffectSystem system)
+        {
+            system.effectType = ActivateOnce ? ObjectEffect.EffectType.OnAdquisition : ObjectEffect.EffectType.OnInitialization;
+        }
+    }
 }
-
-// Sound fx
-// Conditions & stopping conditions
