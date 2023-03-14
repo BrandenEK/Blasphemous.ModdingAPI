@@ -5,7 +5,7 @@ using Framework.Managers;
 using Gameplay.UI.Others.MenuLogic;
 using System.Text;
 
-namespace ModdingAPI.Patches
+namespace ModdingAPI
 {
     // Initialize mods
     [HarmonyPatch(typeof(AchievementsManager), "AllInitialized")]

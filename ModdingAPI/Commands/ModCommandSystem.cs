@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Gameplay.UI.Console;
 
-namespace ModdingAPI
+namespace ModdingAPI.Commands
 {
     internal class ModCommandSystem : ConsoleCommand
     {

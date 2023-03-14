@@ -5,7 +5,7 @@ using Gameplay.UI.Others.MenuLogic;
 using Framework.Managers;
 using Rewired;
 
-namespace ModdingAPI
+namespace ModdingAPI.Penitences
 {
     internal class PenitenceLoader
     {

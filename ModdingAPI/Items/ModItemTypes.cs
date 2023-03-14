@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Framework.Inventory;
 
-namespace ModdingAPI
+namespace ModdingAPI.Items
 {
     public abstract class ModRosaryBead : ModItem
     {

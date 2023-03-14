@@ -12,7 +12,7 @@ using UnityEngine.UI;
 using Tools.Playmaker2.Action;
 using I2.Loc;
 
-namespace ModdingAPI.Patches
+namespace ModdingAPI.Penitences
 {
     // Add custom penitences to list
     [HarmonyPatch(typeof(PenitenceManager), "ResetPenitencesList")]

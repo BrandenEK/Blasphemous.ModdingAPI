@@ -2,7 +2,7 @@
 using Framework.Inventory;
 using System.Collections.Generic;
 
-namespace ModdingAPI
+namespace ModdingAPI.Items
 {
     public abstract class ModItem
     {

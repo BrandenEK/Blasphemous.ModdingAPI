@@ -1,6 +1,6 @@
 ﻿using Framework.Penitences;
 
-namespace ModdingAPI
+namespace ModdingAPI.Penitences
 {
     [System.Serializable]
     internal class ModPenitenceSystem : IPenitence

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Framework.Managers;
 
-namespace ModdingAPI
+namespace ModdingAPI.Penitences
 {
     /// <summary>
     /// An abstract representation of a penitence

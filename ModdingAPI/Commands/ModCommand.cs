@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Gameplay.UI.Widgets;
 
-namespace ModdingAPI
+namespace ModdingAPI.Commands
 {
     /// <summary>
     /// A command that can be used in the console for this mod/>

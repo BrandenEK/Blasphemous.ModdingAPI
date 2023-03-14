@@ -1,6 +1,6 @@
 ﻿using Framework.Inventory;
 
-namespace ModdingAPI
+namespace ModdingAPI.Items
 {
     public abstract class ModItemEffect
     {

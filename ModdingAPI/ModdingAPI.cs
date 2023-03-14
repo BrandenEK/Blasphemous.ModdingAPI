@@ -2,6 +2,10 @@
 using System.Collections.ObjectModel;
 using Framework.Managers;
 using Framework.FrameworkCore;
+using ModdingAPI.Commands;
+using ModdingAPI.Penitences;
+using ModdingAPI.Skins;
+using ModdingAPI.Items;
 
 namespace ModdingAPI
 {

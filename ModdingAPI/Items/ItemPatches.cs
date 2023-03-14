@@ -4,7 +4,7 @@ using Framework.Managers;
 using Framework.Inventory;
 using System.Collections.Generic;
 
-namespace ModdingAPI.Patches
+namespace ModdingAPI.Items
 {
     // Register items on init
     // Add slots to inventory

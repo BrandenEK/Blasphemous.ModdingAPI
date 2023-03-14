@@ -2,6 +2,9 @@
 using HarmonyLib;
 using Framework.Managers;
 using Gameplay.UI;
+using ModdingAPI.Commands;
+using ModdingAPI.Items;
+using ModdingAPI.Penitences;
 
 namespace ModdingAPI
 {
