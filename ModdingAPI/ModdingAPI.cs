@@ -115,6 +115,12 @@ namespace ModdingAPI
                 if (mods[i] is PersistentMod mod)
                     mod.NewGame();
             }
+
+            foreach (ModItem item in modItems)
+            {
+                if (item.CarryOnStart)
+                    item.GiveItem();
+            }
         }
 
         public void registerMod(Mod mod)

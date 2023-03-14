@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Framework.Managers;
 using Framework.Inventory;
 
 namespace ModdingAPI.Items
@@ -13,6 +14,11 @@ namespace ModdingAPI.Items
             RosaryBead bead = CreateBaseObject<RosaryBead>(itemHolder);
             bead.UsePercentageCompletition = AddToPercentCompletion;
             return bead;
+        }
+
+        internal override void GiveItem()
+        {
+            Core.InventoryManager.AddRosaryBead(Id);
         }
     }
 
@@ -33,6 +39,11 @@ namespace ModdingAPI.Items
             prayer.fervourNeeded = FervourCost;
             return prayer;
         }
+
+        internal override void GiveItem()
+        {
+            Core.InventoryManager.AddPrayer(Id);
+        }
     }
 
     /// <summary>
@@ -45,6 +56,11 @@ namespace ModdingAPI.Items
             Relic relic = CreateBaseObject<Relic>(itemHolder);
             relic.UsePercentageCompletition = AddToPercentCompletion;
             return relic;
+        }
+
+        internal override void GiveItem()
+        {
+            Core.InventoryManager.AddRelic(Id);
         }
     }
 
@@ -59,6 +75,11 @@ namespace ModdingAPI.Items
             swordHeart.UsePercentageCompletition = AddToPercentCompletion;
             return swordHeart;
         }
+
+        internal override void GiveItem()
+        {
+            Core.InventoryManager.AddSword(Id);
+        }
     }
 
     /// <summary>
@@ -70,6 +91,11 @@ namespace ModdingAPI.Items
         {
             QuestItem questItem = CreateBaseObject<QuestItem>(itemHolder);
             return questItem;
+        }
+
+        internal override void GiveItem()
+        {
+            Core.InventoryManager.AddQuestItem(Id);
         }
     }
 
@@ -83,6 +109,11 @@ namespace ModdingAPI.Items
             Framework.Inventory.CollectibleItem collectible = CreateBaseObject<Framework.Inventory.CollectibleItem>(itemHolder);
             collectible.UsePercentageCompletition = AddToPercentCompletion;
             return collectible;
+        }
+
+        internal override void GiveItem()
+        {
+            Core.InventoryManager.AddCollectibleItem(Id);
         }
     }
 }

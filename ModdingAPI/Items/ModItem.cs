@@ -96,5 +96,7 @@ namespace ModdingAPI.Items
 
             return item;
         }
+
+        internal abstract void GiveItem();
     }
 }

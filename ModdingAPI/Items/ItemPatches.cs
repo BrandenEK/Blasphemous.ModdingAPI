@@ -48,11 +48,6 @@ namespace ModdingAPI.Items
                 }
             }
 
-            //if (bead.CarryOnStart && PersistentManager.GetAutomaticSlot() >= 0)
-            //{
-            //    __instance.AddRosaryBead(Bead);
-            //}
-
             //displayItemComponents(___mainObject.transform.Find("Prayer"));
             //displayItemComponents(___mainObject.transform.Find("Relic"));
             //displayItemComponents(___mainObject.transform.Find("Sword"));
@@ -75,10 +70,11 @@ namespace ModdingAPI.Items
     [HarmonyPatch(typeof(NewInventory_LayoutGrid), "Awake")]
     internal class InventoryLayout_Patch
     {
-        public static void Prefix(ref int ___numGridElements)
+        public static void Prefix(NewInventory_LayoutGrid __instance, ref int ___numGridElements)
         {
             Main.LogWarning(Main.MOD_NAME, "Awake for adding slots");
-            if (___numGridElements == 0) // ??
+            Main.LogWarning(Main.MOD_NAME, __instance.name);
+            if (___numGridElements == 44)
             {
                 ___numGridElements += CountNumberOfType<ModRosaryBead>();
             }
@@ -90,14 +86,14 @@ namespace ModdingAPI.Items
             {
                 ___numGridElements += CountNumberOfType<ModRelic>();
             }
-            else if (___numGridElements == 0) // ??
+            else if (___numGridElements == 17)
             {
                 ___numGridElements += CountNumberOfType<ModSwordHeart>();
             }
-            else if (___numGridElements == 44)
-            {
-                ___numGridElements += CountNumberOfType<ModCollectible>();
-            }
+            //else if (___numGridElements == 44)
+            //{
+            //    ___numGridElements += CountNumberOfType<ModCollectible>();
+            //}
             // Don't add any slots for quest items
 
             int CountNumberOfType<T>() where T : ModItem
