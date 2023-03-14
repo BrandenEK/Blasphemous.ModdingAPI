@@ -50,8 +50,20 @@ namespace ModdingAPI.Penitences
         internal Sprite ChooseSelectedImage { get; private set; }
         internal Sprite ChooseUnselectedImage { get; private set; }
 
+        /// <summary>
+        /// Stores the associated images for the penitence - only executed on startup
+        /// </summary>
+        /// <param name="inProgress">The menu icon for an activated penitence</param>
+        /// <param name="completed">The menu icon for a completed penitence</param>
+        /// <param name="abandoned">The menu icon for an abandoned penitence</param>
+        /// <param name="gameplay">The gameplay icon for an activated penitence</param>
+        /// <param name="chooseSelected">The selected icon on the choose penitence screen</param>
+        /// <param name="chooseUnselected">The unselected icon on the choose penitence screen</param>
         protected abstract void LoadImages(out Sprite inProgress, out Sprite completed, out Sprite abandoned, out Sprite gameplay, out Sprite chooseSelected, out Sprite chooseUnselected);
 
+        /// <summary>
+        /// Creates a new custom penitence
+        /// </summary>
         public ModPenitence()
         {
             LoadImages(out Sprite inProgress, out Sprite completed, out Sprite abandoned, out Sprite gameplay, out Sprite chooseSelected, out Sprite chooseUnselected);

@@ -73,7 +73,7 @@ namespace ModdingAPI.Items
 
     // Add extra slots to inventory tabs based on how many custom items
     [HarmonyPatch(typeof(NewInventory_LayoutGrid), "Awake")]
-    public class InventoryLayout_Patch
+    internal class InventoryLayout_Patch
     {
         public static void Prefix(ref int ___numGridElements)
         {

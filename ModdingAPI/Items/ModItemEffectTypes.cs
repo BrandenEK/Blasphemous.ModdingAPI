@@ -2,6 +2,9 @@
 
 namespace ModdingAPI.Items
 {
+    /// <summary>
+    /// An item effect that is activated when equipping the item
+    /// </summary>
     public abstract class ModItemEffectOnEquip : ModItemEffect
     {
         internal override void SetSystemProperties(ModItemEffectSystem system)
@@ -10,12 +13,22 @@ namespace ModdingAPI.Items
         }
     }
 
+    /// <summary>
+    /// An item effect that is activated when using an ability
+    /// </summary>
     public abstract class ModItemEffectOnAbility : ModItemEffect
     {
         // Change this to enum
+
+        /// <summary>
+        /// The name of the ability to activate this effect
+        /// </summary>
         protected abstract string AbilityName { get; }
 
-        protected abstract float EffectTime { get; }
+        /// <summary>
+        /// How long this effect should last, or 0 for no time limit
+        /// </summary>
+        protected abstract float EffectTime { get; } // ??
 
         internal override void SetSystemProperties(ModItemEffectSystem system)
         {
@@ -26,12 +39,24 @@ namespace ModdingAPI.Items
         }
     }
 
+    /// <summary>
+    /// An item effect that is activated when using a prayer
+    /// </summary>
     public abstract class ModItemEffectOnPrayerUse : ModItemEffect
     {
+        /// <summary>
+        /// How long this effect should last, or 0 for no time limit
+        /// </summary>
         protected abstract float EffectTime { get; }
 
+        /// <summary>
+        /// Whether or not this effect should only last while the prayer is active
+        /// </summary>
         protected abstract bool OnlyWhenPrayerActive { get; }
 
+        /// <summary>
+        /// Whether or not the effect duration should be scaled by stat modifiers
+        /// </summary>
         protected abstract bool UsePrayerDurationModifier { get; }
 
         internal override void SetSystemProperties(ModItemEffectSystem system)
@@ -45,8 +70,14 @@ namespace ModdingAPI.Items
         }
     }
 
+    /// <summary>
+    /// An item effect that is activated when first obtaining the item
+    /// </summary>
     public abstract class ModItemEffectOnAcquire : ModItemEffect
     {
+        /// <summary>
+        /// Whether to activate only once, or remain active as long as the item is owned
+        /// </summary>
         protected abstract bool ActivateOnce { get; }
 
         internal override void SetSystemProperties(ModItemEffectSystem system)

@@ -1,31 +1,39 @@
-﻿using Framework.Inventory;
-
+﻿
 namespace ModdingAPI.Items
 {
+    /// <summary>
+    /// An abstract represention of an item effect
+    /// </summary>
     public abstract class ModItemEffect
     {
-        protected internal virtual void Awake()
-        {
+        /// <summary>
+        /// Called before startup
+        /// </summary>
+        protected internal virtual void Awake() { }
+        
+        /// <summary>
+        /// Called after startup
+        /// </summary>
+        protected internal virtual void Start() { }
 
-        }
+        /// <summary>
+        /// Called every frame
+        /// </summary>
+        protected internal virtual void Update() { }
 
-        protected internal virtual void Start()
-        {
+        /// <summary>
+        /// Called when the item is disposed
+        /// </summary>
+        protected internal virtual void Dispose() { }
 
-        }
-
-        protected internal virtual void Update()
-        {
-
-        }
-
-        protected internal virtual void Dispose()
-        {
-
-        }
-
+        /// <summary>
+        /// Called when this effect should be applied
+        /// </summary>
         protected internal abstract void ApplyEffect();
 
+        /// <summary>
+        /// Called when this effect should be removed
+        /// </summary>
         protected internal abstract void RemoveEffect();
 
         internal abstract void SetSystemProperties(ModItemEffectSystem system);

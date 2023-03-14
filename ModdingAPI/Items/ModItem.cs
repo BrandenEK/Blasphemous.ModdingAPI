@@ -4,28 +4,61 @@ using System.Collections.Generic;
 
 namespace ModdingAPI.Items
 {
+    /// <summary>
+    /// An abstract representation of a custom item
+    /// </summary>
     public abstract class ModItem
     {
+        /// <summary>
+        /// The unique id of the item (Must start with certain prefix)
+        /// </summary>
         protected internal abstract string Id { get; }
 
+        /// <summary>
+        /// The name of the item
+        /// </summary>
         protected internal abstract string Name { get; }
-
+        
+        /// <summary>
+        /// The description of the item
+        /// </summary>
         protected internal abstract string Description { get; }
 
+        /// <summary>
+        /// The lore for the item
+        /// </summary>
         protected internal abstract string Lore { get; }
 
+        /// <summary>
+        /// Whether or not the item should be given upon starting a new game
+        /// </summary>
         protected internal abstract bool CarryOnStart { get; }
 
+        /// <summary>
+        /// Whether or not the item should be carried over into NG+
+        /// </summary>
         protected internal abstract bool PreserveInNGPlus { get; }
 
-        protected internal abstract bool AddToPercentageCompletion { get; }
+        /// <summary>
+        /// Whether or not the item will add to the percent completion of the save file
+        /// </summary>
+        protected internal abstract bool AddToPercentCompletion { get; }
 
         internal Sprite Picture { get; private set; }
 
         internal List<ModItemEffect> Effects { get; private set; }
 
+        /// <summary>
+        /// Stores the associated images for the item - only executed on startup
+        /// </summary>
+        /// <param name="picture">The icon for the custom item</param>
         protected abstract void LoadImages(out Sprite picture);
 
+        /// <summary>
+        /// Adds an item effect to the custom item
+        /// </summary>
+        /// <typeparam name="T">The type of item effect to add</typeparam>
+        /// <returns>The custom item</returns>
         public ModItem AddEffect<T>() where T : ModItemEffect, new()
         {
             Effects.Add(new T());
