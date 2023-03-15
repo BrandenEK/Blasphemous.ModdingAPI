@@ -11,10 +11,10 @@ namespace ModdingAPI
 {
     internal class ModdingAPI
     {
-        private List<Mod> mods;
-        private List<ModCommand> modCommands;
-        private List<ModPenitence> modPenitences;
-        private List<ModItem> modItems;
+        private readonly List<Mod> mods;
+        private readonly List<ModCommand> modCommands;
+        private readonly List<ModPenitence> modPenitences;
+        private readonly List<ModItem> modItems;
 
         public SkinLoader skinLoader { get; private set; }
         public PenitenceLoader penitenceLoader { get; private set; }
