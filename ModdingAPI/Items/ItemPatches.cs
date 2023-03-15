@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using UnityEngine;
+using UnityEngine.UI;
 using Framework.Managers;
 using Framework.Inventory;
 using Gameplay.UI.Others.MenuLogic;
@@ -65,6 +66,52 @@ namespace ModdingAPI.Items
             }
         }
     }
+
+    // Fix navigation errors on inventory screen
+    [HarmonyPatch(typeof(NewInventory_LayoutGrid), "LinkLastSlotToLastRowFirstSlot")]
+    internal class InventoryLayoutNav_Patch
+    {
+        public static bool Prefix(List<NewInventory_GridItem> ___cachedGridElements, InventoryManager.ItemType ___currentItemType)
+        {
+            int totalSlots = (int)Main.moddingAPI.itemLoader.GetItemCountOfType(___currentItemType).y;
+            if (totalSlots == 0) return true;
+
+            int firstIdx = 8 * (totalSlots / 8);
+            int lastIdx = totalSlots - 1;
+
+            Navigation firstNav = ___cachedGridElements[firstIdx].Button.navigation;
+            firstNav.selectOnLeft = ___cachedGridElements[lastIdx].Button.interactable ? ___cachedGridElements[lastIdx].Button : null;
+            ___cachedGridElements[firstIdx].Button.navigation = firstNav;
+            Navigation lastNav = ___cachedGridElements[lastIdx].Button.navigation;
+            lastNav.selectOnRight = ___cachedGridElements[firstIdx].Button.interactable ? ___cachedGridElements[firstIdx].Button : null;
+            ___cachedGridElements[lastIdx].Button.navigation = lastNav;
+
+            return false;
+        }
+    }
+
+    //[HarmonyPatch]
+    //internal class InventoryLayout_Patch
+    //{
+    //    //[HarmonyTargetMethod]
+    //    public static MethodBase TargetMethod()
+    //    {
+    //        //return (MethodBase).GetMember(".ctor", AccessTools.all)[0];
+    //        System.Type innertype = AccessTools.Inner(typeof(NewInventory_LayoutGrid), "TypeConfiguration");
+    //        if (innertype == null)
+    //            throw new System.Exception("Inner type not found");
+    //        MethodBase method = AccessTools.Constructor(innertype);
+    //        if (method == null)
+    //            throw new System.Exception("Constrcutor not found");
+    //        return method;
+    //    }
+
+    //    public static void Postfix(ref int ___slots)
+    //    {
+    //        Main.LogWarning(Main.MOD_NAME, ___slots.ToString());
+    //        ___slots += 4;
+    //    }
+    //}
 
     // Maybe methods for adding them ?
 }
