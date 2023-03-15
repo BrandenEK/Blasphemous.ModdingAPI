@@ -9,6 +9,7 @@ namespace ModdingAPI.Items
         {
             modEffect = effect;
             modEffect.SetSystemProperties(this);
+            modEffect.InventoryObject = InvObj;
             modEffect.Awake();
         }
 

@@ -235,6 +235,11 @@
             Called when this effect should be removed
             </summary>
         </member>
+        <member name="P:ModdingAPI.Items.ModItemEffect.InventoryObject">
+            <summary>
+            The inventory object that this effect applies to
+            </summary>
+        </member>
         <member name="T:ModdingAPI.Items.ModItemEffectOnEquip">
             <summary>
             An item effect that is activated when equipping the item

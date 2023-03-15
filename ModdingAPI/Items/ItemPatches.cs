@@ -90,28 +90,5 @@ namespace ModdingAPI.Items
         }
     }
 
-    //[HarmonyPatch]
-    //internal class InventoryLayout_Patch
-    //{
-    //    //[HarmonyTargetMethod]
-    //    public static MethodBase TargetMethod()
-    //    {
-    //        //return (MethodBase).GetMember(".ctor", AccessTools.all)[0];
-    //        System.Type innertype = AccessTools.Inner(typeof(NewInventory_LayoutGrid), "TypeConfiguration");
-    //        if (innertype == null)
-    //            throw new System.Exception("Inner type not found");
-    //        MethodBase method = AccessTools.Constructor(innertype);
-    //        if (method == null)
-    //            throw new System.Exception("Constrcutor not found");
-    //        return method;
-    //    }
-
-    //    public static void Postfix(ref int ___slots)
-    //    {
-    //        Main.LogWarning(Main.MOD_NAME, ___slots.ToString());
-    //        ___slots += 4;
-    //    }
-    //}
-
     // Maybe methods for adding them ?
 }

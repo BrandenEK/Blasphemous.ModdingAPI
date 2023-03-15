@@ -1,4 +1,5 @@
-﻿
+﻿using Framework.Inventory;
+
 namespace ModdingAPI.Items
 {
     /// <summary>
@@ -35,6 +36,11 @@ namespace ModdingAPI.Items
         /// Called when this effect should be removed
         /// </summary>
         protected internal abstract void RemoveEffect();
+
+        /// <summary>
+        /// The inventory object that this effect applies to
+        /// </summary>
+        protected internal BaseInventoryObject InventoryObject { get; internal set; }
 
         internal abstract void SetSystemProperties(ModItemEffectSystem system);
 
