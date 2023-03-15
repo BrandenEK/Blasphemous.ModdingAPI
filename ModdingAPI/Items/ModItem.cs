@@ -44,6 +44,11 @@ namespace ModdingAPI.Items
         /// </summary>
         protected internal abstract bool AddToPercentCompletion { get; }
 
+        /// <summary>
+        /// Whether or not to add one additional item slot to the inventory screen
+        /// </summary>
+        protected internal abstract bool AddInventorySlot { get; }
+
         internal Sprite Picture { get; private set; }
 
         internal List<ModItemEffect> Effects { get; private set; }

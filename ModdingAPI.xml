@@ -187,6 +187,11 @@
             Whether or not the item will add to the percent completion of the save file
             </summary>
         </member>
+        <member name="P:ModdingAPI.Items.ModItem.AddInventorySlot">
+            <summary>
+            Whether or not to add one additional item slot to the inventory screen
+            </summary>
+        </member>
         <member name="M:ModdingAPI.Items.ModItem.LoadImages(UnityEngine.Sprite@)">
             <summary>
             Stores the associated images for the item - only executed on startup
