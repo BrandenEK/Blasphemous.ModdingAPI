@@ -47,64 +47,21 @@ namespace ModdingAPI.Items
                     ___allCollectibleItems.Add(collectible.Id, Collectible);
                 }
             }
-
-            //displayItemComponents(___mainObject.transform.Find("Prayer"));
-            //displayItemComponents(___mainObject.transform.Find("Relic"));
-            //displayItemComponents(___mainObject.transform.Find("Sword"));
-            //displayItemComponents(___mainObject.transform.Find("QuestItem"));
-            //displayItemComponents(___mainObject.transform.Find("CollectibleItem"));
-
-            //void displayItemComponents(Transform parent)
-            //{
-            //    foreach (Transform child in parent)
-            //    {
-            //        Main.LogError(Main.MOD_NAME, child.name);
-            //        foreach (Component c in child.GetComponents<Component>())
-            //            Main.LogWarning(Main.MOD_NAME, c.ToString());
-            //    }
-            //}
         }
     }
 
     // Add extra slots to inventory tabs based on how many custom items
-    [HarmonyPatch(typeof(NewInventory_LayoutGrid), "Awake")]
+    [HarmonyPatch(typeof(NewInventory_LayoutGrid), "ShowMaxSlotsForCurrentTabType")]
     internal class InventoryLayout_Patch
     {
-        public static void Prefix(NewInventory_LayoutGrid __instance, ref int ___numGridElements)
+        public static void Postfix(List<NewInventory_GridItem> ___cachedGridElements, InventoryManager.ItemType ___currentItemType)
         {
-            Main.LogWarning(Main.MOD_NAME, "Awake for adding slots");
-            Main.LogWarning(Main.MOD_NAME, __instance.name);
-            if (___numGridElements == 44)
-            {
-                ___numGridElements += CountNumberOfType<ModRosaryBead>();
-            }
-            else if (___numGridElements == 11)
-            {
-                ___numGridElements += CountNumberOfType<ModPrayer>();
-            }
-            else if (___numGridElements == 7)
-            {
-                ___numGridElements += CountNumberOfType<ModRelic>();
-            }
-            else if (___numGridElements == 17)
-            {
-                ___numGridElements += CountNumberOfType<ModSwordHeart>();
-            }
-            //else if (___numGridElements == 44)
-            //{
-            //    ___numGridElements += CountNumberOfType<ModCollectible>();
-            //}
-            // Don't add any slots for quest items
+            Vector2 itemCounts = Main.moddingAPI.itemLoader.GetItemCountOfType(___currentItemType);
+            if (itemCounts.x == 0) return;
 
-            int CountNumberOfType<T>() where T : ModItem
+            for (int i = (int)itemCounts.x; i < (int)itemCounts.y && i < 72; i++)
             {
-                int count = 0;
-                foreach (ModItem item in Main.moddingAPI.GetModItems())
-                {
-                    if (item is T)
-                        count++;
-                }
-                return count;
+                ___cachedGridElements[i].gameObject.SetActive(true);
             }
         }
     }

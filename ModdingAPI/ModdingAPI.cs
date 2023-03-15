@@ -18,6 +18,7 @@ namespace ModdingAPI
 
         public SkinLoader skinLoader { get; private set; }
         public PenitenceLoader penitenceLoader { get; private set; }
+        public ItemLoader itemLoader { get; private set; }
         public FileUtil fileUtil { get; private set; }
         public Localizer localizer { get; private set; }
 
@@ -32,6 +33,7 @@ namespace ModdingAPI
 
             skinLoader = new SkinLoader();
             penitenceLoader = new PenitenceLoader();
+            itemLoader = new ItemLoader();
             fileUtil = new FileUtil();
             localizer = new Localizer(fileUtil.loadLocalization());
             initialized = false;
@@ -164,6 +166,7 @@ namespace ModdingAPI
                     return;
             }
             modItems.Add(item);
+            itemLoader.AddItem(item);
             Main.LogMessage(Main.MOD_NAME, $"Registering custom item: {item.Name} ({item.Id})");
         }
 
