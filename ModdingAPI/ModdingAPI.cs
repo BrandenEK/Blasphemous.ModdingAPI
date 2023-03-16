@@ -21,6 +21,7 @@ namespace ModdingAPI
         public ItemLoader itemLoader { get; private set; }
         public FileUtil fileUtil { get; private set; }
         public Localizer localizer { get; private set; }
+        public HitboxViewer HitboxViewer { get; private set; }
 
         private bool initialized;
 
@@ -36,6 +37,7 @@ namespace ModdingAPI
             itemLoader = new ItemLoader();
             fileUtil = new FileUtil();
             localizer = new Localizer(fileUtil.loadLocalization());
+            HitboxViewer = new HitboxViewer();
             initialized = false;
         }
 
@@ -99,6 +101,8 @@ namespace ModdingAPI
             {
                 mods[i].LevelLoaded(oLevel, nLevel);
             }
+
+            HitboxViewer.AddHitboxes();
         }
 
         public void LevelUnloaded(Level oldLevel, Level newLevel)
@@ -108,6 +112,8 @@ namespace ModdingAPI
             {
                 mods[i].LevelUnloaded(oLevel, nLevel);
             }
+
+            HitboxViewer.RemoveHitboxes();
         }
 
         public void NewGame()
