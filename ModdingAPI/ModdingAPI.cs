@@ -78,6 +78,7 @@ namespace ModdingAPI
 
             if (modPenitences.Count > 0)
                 Core.PenitenceManager.ResetPersistence();
+            HitboxViewer.LoadImage();
         }
 
         public void Dispose()
