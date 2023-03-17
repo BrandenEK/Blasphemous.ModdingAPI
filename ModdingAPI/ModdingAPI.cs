@@ -49,6 +49,7 @@ namespace ModdingAPI
             {
                 mods[i].Update();
             }
+
             penitenceLoader.Update();
             HitboxViewer.Update();
         }

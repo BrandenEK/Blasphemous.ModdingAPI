@@ -22,6 +22,8 @@ namespace ModdingAPI.Items
 
         public void AddItem(ModItem item)
         {
+            if (!item.AddInventorySlot) return;
+
             if (item is ModRosaryBead)
             {
                 itemCountsByType[InventoryManager.ItemType.Bead] = new Vector2(44, itemCountsByType[InventoryManager.ItemType.Bead].y + 1);

@@ -24,7 +24,6 @@ namespace ModdingAPI
 
             foreach (BoxCollider2D collider in Object.FindObjectsOfType<BoxCollider2D>())
             {
-                Main.LogWarning(Main.MOD_NAME, collider.gameObject.name);
                 if (collider.name.StartsWith("GEO_Block")) continue;
 
                 GameObject hitbox = Object.Instantiate(baseHitbox, collider.transform);
