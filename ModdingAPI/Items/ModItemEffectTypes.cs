@@ -7,6 +7,8 @@ namespace ModdingAPI.Items
     /// </summary>
     public abstract class ModItemEffectOnEquip : ModItemEffect
     {
+        internal override ModItem.ModItemType ValidItemTypes => ModItem.EquippableTypes;
+
         internal override void SetSystemProperties(ModItemEffectSystem system)
         {
             system.effectType = ObjectEffect.EffectType.OnEquip;
@@ -29,6 +31,8 @@ namespace ModdingAPI.Items
         /// How long this effect should last, or 0 for no time limit
         /// </summary>
         protected abstract float EffectTime { get; } // ??
+
+        internal override ModItem.ModItemType ValidItemTypes => ModItem.EquippableTypes;
 
         internal override void SetSystemProperties(ModItemEffectSystem system)
         {
@@ -59,6 +63,8 @@ namespace ModdingAPI.Items
         /// </summary>
         protected abstract bool UsePrayerDurationModifier { get; }
 
+        internal override ModItem.ModItemType ValidItemTypes => ModItem.ModItemType.Prayer;
+
         internal override void SetSystemProperties(ModItemEffectSystem system)
         {
             system.effectType = ObjectEffect.EffectType.OnUse;
@@ -79,6 +85,8 @@ namespace ModdingAPI.Items
         /// Whether to activate only once, or remain active as long as the item is owned
         /// </summary>
         protected abstract bool ActivateOnce { get; }
+
+        internal override ModItem.ModItemType ValidItemTypes => ModItem.AllTypes;
 
         internal override void SetSystemProperties(ModItemEffectSystem system)
         {

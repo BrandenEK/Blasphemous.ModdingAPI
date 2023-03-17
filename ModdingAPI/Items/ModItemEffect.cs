@@ -44,6 +44,8 @@ namespace ModdingAPI.Items
 
         internal abstract void SetSystemProperties(ModItemEffectSystem system);
 
-        internal ModItemEffect() { }
+        private protected ModItemEffect() { }
+
+        internal abstract ModItem.ModItemType ValidItemTypes { get; }
     }
 }

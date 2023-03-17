@@ -9,6 +9,8 @@ namespace ModdingAPI.Items
     /// </summary>
     public abstract class ModRosaryBead : ModItem
     {
+        internal override ModItemType ItemType => ModItemType.RosaryBead;
+
         internal RosaryBead CreateRosaryBead(GameObject itemHolder)
         {
             RosaryBead bead = CreateBaseObject<RosaryBead>(itemHolder);
@@ -32,6 +34,8 @@ namespace ModdingAPI.Items
         /// </summary>
         protected internal abstract int FervourCost { get; }
 
+        internal override ModItemType ItemType => ModItemType.Prayer;
+
         internal Prayer CreatePrayer(GameObject itemHolder)
         {
             Prayer prayer = CreateBaseObject<Prayer>(itemHolder);
@@ -51,6 +55,8 @@ namespace ModdingAPI.Items
     /// </summary>
     public abstract class ModRelic : ModItem
     {
+        internal override ModItemType ItemType => ModItemType.Relic;
+
         internal Relic CreateRelic(GameObject itemHolder)
         {
             Relic relic = CreateBaseObject<Relic>(itemHolder);
@@ -69,6 +75,8 @@ namespace ModdingAPI.Items
     /// </summary>
     public abstract class ModSwordHeart : ModItem
     {
+        internal override ModItemType ItemType => ModItemType.SwordHeart;
+
         internal Sword CreateSwordHeart(GameObject itemHolder)
         {
             Sword swordHeart = CreateBaseObject<Sword>(itemHolder);
@@ -87,6 +95,8 @@ namespace ModdingAPI.Items
     /// </summary>
     public abstract class ModQuestItem : ModItem
     {
+        internal override ModItemType ItemType => ModItemType.QuestItem;
+
         internal QuestItem CreateQuestItem(GameObject itemHolder)
         {
             QuestItem questItem = CreateBaseObject<QuestItem>(itemHolder);
@@ -104,6 +114,8 @@ namespace ModdingAPI.Items
     /// </summary>
     public abstract class ModCollectible : ModItem
     {
+        internal override ModItemType ItemType => ModItemType.Collectible;
+
         internal Framework.Inventory.CollectibleItem CreateCollectible (GameObject itemHolder)
         {
             Framework.Inventory.CollectibleItem collectible = CreateBaseObject<Framework.Inventory.CollectibleItem>(itemHolder);

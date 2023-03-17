@@ -49,6 +49,11 @@ namespace ModdingAPI.Items
         /// </summary>
         protected internal abstract bool AddInventorySlot { get; }
 
+        internal enum ModItemType { RosaryBead, Prayer, Relic, SwordHeart, QuestItem, Collectible }
+        internal abstract ModItemType ItemType { get; }
+        internal static ModItemType AllTypes => EquippableTypes | ModItemType.QuestItem | ModItemType.Collectible;
+        internal static ModItemType EquippableTypes => ModItemType.RosaryBead | ModItemType.Prayer | ModItemType.Relic | ModItemType.SwordHeart;
+
         internal Sprite Picture { get; private set; }
 
         internal List<ModItemEffect> Effects { get; private set; }
@@ -66,7 +71,13 @@ namespace ModdingAPI.Items
         /// <returns>The custom item</returns>
         public ModItem AddEffect<T>() where T : ModItemEffect, new()
         {
-            Effects.Add(new T());
+            T newEffect = new T();
+
+            if ((newEffect.ValidItemTypes & ItemType) > 0)
+                Effects.Add(newEffect);
+            else
+                Main.LogWarning(Main.MOD_NAME, $"Can not add effect {typeof(T).Name} to an item of type {ItemType}!");
+
             return this;
         }
 
