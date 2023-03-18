@@ -28,6 +28,7 @@
 ## Features
 
 - Enables the console for all registered mods
+- Enables hitbox viewer mode
 - Allows loading custom skins
 - Ensures compatibility between all mods
 - Adds support for custom penitences and items
@@ -51,6 +52,7 @@
 ### Usage
 
 - Press 'backslash' at any time to open the debug console and enter commands
+- Press '=' at any time to toggle the hitbox viewer
 - All registered mods should be displayed in the top right corner of the main menu
 - Mods can be disabled by simply moving them out of the "Modding/plugins" folder
 
@@ -66,6 +68,7 @@
 The Modding API is available in these other languages in addition to English:
 - Spanish (Thanks to Rodol J. "ConanCimmerio" Pérez (Ro))
 - Chinese (Thanks to NewbieElton)
+- French  (Thanks to Rocher)
 
 ---
 
@@ -77,17 +80,19 @@ The Modding API is available in these other languages in addition to English:
 ### Project Setup
 
 1. Create a folder called "ExampleMod"
-2. Open the command prompt in this folder and run the command:
+2. Open the command prompt in this folder and run these two commands: <br>
+```dotnet new -i BepInEx.Templates --nuget-source https://nuget.bepinex.dev/v3/index.json``` <br>
 ```dotnet new bepinex5plugin -n ExampleMod -T net35 -U 2017.4.40```
 3. Open the newly created "ExampleMod.csproj" in Visual Studio
 4. Go to "Project > Add Assembly Reference > Browse" and add a reference to any required assemblies.  This will include "ModdingAPI.dll", "BepInEx.dll", "Assembly-CSharp.dll", "UnityEngine.dll", and likely many more
-5. Rename the "Plugin.cs" file to "Main.cs"
-6. Create a new file called "Example.cs" that contains a class that derives from Mod
-7. Follow the [Examples](https://github.com/BrandenEK/Blasphemous-Modding-API#examples) section on how to program the mod
+5. Download the "ModdingAPI.xml file from the source code and place it in the same folder as the required assemblies
+6. Rename the "Plugin.cs" file to "Main.cs"
+7. Create a new file called "Example.cs" that contains a class that derives from Mod
+8. Follow the [Examples](https://github.com/BrandenEK/Blasphemous-Modding-API#examples) section on how to program the mod
 
 ### Exporting
 
-Each mod must export the ExampleMod.dll, and it can also export any config files, doc files, data files, and required dll files.  The exported zip file should follow this file format so that it can be extracted into the "Modding" folder.
+Each mod must export the ExampleMod.dll, and it can also export any config files, doc files, data files, localization files, and required dll files.  The exported zip file should follow this file format so that it can be extracted into the "Modding" folder.
 
 ```
 ExampleMod.zip
