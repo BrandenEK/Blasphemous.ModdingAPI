@@ -8,22 +8,17 @@ namespace ModdingAPI.Items
     public abstract class ModItemEffect
     {
         /// <summary>
-        /// Called before startup
+        /// Called when the item is created
         /// </summary>
-        protected internal virtual void Awake() { }
-        
-        /// <summary>
-        /// Called after startup
-        /// </summary>
-        protected internal virtual void Start() { }
-
+        protected internal virtual void Initialize() { }
+       
         /// <summary>
         /// Called every frame
         /// </summary>
         protected internal virtual void Update() { }
 
         /// <summary>
-        /// Called when the item is disposed
+        /// Called when the item is destroyed
         /// </summary>
         protected internal virtual void Dispose() { }
 

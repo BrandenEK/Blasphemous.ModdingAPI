@@ -210,14 +210,9 @@
             An abstract represention of an item effect
             </summary>
         </member>
-        <member name="M:ModdingAPI.Items.ModItemEffect.Awake">
+        <member name="M:ModdingAPI.Items.ModItemEffect.Initialize">
             <summary>
-            Called before startup
-            </summary>
-        </member>
-        <member name="M:ModdingAPI.Items.ModItemEffect.Start">
-            <summary>
-            Called after startup
+            Called when the item is created
             </summary>
         </member>
         <member name="M:ModdingAPI.Items.ModItemEffect.Update">
@@ -227,7 +222,7 @@
         </member>
         <member name="M:ModdingAPI.Items.ModItemEffect.Dispose">
             <summary>
-            Called when the item is disposed
+            Called when the item is destroyed
             </summary>
         </member>
         <member name="M:ModdingAPI.Items.ModItemEffect.ApplyEffect">

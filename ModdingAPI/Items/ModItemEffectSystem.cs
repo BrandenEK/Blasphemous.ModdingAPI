@@ -11,19 +11,7 @@ namespace ModdingAPI.Items
             modEffect = effect;
             modEffect.SetSystemProperties(this);
             modEffect.InventoryObject = InvObj;
-            modEffect.Awake();
-        }
-
-        protected override void OnAwake()
-        {
-            if (modEffect != null)
-                modEffect.Awake();
-        }
-
-        protected override void OnStart()
-        {
-            if (modEffect != null)
-                modEffect.Start();
+            modEffect.Initialize();
         }
 
         protected override void OnUpdate()

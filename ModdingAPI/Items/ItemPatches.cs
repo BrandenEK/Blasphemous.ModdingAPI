@@ -90,5 +90,12 @@ namespace ModdingAPI.Items
         }
     }
 
+    // Prevent incorrect errors for object effect types
+    [HarmonyPatch(typeof(ObjectEffect), "ShowError")]
+    internal class ObjectEffectError_Patch
+    {
+        public static bool Prefix() { return false; }
+    }
+
     // Maybe methods for adding them ?
 }
