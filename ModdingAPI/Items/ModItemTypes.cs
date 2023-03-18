@@ -41,6 +41,7 @@ namespace ModdingAPI.Items
             Prayer prayer = CreateBaseObject<Prayer>(itemHolder);
             prayer.UsePercentageCompletition = AddToPercentCompletion;
             prayer.fervourNeeded = FervourCost;
+            prayer.Awake();
             return prayer;
         }
 

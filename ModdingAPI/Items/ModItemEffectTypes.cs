@@ -7,7 +7,7 @@ namespace ModdingAPI.Items
     /// </summary>
     public abstract class ModItemEffectOnEquip : ModItemEffect
     {
-        internal override ModItem.ModItemType ValidItemTypes => ModItem.EquippableTypes;
+        internal override ModItem.ModItemType ValidItemTypes => ModItem.ModItemType.Equippables;
 
         internal override void SetSystemProperties(ModItemEffectSystem system)
         {
@@ -20,25 +20,23 @@ namespace ModdingAPI.Items
     /// </summary>
     public abstract class ModItemEffectOnAbility : ModItemEffect
     {
-        // Change this to enum
-
         /// <summary>
         /// The name of the ability to activate this effect
         /// </summary>
         protected abstract string AbilityName { get; }
 
         /// <summary>
-        /// How long this effect should last, or 0 for no time limit
+        /// How long this effect should last, or 0 for only ability duration
         /// </summary>
-        protected abstract float EffectTime { get; } // ??
+        protected abstract float EffectTime { get; }
 
-        internal override ModItem.ModItemType ValidItemTypes => ModItem.EquippableTypes;
+        internal override ModItem.ModItemType ValidItemTypes => ModItem.ModItemType.Equippables;
 
         internal override void SetSystemProperties(ModItemEffectSystem system)
         {
             system.effectType = ObjectEffect.EffectType.OnAbilityCast;
             system.abilityName = AbilityName;
-            system.LimitTime = EffectTime > 0; // necessary ?
+            system.LimitTime = EffectTime > 0;
             system.EffectTime = EffectTime;
         }
     }
@@ -49,14 +47,9 @@ namespace ModdingAPI.Items
     public abstract class ModItemEffectOnPrayerUse : ModItemEffect
     {
         /// <summary>
-        /// How long this effect should last, or 0 for no time limit
+        /// How long the prayer should last
         /// </summary>
         protected abstract float EffectTime { get; }
-
-        /// <summary>
-        /// Whether or not this effect should only last while the prayer is active
-        /// </summary>
-        protected abstract bool OnlyWhenPrayerActive { get; }
 
         /// <summary>
         /// Whether or not the effect duration should be scaled by stat modifiers
@@ -68,11 +61,11 @@ namespace ModdingAPI.Items
         internal override void SetSystemProperties(ModItemEffectSystem system)
         {
             system.effectType = ObjectEffect.EffectType.OnUse;
-            system.LimitTime = EffectTime > 0; // necessary ?
+            system.LimitTime = true;
             system.EffectTime = EffectTime;
-            system.OnlyWhenUsingPrayer = OnlyWhenPrayerActive;
+            system.OnlyWhenUsingPrayer = true;
             system.UsePrayerDurationAddition = UsePrayerDurationModifier;
-            system.UseWhenCastingPrayer = true; // ??
+            system.UseWhenCastingPrayer = true;
         }
     }
 
@@ -86,7 +79,7 @@ namespace ModdingAPI.Items
         /// </summary>
         protected abstract bool ActivateOnce { get; }
 
-        internal override ModItem.ModItemType ValidItemTypes => ModItem.AllTypes;
+        internal override ModItem.ModItemType ValidItemTypes => ModItem.ModItemType.All;
 
         internal override void SetSystemProperties(ModItemEffectSystem system)
         {

@@ -262,7 +262,7 @@
         </member>
         <member name="P:ModdingAPI.Items.ModItemEffectOnAbility.EffectTime">
             <summary>
-            How long this effect should last, or 0 for no time limit
+            How long this effect should last, or 0 for only ability duration
             </summary>
         </member>
         <member name="T:ModdingAPI.Items.ModItemEffectOnPrayerUse">
@@ -272,12 +272,7 @@
         </member>
         <member name="P:ModdingAPI.Items.ModItemEffectOnPrayerUse.EffectTime">
             <summary>
-            How long this effect should last, or 0 for no time limit
-            </summary>
-        </member>
-        <member name="P:ModdingAPI.Items.ModItemEffectOnPrayerUse.OnlyWhenPrayerActive">
-            <summary>
-            Whether or not this effect should only last while the prayer is active
+            How long the prayer should last
             </summary>
         </member>
         <member name="P:ModdingAPI.Items.ModItemEffectOnPrayerUse.UsePrayerDurationModifier">
