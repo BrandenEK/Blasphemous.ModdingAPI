@@ -24,25 +24,26 @@ namespace ModdingAPI.Items
         {
             if (!item.AddInventorySlot) return;
 
-            if (item is ModRosaryBead)
+            switch (item.ItemType)
             {
-                itemCountsByType[InventoryManager.ItemType.Bead] = new Vector2(44, itemCountsByType[InventoryManager.ItemType.Bead].y + 1);
-            }
-            else if (item is ModPrayer)
-            {
-                itemCountsByType[InventoryManager.ItemType.Prayer] = new Vector2(17, itemCountsByType[InventoryManager.ItemType.Prayer].y + 1);
-            }
-            else if (item is ModRelic)
-            {
-                itemCountsByType[InventoryManager.ItemType.Relic] = new Vector2(7, itemCountsByType[InventoryManager.ItemType.Relic].y + 1);
-            }
-            else if (item is ModSwordHeart)
-            {
-                itemCountsByType[InventoryManager.ItemType.Sword] = new Vector2(11, itemCountsByType[InventoryManager.ItemType.Sword].y + 1);
-            }
-            else if (item is ModCollectible)
-            {
-                itemCountsByType[InventoryManager.ItemType.Collectible] = new Vector2(44, itemCountsByType[InventoryManager.ItemType.Collectible].y + 1);
+                case ModItem.ModItemType.RosaryBead:
+                    itemCountsByType[InventoryManager.ItemType.Bead] = new Vector2(44, itemCountsByType[InventoryManager.ItemType.Bead].y + 1);
+                    return;
+                case ModItem.ModItemType.Prayer:
+                    itemCountsByType[InventoryManager.ItemType.Prayer] = new Vector2(17, itemCountsByType[InventoryManager.ItemType.Prayer].y + 1);
+                    return;
+                case ModItem.ModItemType.Relic:
+                    itemCountsByType[InventoryManager.ItemType.Relic] = new Vector2(7, itemCountsByType[InventoryManager.ItemType.Relic].y + 1);
+                    return;
+                case ModItem.ModItemType.SwordHeart:
+                    itemCountsByType[InventoryManager.ItemType.Sword] = new Vector2(11, itemCountsByType[InventoryManager.ItemType.Sword].y + 1);
+                    return;
+                case ModItem.ModItemType.QuestItem:
+                    Main.LogWarning(Main.MOD_NAME, "Can not add an inventory slot for quest items!");
+                    return;
+                case ModItem.ModItemType.Collectible:
+                    itemCountsByType[InventoryManager.ItemType.Collectible] = new Vector2(44, itemCountsByType[InventoryManager.ItemType.Collectible].y + 1);
+                    return;
             }
         }
 
