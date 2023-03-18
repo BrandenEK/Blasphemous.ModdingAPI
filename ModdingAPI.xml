@@ -423,7 +423,7 @@
             <summary>
             Registers a custom item to be loaded into the game
             </summary>
-            <param name="item"></param>
+            <param name="item">The new item to be added</param>
         </member>
         <member name="M:ModdingAPI.Mod.IsModLoaded(System.String)">
             <summary>

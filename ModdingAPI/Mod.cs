@@ -137,7 +137,7 @@ namespace ModdingAPI
         /// <summary>
         /// Registers a custom item to be loaded into the game
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">The new item to be added</param>
         protected void RegisterItem(ModItem item)
         {
             Main.moddingAPI.registerItem(item);
