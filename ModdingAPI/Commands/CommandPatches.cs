@@ -8,7 +8,7 @@ using Gameplay.UI.Console;
 using Gameplay.UI.Others;
 using System.Collections.Generic;
 
-namespace ModdingAPI
+namespace ModdingAPI.Commands
 {
     // Allow access to console
     [HarmonyPatch(typeof(ConsoleWidget), "Update")]
@@ -58,7 +58,7 @@ namespace ModdingAPI
     {
         public static void Postfix(List<ConsoleCommand> ___commands)
         {
-            foreach (ModCommand command in Main.moddingAPI.getModCommnds())
+            foreach (ModCommand command in Main.moddingAPI.GetModCommands())
             {
                 ___commands.Add(new ModCommandSystem(command));
             }

@@ -36,6 +36,7 @@ namespace ModdingAPI
             Directory.CreateDirectory(Path.GetFullPath("Modding\\logs\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\skins\\"));
             localizationPath = Path.GetFullPath("Modding\\localization\\Modding API.txt");
+            dataPath = Path.GetFullPath("Modding\\data\\Modding API\\");
         }
 
         internal Dictionary<string, Sprite> loadCustomSkins()

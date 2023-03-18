@@ -6,3 +6,6 @@ cr: Creado por
 
 lang: zh
 cr: 作者
+
+lang: fr
+cr: Créé par
