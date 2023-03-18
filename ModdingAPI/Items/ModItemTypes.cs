@@ -98,6 +98,16 @@ namespace ModdingAPI.Items
     {
         internal override ModItemType ItemType => ModItemType.QuestItem;
 
+        /// <summary>
+        /// Quest items can not have extra slots added to the inventory screen
+        /// </summary>
+        protected internal sealed override bool AddInventorySlot => false;
+
+        /// <summary>
+        /// Quest items can not add to the percent completion
+        /// </summary>
+        protected internal sealed override bool AddToPercentCompletion => false;
+
         internal QuestItem CreateQuestItem(GameObject itemHolder)
         {
             QuestItem questItem = CreateBaseObject<QuestItem>(itemHolder);
@@ -116,6 +126,11 @@ namespace ModdingAPI.Items
     public abstract class ModCollectible : ModItem
     {
         internal override ModItemType ItemType => ModItemType.Collectible;
+
+        /// <summary>
+        /// Collectibles can not have lore
+        /// </summary>
+        protected internal sealed override string Lore => string.Empty;
 
         internal Framework.Inventory.CollectibleItem CreateCollectible (GameObject itemHolder)
         {

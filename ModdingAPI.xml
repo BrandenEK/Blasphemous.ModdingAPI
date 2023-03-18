@@ -320,9 +320,24 @@
             A custom quest item
             </summary>
         </member>
+        <member name="P:ModdingAPI.Items.ModQuestItem.AddInventorySlot">
+            <summary>
+            Quest items can not have extra slots added to the inventory screen
+            </summary>
+        </member>
+        <member name="P:ModdingAPI.Items.ModQuestItem.AddToPercentCompletion">
+            <summary>
+            Quest items can not add to the percent completion
+            </summary>
+        </member>
         <member name="T:ModdingAPI.Items.ModCollectible">
             <summary>
             A custom collectible
+            </summary>
+        </member>
+        <member name="P:ModdingAPI.Items.ModCollectible.Lore">
+            <summary>
+            Collectibles can not have lore
             </summary>
         </member>
         <member name="T:ModdingAPI.Mod">
