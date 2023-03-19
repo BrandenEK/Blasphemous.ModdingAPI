@@ -82,14 +82,14 @@ namespace ModdingAPI
 
         public void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Equals))
-            {
-                HitboxesEnabled = !HitboxesEnabled;
-                if (HitboxesEnabled)
-                    AddHitboxes();
-                else
-                    RemoveHitboxes();
-            }
+            //if (Input.GetKeyDown(KeyCode.Equals))
+            //{
+            //    HitboxesEnabled = !HitboxesEnabled;
+            //    if (HitboxesEnabled)
+            //        AddHitboxes();
+            //    else
+            //        RemoveHitboxes();
+            //}
         }
     }
 }

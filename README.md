@@ -28,7 +28,6 @@
 ## Features
 
 - Enables the console for all registered mods
-- Enables hitbox viewer mode
 - Allows loading custom skins
 - Ensures compatibility between all mods
 - Adds support for custom penitences and items
@@ -52,7 +51,6 @@
 ### Usage
 
 - Press 'backslash' at any time to open the debug console and enter commands
-- Press '=' at any time to toggle the hitbox viewer
 - All registered mods should be displayed in the top right corner of the main menu
 - Mods can be disabled by simply moving them out of the "Modding/plugins" folder
 
