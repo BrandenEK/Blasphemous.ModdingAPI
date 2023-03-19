@@ -78,6 +78,7 @@ namespace ModdingAPI.Items
 
             int firstIdx = 8 * (totalSlots / 8);
             int lastIdx = totalSlots - 1;
+            if (firstIdx >= totalSlots) firstIdx -= 8;
 
             Navigation firstNav = ___cachedGridElements[firstIdx].Button.navigation;
             firstNav.selectOnLeft = ___cachedGridElements[lastIdx].Button.interactable ? ___cachedGridElements[lastIdx].Button : null;
