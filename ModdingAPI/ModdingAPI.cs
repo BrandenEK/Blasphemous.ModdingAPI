@@ -119,7 +119,7 @@ namespace ModdingAPI
             HitboxViewer.RemoveHitboxes();
         }
 
-        public void NewGame()
+        public void NewGame(bool NGPlus)
         {
             foreach (ModItem item in modItems)
             {
@@ -130,8 +130,9 @@ namespace ModdingAPI
             for (int i = 0; i < mods.Count; i++)
             {
                 if (mods[i] is PersistentMod mod)
-                    mod.NewGame();
+                    mod.NewGame(NGPlus);
             }
+            Core.Persistence.SaveGame(true);
         }
 
         public void registerMod(Mod mod)

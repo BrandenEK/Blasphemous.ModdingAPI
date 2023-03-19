@@ -50,10 +50,10 @@ namespace ModdingAPI
     [HarmonyPatch(typeof(NewMainMenu), "InternalPlay")]
     internal class NewMainMenu_Patch
     {
-        public static void Postfix(bool ___isContinue)
+        public static void Postfix(bool ___isContinue, bool ___mustConvertToNewgamePlus)
         {
-            if (!___isContinue)
-                Main.moddingAPI.NewGame();
+            if (!___isContinue || ___mustConvertToNewgamePlus)
+                Main.moddingAPI.NewGame(___mustConvertToNewgamePlus);
         }
     }
 }

@@ -35,7 +35,8 @@ namespace ModdingAPI
         /// <summary>
         /// Called by the modding API whenever a new game is started
         /// </summary>
-        public abstract void NewGame();
+        /// <param name="NGPlus">Whether the new game has been started in NG+ or not</param>
+        public abstract void NewGame(bool NGPlus);
 
         /// <summary>
         /// The unique id of this persistent system
