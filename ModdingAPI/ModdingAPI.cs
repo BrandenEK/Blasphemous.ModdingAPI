@@ -21,7 +21,6 @@ namespace ModdingAPI
         public ItemLoader itemLoader { get; private set; }
         public FileUtil fileUtil { get; private set; }
         public Localizer localizer { get; private set; }
-        public HitboxViewer HitboxViewer { get; private set; }
 
         private bool initialized;
 
@@ -37,7 +36,6 @@ namespace ModdingAPI
             itemLoader = new ItemLoader();
             fileUtil = new FileUtil();
             localizer = new Localizer(fileUtil.loadLocalization());
-            HitboxViewer = new HitboxViewer();
             initialized = false;
         }
 
@@ -51,7 +49,6 @@ namespace ModdingAPI
             }
 
             penitenceLoader.Update();
-            HitboxViewer.Update();
         }
 
         public void LateUpdate()
@@ -80,7 +77,6 @@ namespace ModdingAPI
 
             if (modPenitences.Count > 0)
                 Core.PenitenceManager.ResetPersistence();
-            HitboxViewer.LoadImage();
         }
 
         public void Dispose()
@@ -104,8 +100,6 @@ namespace ModdingAPI
             {
                 mods[i].LevelLoaded(oLevel, nLevel);
             }
-
-            HitboxViewer.AddHitboxes();
         }
 
         public void LevelUnloaded(Level oldLevel, Level newLevel)
@@ -115,8 +109,6 @@ namespace ModdingAPI
             {
                 mods[i].LevelUnloaded(oLevel, nLevel);
             }
-
-            HitboxViewer.RemoveHitboxes();
         }
 
         public void NewGame(bool NGPlus)
