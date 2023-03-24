@@ -18,6 +18,7 @@ namespace ModdingAPI
 
         internal static ModdingAPI moddingAPI;
         private static Dictionary<string, BepInEx.Logging.ManualLogSource> loggers;
+        internal static Main Instance { get; private set; }
 
         private void Awake()
         {
@@ -28,6 +29,9 @@ namespace ModdingAPI
 
             loggers = new Dictionary<string, BepInEx.Logging.ManualLogSource>();
             AddLogger(MOD_NAME);
+
+            if (Instance == null)
+                Instance = this;
         }
 
         private Assembly loadMissingAssemblies(object send, ResolveEventArgs args)
