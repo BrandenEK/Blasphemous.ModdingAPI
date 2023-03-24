@@ -32,6 +32,7 @@ namespace ModdingAPI
             Directory.CreateDirectory(Path.GetFullPath("Modding\\config\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\data\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\docs\\"));
+            Directory.CreateDirectory(Path.GetFullPath("Modding\\levels\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\localization\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\logs\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\skins\\"));
@@ -70,6 +71,24 @@ namespace ModdingAPI
 
                 return true;
             }
+        }
+
+        internal bool loadLevels()
+        {
+            string levelsPath = Path.GetFullPath("Modding\\levels\\");
+
+            if (File.Exists(levelsPath + "Double Jump\\D04Z02S01.json"))
+            {
+                string jsonString = File.ReadAllText(levelsPath + "Double Jump\\D04Z02S01.json");
+                Levels.LevelStructure structure = jsonObject<Levels.LevelStructure>(jsonString);
+                Main.LogWarning(Main.MOD_NAME, structure.ToString());
+            }
+            else
+            {
+                Main.LogWarning(Main.MOD_NAME, "No file exists");
+            }
+
+            return true;
         }
 
         internal string[] loadLocalization()

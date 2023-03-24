@@ -35,22 +35,22 @@ namespace ModdingAPI.Levels
             if (level != "D04Z02S01") return;
 
             // Remove wall climb
-            foreach (GameObject obj in SceneManager.GetSceneByName("D04Z02S01_DECO").GetRootGameObjects())
-            {
-                if (obj.name == "MIDDLEGROUND")
-                {
-                    Transform holder = obj.transform.Find("AfterPlayer/WallClimb");
-                    holder.GetChild(0).gameObject.SetActive(false);
-                    holder.GetChild(1).gameObject.SetActive(false);
-                }
-            }
-            foreach (GameObject obj in SceneManager.GetSceneByName("D04Z02S01_LAYOUT").GetRootGameObjects())
-            {
-                if (obj.name == "NAVIGATION")
-                {
-                    obj.transform.Find("NAV_Wall Climb (1x3) (2)").gameObject.SetActive(false);
-                }
-            }
+            //foreach (GameObject obj in SceneManager.GetSceneByName("D04Z02S01_DECO").GetRootGameObjects())
+            //{
+            //    if (obj.name == "MIDDLEGROUND")
+            //    {
+            //        Transform holder = obj.transform.Find("AfterPlayer/WallClimb");
+            //        holder.GetChild(0).gameObject.SetActive(false);
+            //        holder.GetChild(1).gameObject.SetActive(false);
+            //    }
+            //}
+            //foreach (GameObject obj in SceneManager.GetSceneByName("D04Z02S01_LAYOUT").GetRootGameObjects())
+            //{
+            //    if (obj.name == "NAVIGATION")
+            //    {
+            //        obj.transform.Find("NAV_Wall Climb (1x3) (2)").gameObject.SetActive(false);
+            //    }
+            //}
 
             CreateCollectibleItem(ItemPersId, "RE402", new Vector3(233, 29, 0));
         }
@@ -66,6 +66,7 @@ namespace ModdingAPI.Levels
         public void LoadLevelEdits()
         {
             Main.LogWarning(Main.MOD_NAME, "Loading level edits from levels folder");
+            Main.moddingAPI.fileUtil.loadLevels();
         }
 
         private IEnumerator LoadCollectibleItem(string sceneName)
