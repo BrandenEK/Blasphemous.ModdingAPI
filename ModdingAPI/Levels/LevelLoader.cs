@@ -15,20 +15,37 @@ namespace ModdingAPI.Levels
         public bool InLoadProcess { get; private set; }
         private bool LoadedObjects { get; set; }
 
+        private Dictionary<string, LevelStructure> LevelModifications { get; set; }
+
         private GameObject itemObject;
 
 
         public string ItemPersId => "RE402-ITEM";
         public string ItemFlag => "RE402_COLLECTED";
 
+        public void LoadObjects()
+        {
+            itemObject = null;
+            Main.Instance.StartCoroutine(LoadCollectibleItem(ITEM_SCENE));
+            LoadedObjects = true;
+        }
+
+        public void LoadLevelEdits()
+        {
+            LevelModifications = Main.moddingAPI.fileUtil.loadLevels();
+        }
+
         public void LevelLoaded(string level)
         {
             // When game is first started, load objects
-            if (level == "MainMenu" && !LoadedObjects)
+            if (level == "MainMenu")
             {
-                LoadObjects();
+                if (!LoadedObjects)
+                    LoadObjects();
                 return;
             }
+
+            // Apply all level edits from other mods
 
             // Change
             // When loading level MoM, remove wall climb and add the collectible item
@@ -53,20 +70,6 @@ namespace ModdingAPI.Levels
             //}
 
             CreateCollectibleItem(ItemPersId, "RE402", new Vector3(233, 29, 0));
-        }
-
-        public void LoadObjects()
-        {
-            itemObject = null;
-            Main.Instance.StartCoroutine(LoadCollectibleItem(ITEM_SCENE));
-            LoadedObjects = true;
-        }
-
-        // Actually load level edits from folder
-        public void LoadLevelEdits()
-        {
-            Main.LogWarning(Main.MOD_NAME, "Loading level edits from levels folder");
-            Main.moddingAPI.fileUtil.loadLevels();
         }
 
         private IEnumerator LoadCollectibleItem(string sceneName)

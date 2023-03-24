@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
+using ModdingAPI.Levels;
 
 namespace ModdingAPI
 {
@@ -73,22 +74,28 @@ namespace ModdingAPI
             }
         }
 
-        internal bool loadLevels()
+        internal Dictionary<string, LevelStructure> loadLevels()
         {
             string levelsPath = Path.GetFullPath("Modding\\levels\\");
+            Dictionary<string, LevelStructure> allLevels = new Dictionary<string, LevelStructure>();
 
-            if (File.Exists(levelsPath + "Double Jump\\D04Z02S01.json"))
+            foreach (string folder in Directory.GetDirectories(levelsPath))
             {
-                string jsonString = File.ReadAllText(levelsPath + "Double Jump\\D04Z02S01.json");
-                Levels.LevelStructure structure = jsonObject<Levels.LevelStructure>(jsonString);
-                Main.LogWarning(Main.MOD_NAME, structure.ToString());
-            }
-            else
-            {
-                Main.LogWarning(Main.MOD_NAME, "No file exists");
+                foreach (string file in Directory.GetFiles(folder))
+                {
+                    string levelName = file.Substring(file.LastIndexOf('\\') + 1);
+                    levelName = levelName.Substring(0, levelName.LastIndexOf('.'));
+                    LevelStructure levelStructure = jsonObject<LevelStructure>(File.ReadAllText(file));
+
+                    Main.LogMessage(Main.MOD_NAME, "Loading level modifications for " + levelName);
+                    if (allLevels.ContainsKey(levelName))
+                        allLevels[levelName].CombineLevel(levelStructure);
+                    else
+                        allLevels.Add(levelName, levelStructure);
+                }
             }
 
-            return true;
+            return allLevels;
         }
 
         internal string[] loadLocalization()

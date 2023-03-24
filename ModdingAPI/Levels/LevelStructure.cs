@@ -11,22 +11,9 @@ namespace ModdingAPI.Levels
 
         public AddedObject[] AddedObjects { get; set; }
 
-        public override string ToString()
+        public void CombineLevel(LevelStructure other)
         {
-            string output = "New level structure";
-            foreach (string item in DisabledObjects.Decoration)
-                output += item + "\n";
-            foreach (string item in DisabledObjects.Layout)
-                output += item + "\n";
-            foreach (string item in DisabledObjects.Logic)
-                output += item + "\n";
 
-            foreach (AddedObject obj in AddedObjects)
-            {
-                output += obj.Id + " " + obj.Type;
-            }
-
-            return output;
         }
     }
 
