@@ -46,10 +46,30 @@ namespace ModdingAPI.Levels
             }
 
             // Apply all level edits from other mods
+            if (!LevelModifications.ContainsKey(level))
+                return;
 
-            // Change
-            // When loading level MoM, remove wall climb and add the collectible item
-            if (level != "D04Z02S01") return;
+            LevelStructure levelModification = LevelModifications[level];
+
+            if (levelModification.DisabledObjects != null)
+            {
+                // Potentially disable decoration objects
+                List<string> decoration = levelModification.DisabledObjects.Decoration;
+                if (decoration != null && decoration.Count > 0)
+                    DisableObjectGroup(SceneManager.GetSceneByName(level + "_DECO"), levelModification.DisabledObjects.Decoration);
+                // Potentially disable layout objects
+                List<string> layout = levelModification.DisabledObjects.Layout;
+                if (layout != null && layout.Count > 0)
+                    DisableObjectGroup(SceneManager.GetSceneByName(level + "_LAYOUT"), levelModification.DisabledObjects.Layout);
+                // Potentially disable logic objects
+                List<string> logic = levelModification.DisabledObjects.Logic;
+                if (logic != null && logic.Count > 0)
+                    DisableObjectGroup(SceneManager.GetSceneByName(level + "_LOGIC"), levelModification.DisabledObjects.Logic);
+            }
+            if (levelModification.AddedObjects != null && levelModification.AddedObjects.Count > 0)
+            {
+                // Add any objects
+            }
 
             // Remove wall climb
             //foreach (GameObject obj in SceneManager.GetSceneByName("D04Z02S01_DECO").GetRootGameObjects())
@@ -69,7 +89,7 @@ namespace ModdingAPI.Levels
             //    }
             //}
 
-            CreateCollectibleItem(ItemPersId, "RE402", new Vector3(233, 29, 0));
+            //CreateCollectibleItem(ItemPersId, "RE402", new Vector3(233, 29, 0));
         }
 
         private IEnumerator LoadCollectibleItem(string sceneName)
@@ -113,6 +133,12 @@ namespace ModdingAPI.Levels
                 Main.LogError(Main.MOD_NAME, "Failed to load CollectibleItem object");
             else
                 Main.LogMessage(Main.MOD_NAME, "Loaded CollectibleItem object");
+        }
+
+        private void DisableObjectGroup(Scene scene, List<string> disabledObjects)
+        {
+            // Store dictionary of all root objects in the scene
+            // Loop through all disabled objects and navigate through their transform
         }
 
         // Change to use pers. id instead of flag
