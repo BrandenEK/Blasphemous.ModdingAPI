@@ -35,6 +35,15 @@ namespace ModdingAPI.Levels
             LevelStructure levelModification = LevelModifications[level];
             Main.LogMessage(Main.MOD_NAME, "Applying modifications for " + level);
 
+            if (levelModification.AddedObjects != null)
+            {
+                // Add any objects
+                foreach (AddedObject obj in levelModification.AddedObjects)
+                {
+                    if (obj.Type == "item")
+                        CreateCollectibleItem(obj.Id, new Vector3(obj.XPos, obj.YPos));
+                }
+            }
             if (levelModification.DisabledObjects != null)
             {
                 // Potentially disable decoration objects
@@ -49,15 +58,6 @@ namespace ModdingAPI.Levels
                 List<string> logic = levelModification.DisabledObjects.Logic;
                 if (logic != null && logic.Count > 0)
                     DisableObjectGroup(SceneManager.GetSceneByName(level + "_LOGIC"), levelModification.DisabledObjects.Logic);
-            }
-            if (levelModification.AddedObjects != null)
-            {
-                // Add any objects
-                foreach (AddedObject obj in levelModification.AddedObjects)
-                {
-                    if (obj.Type == "item")
-                        CreateCollectibleItem(obj.Id, new Vector3(obj.XPos, obj.YPos));
-                }
             }
         }
 
@@ -193,6 +193,7 @@ namespace ModdingAPI.Levels
             if (itemObject == null) return;
 
             GameObject newItem = Object.Instantiate(itemObject, GameObject.Find("INTERACTABLES").transform);
+            newItem.name = "Item Pickup " + itemId;
             newItem.SetActive(true);
             newItem.transform.position = position;
             newItem.GetComponent<UniqueId>().uniqueId = "ITEM-PICKUP-" + itemId;
