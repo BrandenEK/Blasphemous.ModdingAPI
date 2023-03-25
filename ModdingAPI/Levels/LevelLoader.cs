@@ -36,10 +36,15 @@ namespace ModdingAPI.Levels
                 foreach (AddedObject obj in levelModification.AddedObjects)
                 {
                     // Calculate object type and make sure that object has been loaded
-                    ObjectType objectType = (ObjectType)System.Enum.Parse(typeof(ObjectType), obj.Type);
-                    if (LoadedObjects.ContainsKey(objectType))
+                    try
                     {
-                        CreateNewObject(objectType, obj);
+                        ObjectType objectType = (ObjectType)System.Enum.Parse(typeof(ObjectType), obj.Type);
+                        if (LoadedObjects.ContainsKey(objectType))
+                            CreateNewObject(objectType, obj);
+                    }
+                    catch (System.ArgumentException)
+                    {
+                        Main.LogWarning(Main.MOD_NAME, obj.Type + " is not a valid object type!");
                     }
                 }
             }
