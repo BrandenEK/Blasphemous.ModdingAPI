@@ -11,6 +11,7 @@ namespace ModdingAPI.Levels
     internal class LevelLoader
     {
         private const string ITEM_SCENE = "D02Z02S14_LOGIC";
+        private const string SPIKE_SCENE = "";
 
         public bool InLoadProcess { get; private set; }
         private bool LoadedObjects { get; set; }
@@ -18,13 +19,7 @@ namespace ModdingAPI.Levels
         private Dictionary<string, LevelStructure> LevelModifications { get; set; }
 
         private GameObject itemObject;
-
-        public void LoadObjects()
-        {
-            itemObject = null;
-            Main.Instance.StartCoroutine(LoadCollectibleItem(ITEM_SCENE));
-            LoadedObjects = true;
-        }
+        private GameObject spikesObject;
 
         public void LoadLevelEdits()
         {
@@ -70,10 +65,25 @@ namespace ModdingAPI.Levels
         {
             // When game is first started, load objects
             if (level == "MainMenu" && !LoadedObjects)
-                LoadObjects();
+            {
+                itemObject = null;
+                Main.Instance.StartCoroutine(LoadRequiredItems());
+            }
         }
 
-        private IEnumerator LoadCollectibleItem(string sceneName)
+        #region Loading Objects
+
+        private IEnumerator LoadRequiredItems()
+        {
+            yield return Main.Instance.StartCoroutine(LoadSceneForObject(ITEM_SCENE, "LOGIC/INTERACTABLES/???", itemObject));
+            //yield return Main.Instance.StartCoroutine(LoadSceneForObject(SPIKE_SCENE, "???", spikesObject));
+
+            Camera.main.transform.position = new Vector3(0, 0, -10);
+            Camera.main.backgroundColor = new Color(0, 0, 0, 1);
+            LoadedObjects = true;
+        }
+
+        private IEnumerator LoadSceneForObject(string sceneName, string objectPath, GameObject obj)
         {
             InLoadProcess = true;
 
@@ -83,19 +93,18 @@ namespace ModdingAPI.Levels
                 yield return null;
             }
 
+            // Load the item from this scene
             Scene tempScene = SceneManager.GetSceneByName(sceneName);
-            foreach (GameObject obj in tempScene.GetRootGameObjects())
+            GameObject sceneObject = FindObjectInScene(tempScene, objectPath, true);
+            if (sceneObject == null)
             {
-                if (obj.name == "LOGIC")
-                {
-                    // This is the logic object
-                    CollectibleItem item = obj.GetComponentInChildren<CollectibleItem>();
-                    itemObject = Object.Instantiate(item.gameObject, Main.Instance.transform);
-                    itemObject.SetActive(false);
-                }
-
+                Main.LogError(Main.MOD_NAME, $"Failed to load {objectPath} from {sceneName}");
+            }
+            else
+            {
+                obj = Object.Instantiate(sceneObject, Main.Instance.transform);
                 obj.SetActive(false);
-                //Object.DestroyImmediate(obj);
+                Main.LogMessage(Main.MOD_NAME, $"Loaded {objectPath} from {sceneName}");
             }
 
             yield return null;
@@ -106,61 +115,78 @@ namespace ModdingAPI.Levels
                 yield return null;
             }
 
-            Camera.main.transform.position = new Vector3(0, 0, -10);
-            Camera.main.backgroundColor = new Color(0, 0, 0, 1);
-
             InLoadProcess = false;
-            if (itemObject == null)
-                Main.LogError(Main.MOD_NAME, "Failed to load CollectibleItem object");
-            else
-                Main.LogMessage(Main.MOD_NAME, "Loaded CollectibleItem object");
         }
 
         private void DisableObjectGroup(Scene scene, List<string> disabledObjects)
         {
             // Store dictionary of root objects
+            Dictionary<string, Transform> rootObjects = FindRootObjectsInScene(scene, false);
+
+            // Loop through disabled objects and locate & disable them
+            foreach (string disabledObject in disabledObjects)
+            {
+                GameObject obj = FindObjectInScene(rootObjects, disabledObject);
+                if (obj != null)
+                    obj.SetActive(false);
+            }
+        }
+
+        #endregion Loading Objects
+
+        #region Finding Objects
+
+        private GameObject FindObjectInScene(Scene scene, string objectPath, bool disableRoots)
+        {
+            return FindObjectInScene(FindRootObjectsInScene(scene, disableRoots), objectPath);
+        }
+
+        private GameObject FindObjectInScene(Dictionary<string, Transform> rootObjects, string objectPath)
+        {
+            string[] transformPath = objectPath.Split('/');
+
+            Transform currTransform = null;
+            for (int i = 0; i < transformPath.Length; i++)
+            {
+                string finder = transformPath[i];
+                if (i == 0)
+                {
+                    currTransform = rootObjects.ContainsKey(finder) ? rootObjects[finder] : null;
+                }
+                else if (finder.Length >= 3 && finder[0] == '{' && finder[finder.Length - 1] == '}')
+                {
+                    int childIdx = int.Parse(finder.Substring(1, finder.Length - 2));
+                    currTransform = currTransform.childCount > childIdx ? currTransform.GetChild(childIdx) : null;
+                }
+                else
+                {
+                    currTransform = currTransform.Find(finder);
+                }
+
+                if (finder == null) break;
+            }
+
+            return currTransform?.gameObject;
+        }
+
+        private Dictionary<string, Transform> FindRootObjectsInScene(Scene scene, bool disableRoots)
+        {
             Dictionary<string, Transform> rootObjects = new Dictionary<string, Transform>();
             foreach (GameObject obj in scene.GetRootGameObjects())
             {
                 if (obj.name[0] != '=' && !rootObjects.ContainsKey(obj.name))
                 {
                     rootObjects.Add(obj.name, obj.transform);
+                    if (disableRoots)
+                        obj.SetActive(false);
                 }
             }
-
-            // Loop through disabled objects and locate & disable them
-            foreach (string disabledObject in disabledObjects)
-            {
-                string[] transformPath = disabledObject.Split('/');
-
-                Transform currTransform = null;
-                for (int i = 0; i < transformPath.Length; i++)
-                {
-                    string finder = transformPath[i];
-                    if (i == 0)
-                    {
-                        currTransform = rootObjects.ContainsKey(finder) ? rootObjects[finder] : null;
-                    }
-                    else if (finder.Length >= 3 && finder[0] == '{' && finder[finder.Length - 1] == '}')
-                    {
-                        int childIdx = int.Parse(finder.Substring(1, finder.Length - 2));
-                        currTransform = currTransform.childCount > childIdx ? currTransform.GetChild(childIdx) : null;
-                    }
-                    else
-                    {
-                        currTransform = currTransform.Find(finder);
-                    }
-
-                    if (finder == null) break;
-                }
-
-                // If the child object was found, disable it
-                if (currTransform != null)
-                {
-                    currTransform.gameObject.SetActive(false);
-                }
-            }
+            return rootObjects;
         }
+
+        #endregion Finding Objects
+
+        #region Creating Objects
 
         private void CreateCollectibleItem(string itemId, Vector3 position)
         {
@@ -193,5 +219,7 @@ namespace ModdingAPI.Levels
             Main.LogError(Main.MOD_NAME, "Could not determine item type for " + id);
             return InventoryManager.ItemType.Bead;
         }
+
+        #endregion Creating Objects
     }
 }
