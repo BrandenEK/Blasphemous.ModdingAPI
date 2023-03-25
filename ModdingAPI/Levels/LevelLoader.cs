@@ -31,16 +31,8 @@ namespace ModdingAPI.Levels
             LevelModifications = Main.moddingAPI.fileUtil.loadLevels();
         }
 
-        public void LevelLoaded(string level)
+        public void LevelPreLoaded(string level)
         {
-            // When game is first started, load objects
-            if (level == "MainMenu")
-            {
-                if (!LoadedObjects)
-                    LoadObjects();
-                return;
-            }
-
             // Apply all level edits from other mods
             if (!LevelModifications.ContainsKey(level))
                 return;
@@ -72,6 +64,13 @@ namespace ModdingAPI.Levels
                         CreateCollectibleItem(obj.Id, new Vector3(obj.XPos, obj.YPos));
                 }
             }
+        }
+
+        public void LevelLoaded(string level)
+        {
+            // When game is first started, load objects
+            if (level == "MainMenu" && !LoadedObjects)
+                LoadObjects();
         }
 
         private IEnumerator LoadCollectibleItem(string sceneName)
@@ -163,7 +162,6 @@ namespace ModdingAPI.Levels
             }
         }
 
-        // Change to use pers. id instead of flag
         private void CreateCollectibleItem(string itemId, Vector3 position)
         {
             if (itemObject == null) return;
@@ -171,17 +169,11 @@ namespace ModdingAPI.Levels
             GameObject newItem = Object.Instantiate(itemObject, GameObject.Find("INTERACTABLES").transform);
             newItem.SetActive(true);
             newItem.transform.position = position;
-            newItem.GetComponent<UniqueId>().uniqueId = "ITEMPICKUP" + itemId;
+            newItem.GetComponent<UniqueId>().uniqueId = "ITEM-PICKUP-" + itemId;
 
             InteractableInvAdd addComponent = newItem.GetComponent<InteractableInvAdd>();
             addComponent.item = itemId;
             addComponent.itemType = GetItemType(itemId);
-
-            // Hopefully can remove this once the actual pers id is used
-            CollectibleItem collectComponent = newItem.GetComponent<CollectibleItem>();
-            bool collected = Core.Events.GetFlag("PICKUPITEM_" + itemId);
-            collectComponent.Consumed = collected;
-            collectComponent.transform.GetChild(2).gameObject.SetActive(!collected);
         }
 
         private InventoryManager.ItemType GetItemType(string id)

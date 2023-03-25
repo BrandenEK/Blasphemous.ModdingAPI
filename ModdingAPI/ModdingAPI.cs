@@ -67,6 +67,7 @@ namespace ModdingAPI
         public void Initialize()
         {
             initialized = true;
+            LevelManager.OnLevelPreLoaded += LevelPreLoaded;
             LevelManager.OnLevelLoaded += LevelLoaded;
             LevelManager.OnBeforeLevelLoad += LevelUnloaded;
 
@@ -90,9 +91,15 @@ namespace ModdingAPI
                 mods[i].Dispose();
             }
 
+            LevelManager.OnLevelPreLoaded -= LevelPreLoaded;
             LevelManager.OnLevelLoaded -= LevelLoaded;
             LevelManager.OnBeforeLevelLoad -= LevelUnloaded;
             initialized = false;
+        }
+
+        public void LevelPreLoaded(Level oldLevel, Level newLevel)
+        {
+            LevelLoader.LevelPreLoaded(newLevel.LevelName);
         }
 
         public void LevelLoaded(Level oldLevel, Level newLevel)
