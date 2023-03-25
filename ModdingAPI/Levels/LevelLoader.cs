@@ -10,16 +10,12 @@ namespace ModdingAPI.Levels
 {
     internal class LevelLoader
     {
-        private const string ITEM_SCENE = "D02Z02S14_LOGIC";
-        private const string SPIKE_SCENE = "";
+        private enum ObjectType { CollectibleItem, Spikes }
 
         public bool InLoadProcess { get; private set; }
-        private bool LoadedObjects { get; set; }
 
         private Dictionary<string, LevelStructure> LevelModifications { get; set; }
-
-        private GameObject itemObject;
-        private GameObject spikesObject;
+        private Dictionary<ObjectType, GameObject> LoadedObjects { get; set; }
 
         public void LoadLevelEdits()
         {
@@ -37,11 +33,14 @@ namespace ModdingAPI.Levels
 
             if (levelModification.AddedObjects != null)
             {
-                // Add any objects
                 foreach (AddedObject obj in levelModification.AddedObjects)
                 {
-                    if (obj.Type == "item")
-                        CreateCollectibleItem(obj.Id, new Vector3(obj.XPos, obj.YPos));
+                    // Calculate object type and make sure that object has been loaded
+                    ObjectType objectType = (ObjectType)System.Enum.Parse(typeof(ObjectType), obj.Type);
+                    if (LoadedObjects.ContainsKey(objectType))
+                    {
+                        CreateNewObject(objectType, obj);
+                    }
                 }
             }
             if (levelModification.DisabledObjects != null)
@@ -64,9 +63,9 @@ namespace ModdingAPI.Levels
         public void LevelLoaded(string level)
         {
             // When game is first started, load objects
-            if (level == "MainMenu" && !LoadedObjects)
+            if (level == "MainMenu" && LoadedObjects == null)
             {
-                itemObject = null;
+                LoadedObjects = new Dictionary<ObjectType, GameObject>();
                 Main.Instance.StartCoroutine(LoadRequiredItems());
             }
         }
@@ -75,15 +74,14 @@ namespace ModdingAPI.Levels
 
         private IEnumerator LoadRequiredItems()
         {
-            yield return Main.Instance.StartCoroutine(LoadSceneForObject(ITEM_SCENE, "LOGIC/INTERACTABLES/???", itemObject));
-            //yield return Main.Instance.StartCoroutine(LoadSceneForObject(SPIKE_SCENE, "???", spikesObject));
+            yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.CollectibleItem, "D02Z02S14_LOGIC", "LOGIC/INTERACTABLES/???"));
+            yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.Spikes, "???", "???"));
 
             Camera.main.transform.position = new Vector3(0, 0, -10);
             Camera.main.backgroundColor = new Color(0, 0, 0, 1);
-            LoadedObjects = true;
         }
 
-        private IEnumerator LoadSceneForObject(string sceneName, string objectPath, GameObject obj)
+        private IEnumerator LoadSceneForObject(ObjectType objectType, string sceneName, string objectPath)
         {
             InLoadProcess = true;
 
@@ -102,8 +100,11 @@ namespace ModdingAPI.Levels
             }
             else
             {
-                obj = Object.Instantiate(sceneObject, Main.Instance.transform);
+                GameObject obj = Object.Instantiate(sceneObject, Main.Instance.transform);
+                obj.name = objectType.ToString();
+                obj.transform.position = Vector3.zero;
                 obj.SetActive(false);
+                LoadedObjects.Add(objectType, obj);
                 Main.LogMessage(Main.MOD_NAME, $"Loaded {objectPath} from {sceneName}");
             }
 
@@ -188,11 +189,22 @@ namespace ModdingAPI.Levels
 
         #region Creating Objects
 
-        private void CreateCollectibleItem(string itemId, Vector3 position)
+        private void CreateNewObject(ObjectType objectType, AddedObject obj)
         {
-            if (itemObject == null) return;
+            switch (objectType)
+            {
+                case ObjectType.CollectibleItem:
+                    CreateCollectibleItem(obj.Id, new Vector3(obj.XPos, obj.YPos), LoadedObjects[objectType]);
+                    break;
+                case ObjectType.Spikes:
 
-            GameObject newItem = Object.Instantiate(itemObject, GameObject.Find("INTERACTABLES").transform);
+                    break;
+            }
+        }
+
+        private void CreateCollectibleItem(string itemId, Vector3 position, GameObject baseObject)
+        {
+            GameObject newItem = Object.Instantiate(baseObject, GameObject.Find("INTERACTABLES").transform); // Change from Find()
             newItem.name = "Item Pickup " + itemId;
             newItem.SetActive(true);
             newItem.transform.position = position;
@@ -201,6 +213,11 @@ namespace ModdingAPI.Levels
             InteractableInvAdd addComponent = newItem.GetComponent<InteractableInvAdd>();
             addComponent.item = itemId;
             addComponent.itemType = GetItemType(itemId);
+        }
+
+        private void CreateSpikes(Vector3 position, GameObject baseObject)
+        {
+            // Create new spikes object
         }
 
         private InventoryManager.ItemType GetItemType(string id)
