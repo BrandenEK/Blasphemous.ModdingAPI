@@ -94,6 +94,8 @@ namespace ModdingAPI.Levels
         public string Id { get; set; }
         public float XPos { get; set; }
         public float YPos { get; set; }
+        public float Rotation { get; set; }
+        public bool FacingDirection { get; set; }
 
         public override bool Equals(object obj)
         {

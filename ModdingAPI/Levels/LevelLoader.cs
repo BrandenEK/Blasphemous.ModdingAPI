@@ -10,7 +10,7 @@ namespace ModdingAPI.Levels
 {
     internal class LevelLoader
     {
-        private enum ObjectType { CollectibleItem, Spikes }
+        private enum ObjectType { CollectibleItem, Chest, PrieDieu, Lever, Gate, Platform, Ladder, Lantern, Spikes, BloodFloor, RootWall, Enemy, Trap }
 
         public bool InLoadProcess { get; private set; }
 
