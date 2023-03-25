@@ -19,10 +19,6 @@ namespace ModdingAPI.Levels
 
         private GameObject itemObject;
 
-
-        public string ItemPersId => "RE402-ITEM";
-        public string ItemFlag => "RE402_COLLECTED";
-
         public void LoadObjects()
         {
             itemObject = null;
@@ -50,6 +46,7 @@ namespace ModdingAPI.Levels
                 return;
 
             LevelStructure levelModification = LevelModifications[level];
+            Main.LogMessage(Main.MOD_NAME, "Applying modifications for " + level);
 
             if (levelModification.DisabledObjects != null)
             {
@@ -66,30 +63,15 @@ namespace ModdingAPI.Levels
                 if (logic != null && logic.Count > 0)
                     DisableObjectGroup(SceneManager.GetSceneByName(level + "_LOGIC"), levelModification.DisabledObjects.Logic);
             }
-            if (levelModification.AddedObjects != null && levelModification.AddedObjects.Count > 0)
+            if (levelModification.AddedObjects != null)
             {
                 // Add any objects
+                foreach (AddedObject obj in levelModification.AddedObjects)
+                {
+                    if (obj.Type == "item")
+                        CreateCollectibleItem(obj.Id, new Vector3(obj.XPos, obj.YPos));
+                }
             }
-
-            // Remove wall climb
-            //foreach (GameObject obj in SceneManager.GetSceneByName("D04Z02S01_DECO").GetRootGameObjects())
-            //{
-            //    if (obj.name == "MIDDLEGROUND")
-            //    {
-            //        Transform holder = obj.transform.Find("AfterPlayer/WallClimb");
-            //        holder.GetChild(0).gameObject.SetActive(false);
-            //        holder.GetChild(1).gameObject.SetActive(false);
-            //    }
-            //}
-            //foreach (GameObject obj in SceneManager.GetSceneByName("D04Z02S01_LAYOUT").GetRootGameObjects())
-            //{
-            //    if (obj.name == "NAVIGATION")
-            //    {
-            //        obj.transform.Find("NAV_Wall Climb (1x3) (2)").gameObject.SetActive(false);
-            //    }
-            //}
-
-            //CreateCollectibleItem(ItemPersId, "RE402", new Vector3(233, 29, 0));
         }
 
         private IEnumerator LoadCollectibleItem(string sceneName)
@@ -137,19 +119,59 @@ namespace ModdingAPI.Levels
 
         private void DisableObjectGroup(Scene scene, List<string> disabledObjects)
         {
-            // Store dictionary of all root objects in the scene
-            // Loop through all disabled objects and navigate through their transform
+            // Store dictionary of root objects
+            Dictionary<string, Transform> rootObjects = new Dictionary<string, Transform>();
+            foreach (GameObject obj in scene.GetRootGameObjects())
+            {
+                if (obj.name[0] != '=' && !rootObjects.ContainsKey(obj.name))
+                {
+                    rootObjects.Add(obj.name, obj.transform);
+                }
+            }
+
+            // Loop through disabled objects and locate & disable them
+            foreach (string disabledObject in disabledObjects)
+            {
+                string[] transformPath = disabledObject.Split('/');
+
+                Transform currTransform = null;
+                for (int i = 0; i < transformPath.Length; i++)
+                {
+                    string finder = transformPath[i];
+                    if (i == 0)
+                    {
+                        currTransform = rootObjects.ContainsKey(finder) ? rootObjects[finder] : null;
+                    }
+                    else if (finder.Length >= 3 && finder[0] == '{' && finder[finder.Length - 1] == '}')
+                    {
+                        int childIdx = int.Parse(finder.Substring(1, finder.Length - 2));
+                        currTransform = currTransform.childCount > childIdx ? currTransform.GetChild(childIdx) : null;
+                    }
+                    else
+                    {
+                        currTransform = currTransform.Find(finder);
+                    }
+
+                    if (finder == null) break;
+                }
+
+                // If the child object was found, disable it
+                if (currTransform != null)
+                {
+                    currTransform.gameObject.SetActive(false);
+                }
+            }
         }
 
         // Change to use pers. id instead of flag
-        private void CreateCollectibleItem(string persistentId, string itemId, Vector3 position)
+        private void CreateCollectibleItem(string itemId, Vector3 position)
         {
             if (itemObject == null) return;
 
             GameObject newItem = Object.Instantiate(itemObject, GameObject.Find("INTERACTABLES").transform);
             newItem.SetActive(true);
             newItem.transform.position = position;
-            newItem.GetComponent<UniqueId>().uniqueId = persistentId;
+            newItem.GetComponent<UniqueId>().uniqueId = "ITEMPICKUP" + itemId;
 
             InteractableInvAdd addComponent = newItem.GetComponent<InteractableInvAdd>();
             addComponent.item = itemId;
@@ -157,7 +179,7 @@ namespace ModdingAPI.Levels
 
             // Hopefully can remove this once the actual pers id is used
             CollectibleItem collectComponent = newItem.GetComponent<CollectibleItem>();
-            bool collected = Core.Events.GetFlag(ItemFlag);
+            bool collected = Core.Events.GetFlag("PICKUPITEM_" + itemId);
             collectComponent.Consumed = collected;
             collectComponent.transform.GetChild(2).gameObject.SetActive(!collected);
         }
