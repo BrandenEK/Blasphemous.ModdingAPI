@@ -10,7 +10,7 @@ namespace ModdingAPI.Levels
 {
     internal class LevelLoader
     {
-        private enum ObjectType { CollectibleItem, Chest, PrieDieu, Lever, Gate, Platform, Ladder, Lantern, Spikes, BloodFloor, RootWall, Enemy, Trap }
+        private enum ObjectType { Nothing, CollectibleItem, Chest, PrieDieu, Lever, Gate, Platform, Ladder, Lantern, Spikes, BloodFloor, RootWall, Enemy, Trap }
 
         public bool InLoadProcess { get; private set; }
         private Transform CurrentObjectHolder { get; set; } // Only accessed when adding objects, so always set when loading scene with objects to add
@@ -18,10 +18,7 @@ namespace ModdingAPI.Levels
         private Dictionary<string, LevelStructure> LevelModifications { get; set; }
         private Dictionary<ObjectType, GameObject> LoadedObjects { get; set; }
 
-        private ObjectType GetTypeFromObject(AddedObject obj)
-        {
-            return (ObjectType)System.Enum.Parse(typeof(ObjectType), obj.Type);
-        }
+
 
         public void LoadLevelEdits()
         {
@@ -46,8 +43,7 @@ namespace ModdingAPI.Levels
                     // Calculate object type and make sure that object has been loaded
                     try
                     {
-                        ObjectType objectType = GetTypeFromObject(obj);
-                        if (LoadedObjects.ContainsKey(objectType))
+                        if (GetTypeFromObject(obj, out ObjectType objectType) && LoadedObjects.ContainsKey(objectType))
                             CreateNewObject(objectType, obj);
                     }
                     catch (System.ArgumentException)
@@ -95,8 +91,7 @@ namespace ModdingAPI.Levels
                 {
                     foreach (AddedObject obj in level.AddedObjects)
                     {
-                        ObjectType objectType = GetTypeFromObject(obj);
-                        if (!necessaryObjects.Contains(objectType))
+                        if (GetTypeFromObject(obj, out ObjectType objectType) && !necessaryObjects.Contains(objectType))
                             necessaryObjects.Add(objectType);
                     }
                 }
@@ -201,7 +196,7 @@ namespace ModdingAPI.Levels
                     currTransform = currTransform.Find(finder);
                 }
 
-                if (finder == null) break;
+                if (currTransform == null) break;
             }
 
             return currTransform?.gameObject;
@@ -257,6 +252,10 @@ namespace ModdingAPI.Levels
             // Create new spikes object
         }
 
+        #endregion Creating Objects
+
+        #region Helpers
+
         private InventoryManager.ItemType GetItemType(string id)
         {
             if (id != null && id.Length >= 2)
@@ -275,6 +274,21 @@ namespace ModdingAPI.Levels
             return InventoryManager.ItemType.Bead;
         }
 
-        #endregion Creating Objects
+        private bool GetTypeFromObject(AddedObject obj, out ObjectType type)
+        {
+            try
+            {
+                type = (ObjectType)System.Enum.Parse(typeof(ObjectType), obj.Type);
+                return true;
+            }
+            catch (System.ArgumentException)
+            {
+                Main.LogWarning(Main.MOD_NAME, obj.Type + " is not a valid object type!");
+                type = ObjectType.Nothing;
+                return false;
+            }
+        }
+
+        #endregion Helpers
     }
 }
