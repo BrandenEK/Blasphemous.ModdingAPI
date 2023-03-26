@@ -100,11 +100,20 @@ namespace ModdingAPI.Levels
             // Load any necessary objects from various scenes
             if (necessaryObjects.Contains(ObjectType.CollectibleItem))
             {
-                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.CollectibleItem, "D02Z02S14_LOGIC", "LOGIC/INTERACTABLES/???"));
+                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.CollectibleItem, "D02Z02S14_LOGIC", "LOGIC/INTERACTABLES/ACT_Collectible"));
             }
             if (necessaryObjects.Contains(ObjectType.Spikes))
             {
-                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.Spikes, "???", "???"));
+                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.Spikes, "D01Z03S01_DECO", "MIDDLEGROUND/AfterPlayer/Spikes/{0}"));
+                if (LoadedObjects.ContainsKey(ObjectType.Spikes))
+                {
+                    GameObject spikes = LoadedObjects[ObjectType.Spikes];
+                    spikes.gameObject.tag = "SpikeTrap";
+                    spikes.layer = LayerMask.NameToLayer("Trap");
+                    BoxCollider2D collider = spikes.AddComponent<BoxCollider2D>();
+                    collider.isTrigger = true;
+                    collider.size = new Vector2(1.8f, 0.8f);
+                }
             }
 
             // Fix camera after scene loads
@@ -226,30 +235,39 @@ namespace ModdingAPI.Levels
             switch (objectType)
             {
                 case ObjectType.CollectibleItem:
-                    CreateCollectibleItem(obj.Id, new Vector3(obj.XPos, obj.YPos), LoadedObjects[objectType]);
+                    CreateCollectibleItem(obj);
                     break;
                 case ObjectType.Spikes:
-
+                    CreateSpikes(obj);
                     break;
             }
         }
 
-        private void CreateCollectibleItem(string itemId, Vector3 position, GameObject baseObject)
+        private GameObject CreateBaseObject(ObjectType objectType, AddedObject obj, string name)
         {
-            GameObject newItem = Object.Instantiate(baseObject, CurrentObjectHolder);
-            newItem.name = "Item Pickup " + itemId;
-            newItem.SetActive(true);
-            newItem.transform.position = position;
-            newItem.GetComponent<UniqueId>().uniqueId = "ITEM-PICKUP-" + itemId;
-
-            InteractableInvAdd addComponent = newItem.GetComponent<InteractableInvAdd>();
-            addComponent.item = itemId;
-            addComponent.itemType = GetItemType(itemId);
+            GameObject baseObject = Object.Instantiate(LoadedObjects[objectType], CurrentObjectHolder);
+            baseObject.name = name;
+            baseObject.transform.position = new Vector3(obj.XPos, obj.YPos, 0);
+            baseObject.transform.eulerAngles = new Vector3(0, 0, obj.Rotation);
+            baseObject.SetActive(true);
+            return baseObject;
         }
 
-        private void CreateSpikes(Vector3 position, GameObject baseObject)
+        private void CreateCollectibleItem(AddedObject obj)
         {
-            // Create new spikes object
+            GameObject newItem = CreateBaseObject(ObjectType.CollectibleItem, obj, "Item Pickup " + obj.Id);
+
+            newItem.GetComponent<UniqueId>().uniqueId = "ITEM-PICKUP-" + obj.Id;
+            InteractableInvAdd addComponent = newItem.GetComponent<InteractableInvAdd>();
+            addComponent.item = obj.Id;
+            addComponent.itemType = GetItemType(obj.Id);
+        }
+
+        private void CreateSpikes(AddedObject obj)
+        {
+            GameObject spikes = CreateBaseObject(ObjectType.Spikes, obj, "Spikes " + obj.Id);
+            if (obj.FacingDirection)
+                spikes.GetComponent<SpriteRenderer>().flipX = true;
         }
 
         #endregion Creating Objects

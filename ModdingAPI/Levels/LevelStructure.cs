@@ -99,12 +99,13 @@ namespace ModdingAPI.Levels
 
         public override bool Equals(object obj)
         {
-            return Id == ((AddedObject)obj).Id;
+            AddedObject addedObject = (AddedObject)obj;
+            return Type == addedObject.Type && Id == addedObject.Id;
         }
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            return (Type.ToString() + Id).GetHashCode();
         }
     }
 }
