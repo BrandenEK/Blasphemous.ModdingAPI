@@ -7,6 +7,7 @@
   - [Installation](https://github.com/BrandenEK/Blasphemous-Modding-API#installation)
   - [Usage](https://github.com/BrandenEK/Blasphemous-Modding-API#usage)
   - [Custom skins](https://github.com/BrandenEK/Blasphemous-Modding-API#custom-skins)
+  - [Save Compatibility](https://github.com/BrandenEK/Blasphemous-Modding-API#save-compatibility)
 - [Translations](https://github.com/BrandenEK/Blasphemous-Modding-API#translations)
 
 <br>
@@ -58,6 +59,12 @@
 
 - Skins can be downloaded from https://github.com/BrandenEK/Blasphemous-Custom-Skins
 - Extract the contents of each skin's zip file into the "Modding/skins" folder.  There should be one folder for each skin in the "Modding/skins" folder
+
+### Save Compatibility
+
+- Make sure to back up any save files you care about before installing mods
+- To prevent save corruption, don't load a save file with different mods installed than were present when the save file was created
+- If corruption does happen, strange effects may take place, such as rosary beads being randomly equipped.  Removing all existing save files should fix this problem
 
 ---
 
