@@ -21,6 +21,9 @@
   - [File Utility](https://github.com/BrandenEK/Blasphemous-Modding-API#file-utility)
   - [Persistent Data](https://github.com/BrandenEK/Blasphemous-Modding-API#persistent-data)
   - [Commands](https://github.com/BrandenEK/Blasphemous-Modding-API#commands)
+  - [Custom Penitences](https://github.com/BrandenEK/Blasphemous-Modding-API#custom-penitences)
+  - [Custom Items](https://github.com/BrandenEK/Blasphemous-Modding-API#custom-items)
+  - [Level Modifications](https://github.com/BrandenEK/Blasphemous-Modding-API#level-modifications)
   - [Harmony Patching](https://github.com/BrandenEK/Blasphemous-Modding-API#harmony-patching)
 - [Examples](https://github.com/BrandenEK/Blasphemous-Modding-API#examples)
 
@@ -110,6 +113,9 @@ ExampleMod.zip
 │   └── RequiredDLL.dll
 ├── docs
 │   └── ExampleMod.txt
+├── levels
+│   ├── D04Z02S01.json
+│   └── D17Z01S02.json
 ├── localization
 │   └── ExampleMod.txt
 └── plugins
@@ -331,6 +337,15 @@ public class ExampleCommand : ModCommand
     }
 }
 ```
+
+### Custom Penitences
+
+
+### Custom Items
+
+
+### Level Modifications
+
 
 ### Harmony Patching
 
