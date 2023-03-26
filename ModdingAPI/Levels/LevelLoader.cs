@@ -17,6 +17,11 @@ namespace ModdingAPI.Levels
         private Dictionary<string, LevelStructure> LevelModifications { get; set; }
         private Dictionary<ObjectType, GameObject> LoadedObjects { get; set; }
 
+        private ObjectType GetTypeFromObject(AddedObject obj)
+        {
+            return (ObjectType)System.Enum.Parse(typeof(ObjectType), obj.Type);
+        }
+
         public void LoadLevelEdits()
         {
             LevelModifications = Main.moddingAPI.fileUtil.loadLevels();
@@ -38,7 +43,7 @@ namespace ModdingAPI.Levels
                     // Calculate object type and make sure that object has been loaded
                     try
                     {
-                        ObjectType objectType = (ObjectType)System.Enum.Parse(typeof(ObjectType), obj.Type);
+                        ObjectType objectType = GetTypeFromObject(obj);
                         if (LoadedObjects.ContainsKey(objectType))
                             CreateNewObject(objectType, obj);
                     }
@@ -46,6 +51,7 @@ namespace ModdingAPI.Levels
                     {
                         Main.LogWarning(Main.MOD_NAME, obj.Type + " is not a valid object type!");
                     }
+
                 }
             }
             if (levelModification.DisabledObjects != null)
@@ -79,11 +85,35 @@ namespace ModdingAPI.Levels
 
         private IEnumerator LoadRequiredItems()
         {
-            yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.CollectibleItem, "D02Z02S14_LOGIC", "LOGIC/INTERACTABLES/???"));
-            yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.Spikes, "???", "???"));
+            // Get list of all objects that are needed by mods
+            List<ObjectType> necessaryObjects = new List<ObjectType>();
+            foreach (LevelStructure level in LevelModifications.Values)
+            {
+                if (level.AddedObjects != null)
+                {
+                    foreach (AddedObject obj in level.AddedObjects)
+                    {
+                        ObjectType objectType = GetTypeFromObject(obj);
+                        if (!necessaryObjects.Contains(objectType))
+                            necessaryObjects.Add(objectType);
+                    }
+                }
+            }
 
+            // Load any necessary objects from various scenes
+            if (necessaryObjects.Contains(ObjectType.CollectibleItem))
+            {
+                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.CollectibleItem, "D02Z02S14_LOGIC", "LOGIC/INTERACTABLES/???"));
+            }
+            if (necessaryObjects.Contains(ObjectType.Spikes))
+            {
+                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.Spikes, "???", "???"));
+            }
+
+            // Fix camera after scene loads
             Camera.main.transform.position = new Vector3(0, 0, -10);
             Camera.main.backgroundColor = new Color(0, 0, 0, 1);
+            yield return null;
         }
 
         private IEnumerator LoadSceneForObject(ObjectType objectType, string sceneName, string objectPath)
