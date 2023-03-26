@@ -268,6 +268,8 @@ namespace ModdingAPI.Levels
             GameObject spikes = CreateBaseObject(ObjectType.Spikes, obj, "Spikes " + obj.Id);
             if (obj.FacingDirection)
                 spikes.GetComponent<SpriteRenderer>().flipX = true;
+            if (obj.XSize > 0 && obj.YSize > 0)
+                spikes.GetComponent<BoxCollider2D>().size = new Vector2(obj.XSize, obj.YSize);
         }
 
         #endregion Creating Objects
