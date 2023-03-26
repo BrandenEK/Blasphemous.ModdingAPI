@@ -13,6 +13,7 @@ namespace ModdingAPI.Levels
         private enum ObjectType { CollectibleItem, Chest, PrieDieu, Lever, Gate, Platform, Ladder, Lantern, Spikes, BloodFloor, RootWall, Enemy, Trap }
 
         public bool InLoadProcess { get; private set; }
+        private Transform CurrentObjectHolder { get; set; } // Only accessed when adding objects, so always set when loading scene with objects to add
 
         private Dictionary<string, LevelStructure> LevelModifications { get; set; }
         private Dictionary<ObjectType, GameObject> LoadedObjects { get; set; }
@@ -38,6 +39,8 @@ namespace ModdingAPI.Levels
 
             if (levelModification.AddedObjects != null)
             {
+                CurrentObjectHolder = GameObject.Find("LOGIC").transform;
+
                 foreach (AddedObject obj in levelModification.AddedObjects)
                 {
                     // Calculate object type and make sure that object has been loaded
@@ -51,7 +54,6 @@ namespace ModdingAPI.Levels
                     {
                         Main.LogWarning(Main.MOD_NAME, obj.Type + " is not a valid object type!");
                     }
-
                 }
             }
             if (levelModification.DisabledObjects != null)
@@ -239,7 +241,7 @@ namespace ModdingAPI.Levels
 
         private void CreateCollectibleItem(string itemId, Vector3 position, GameObject baseObject)
         {
-            GameObject newItem = Object.Instantiate(baseObject, GameObject.Find("INTERACTABLES").transform); // Change from Find()
+            GameObject newItem = Object.Instantiate(baseObject, CurrentObjectHolder);
             newItem.name = "Item Pickup " + itemId;
             newItem.SetActive(true);
             newItem.transform.position = position;
