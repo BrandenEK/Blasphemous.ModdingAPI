@@ -39,15 +39,8 @@ namespace ModdingAPI.Levels
                 foreach (AddedObject obj in levelModification.AddedObjects)
                 {
                     // Calculate object type and make sure that object has been loaded
-                    try
-                    {
-                        if (GetTypeFromObject(obj, out ObjectType objectType) && LoadedObjects.ContainsKey(objectType))
-                            CreateNewObject(objectType, obj);
-                    }
-                    catch (System.ArgumentException)
-                    {
-                        Main.LogWarning(Main.MOD_NAME, obj.Type + " is not a valid object type!");
-                    }
+                    if (GetTypeFromObject(obj, out ObjectType objectType) && LoadedObjects.ContainsKey(objectType))
+                        CreateNewObject(objectType, obj);
                 }
             }
             if (levelModification.DisabledObjects != null)
