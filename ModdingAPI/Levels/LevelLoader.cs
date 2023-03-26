@@ -18,8 +18,6 @@ namespace ModdingAPI.Levels
         private Dictionary<string, LevelStructure> LevelModifications { get; set; }
         private Dictionary<ObjectType, GameObject> LoadedObjects { get; set; }
 
-
-
         public void LoadLevelEdits()
         {
             LevelModifications = Main.moddingAPI.fileUtil.loadLevels();
@@ -114,6 +112,10 @@ namespace ModdingAPI.Levels
                     collider.isTrigger = true;
                     collider.size = new Vector2(1.8f, 0.8f);
                 }
+            }
+            if (necessaryObjects.Contains(ObjectType.Chest))
+            {
+                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.Chest, "D20Z02S02_LOGIC", "ACT_Wooden Chest"));
             }
 
             // Fix camera after scene loads
@@ -237,6 +239,9 @@ namespace ModdingAPI.Levels
                 case ObjectType.CollectibleItem:
                     CreateCollectibleItem(obj);
                     break;
+                case ObjectType.Chest:
+                    CreateChest(obj);
+                    break;
                 case ObjectType.Spikes:
                     CreateSpikes(obj);
                     break;
@@ -258,6 +263,16 @@ namespace ModdingAPI.Levels
             GameObject newItem = CreateBaseObject(ObjectType.CollectibleItem, obj, "Item Pickup " + obj.Id);
 
             newItem.GetComponent<UniqueId>().uniqueId = "ITEM-PICKUP-" + obj.Id;
+            InteractableInvAdd addComponent = newItem.GetComponent<InteractableInvAdd>();
+            addComponent.item = obj.Id;
+            addComponent.itemType = GetItemType(obj.Id);
+        }
+
+        private void CreateChest(AddedObject obj)
+        {
+            GameObject newItem = CreateBaseObject(ObjectType.Chest, obj, "Chest " + obj.Id);
+
+            newItem.GetComponent<UniqueId>().uniqueId = "Chest-" + obj.Id;
             InteractableInvAdd addComponent = newItem.GetComponent<InteractableInvAdd>();
             addComponent.item = obj.Id;
             addComponent.itemType = GetItemType(obj.Id);
