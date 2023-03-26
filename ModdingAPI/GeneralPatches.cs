@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using Framework.Managers;
 using Gameplay.UI.Others.MenuLogic;
 using System.Text;
+using Tools.Level.Layout;
 
 namespace ModdingAPI
 {
@@ -54,6 +55,16 @@ namespace ModdingAPI
         {
             if (!___isContinue || ___mustConvertToNewgamePlus)
                 Main.moddingAPI.NewGame(___mustConvertToNewgamePlus);
+        }
+    }
+
+    // Prevent init functions when loading temp level
+    [HarmonyPatch(typeof(LevelInitializer), "Awake")]
+    internal class LevelInit_Patch
+    {
+        public static bool Prefix()
+        {
+            return !Main.moddingAPI.LevelLoader.InLoadProcess;
         }
     }
 }

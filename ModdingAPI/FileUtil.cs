@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
+using ModdingAPI.Levels;
 
 namespace ModdingAPI
 {
@@ -32,6 +33,7 @@ namespace ModdingAPI
             Directory.CreateDirectory(Path.GetFullPath("Modding\\config\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\data\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\docs\\"));
+            Directory.CreateDirectory(Path.GetFullPath("Modding\\levels\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\localization\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\logs\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\skins\\"));
@@ -70,6 +72,30 @@ namespace ModdingAPI
 
                 return true;
             }
+        }
+
+        internal Dictionary<string, LevelStructure> loadLevels()
+        {
+            string levelsPath = Path.GetFullPath("Modding\\levels\\");
+            Dictionary<string, LevelStructure> allLevels = new Dictionary<string, LevelStructure>();
+
+            foreach (string folder in Directory.GetDirectories(levelsPath))
+            {
+                foreach (string file in Directory.GetFiles(folder))
+                {
+                    string levelName = file.Substring(file.LastIndexOf('\\') + 1);
+                    levelName = levelName.Substring(0, levelName.LastIndexOf('.'));
+                    LevelStructure levelStructure = jsonObject<LevelStructure>(File.ReadAllText(file));
+
+                    Main.LogMessage(Main.MOD_NAME, "Loading level modifications for " + levelName);
+                    if (allLevels.ContainsKey(levelName))
+                        allLevels[levelName].CombineLevel(levelStructure);
+                    else
+                        allLevels.Add(levelName, levelStructure);
+                }
+            }
+
+            return allLevels;
         }
 
         internal string[] loadLocalization()

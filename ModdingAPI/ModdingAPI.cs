@@ -6,6 +6,7 @@ using ModdingAPI.Commands;
 using ModdingAPI.Penitences;
 using ModdingAPI.Skins;
 using ModdingAPI.Items;
+using ModdingAPI.Levels;
 
 namespace ModdingAPI
 {
@@ -19,6 +20,7 @@ namespace ModdingAPI
         public SkinLoader skinLoader { get; private set; }
         public PenitenceLoader penitenceLoader { get; private set; }
         public ItemLoader itemLoader { get; private set; }
+        public LevelLoader LevelLoader { get; private set; }
         public FileUtil fileUtil { get; private set; }
         public Localizer localizer { get; private set; }
 
@@ -34,6 +36,7 @@ namespace ModdingAPI
             skinLoader = new SkinLoader();
             penitenceLoader = new PenitenceLoader();
             itemLoader = new ItemLoader();
+            LevelLoader = new LevelLoader();
             fileUtil = new FileUtil();
             localizer = new Localizer(fileUtil.loadLocalization());
             initialized = false;
@@ -64,6 +67,7 @@ namespace ModdingAPI
         public void Initialize()
         {
             initialized = true;
+            LevelManager.OnLevelPreLoaded += LevelPreLoaded;
             LevelManager.OnLevelLoaded += LevelLoaded;
             LevelManager.OnBeforeLevelLoad += LevelUnloaded;
 
@@ -75,6 +79,7 @@ namespace ModdingAPI
                     Core.Persistence.AddPersistentManager(new ModPersistentSystem(mod));
             }
 
+            LevelLoader.LoadLevelEdits();
             if (modPenitences.Count > 0)
                 Core.PenitenceManager.ResetPersistence();
         }
@@ -86,9 +91,15 @@ namespace ModdingAPI
                 mods[i].Dispose();
             }
 
+            LevelManager.OnLevelPreLoaded -= LevelPreLoaded;
             LevelManager.OnLevelLoaded -= LevelLoaded;
             LevelManager.OnBeforeLevelLoad -= LevelUnloaded;
             initialized = false;
+        }
+
+        public void LevelPreLoaded(Level oldLevel, Level newLevel)
+        {
+            LevelLoader.LevelPreLoaded(newLevel.LevelName);
         }
 
         public void LevelLoaded(Level oldLevel, Level newLevel)
@@ -100,6 +111,8 @@ namespace ModdingAPI
             {
                 mods[i].LevelLoaded(oLevel, nLevel);
             }
+
+            LevelLoader.LevelLoaded(nLevel);
         }
 
         public void LevelUnloaded(Level oldLevel, Level newLevel)
