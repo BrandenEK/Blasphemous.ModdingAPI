@@ -33,6 +33,13 @@ namespace ModdingAPI
         /// </summary>
         public FileUtil FileUtil { get; private set; }
         /// <summary>
+        /// The utility class for checking player input
+        /// </summary>
+        public InputHandler Input
+        {
+            get { return Main.moddingAPI.Input; }
+        }
+        /// <summary>
         /// Set to true to disable the mod from writing to the log file
         /// </summary>
         public bool DisableFileLogging { get; set; }

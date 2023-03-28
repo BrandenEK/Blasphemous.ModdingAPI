@@ -23,6 +23,7 @@ namespace ModdingAPI
         public LevelLoader LevelLoader { get; private set; }
         public FileUtil fileUtil { get; private set; }
         public Localizer localizer { get; private set; }
+        public InputHandler Input { get; private set; }
 
         private bool initialized;
 
@@ -39,6 +40,7 @@ namespace ModdingAPI
             LevelLoader = new LevelLoader();
             fileUtil = new FileUtil();
             localizer = new Localizer(fileUtil.loadLocalization());
+            Input = new InputHandler();
             initialized = false;
         }
 
