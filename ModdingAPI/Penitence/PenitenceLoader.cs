@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Gameplay.UI.Others.MenuLogic;
 using Framework.Managers;
-using Rewired;
 
 namespace ModdingAPI.Penitences
 {
@@ -13,7 +12,6 @@ namespace ModdingAPI.Penitences
         public Selection CurrentSelection { get; set; }
 
         public System.Action chooseAction { get; set; }
-        private Player rewired;
 
         public void ActivatePenitence(string id)
         {
@@ -72,16 +70,12 @@ namespace ModdingAPI.Penitences
         {
             if (CurrentSelection != Selection.Normal)
             {
-                if (rewired == null)
-                {
-                    rewired = ReInput.players.GetPlayer(0);
-                }
-                if (rewired.GetButtonDown(28))
+                if (Main.moddingAPI.Input.GetButtonDown(InputHandler.ButtonCode.InventoryLeft))
                 {
                     CurrentSelectedCustomPenitence--;
                     Object.FindObjectOfType<ChoosePenitenceWidget>().Option_SelectNoPenitence();
                 }
-                else if (rewired.GetButtonDown(29))
+                else if (Main.moddingAPI.Input.GetButtonDown(InputHandler.ButtonCode.InventoryRight))
                 {
                     CurrentSelectedCustomPenitence++;
                     Object.FindObjectOfType<ChoosePenitenceWidget>().Option_SelectNoPenitence();
