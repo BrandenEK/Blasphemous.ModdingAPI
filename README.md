@@ -1,4 +1,7 @@
 # Blasphemous Modding API
+![Release version](https://img.shields.io/github/v/release/BrandenEK/Blasphemous-Modding-API)
+![Last commit](https://img.shields.io/github/last-commit/BrandenEK/Blasphemous-Modding-API?color=important)
+![Downloads](https://img.shields.io/github/downloads/BrandenEK/Blasphemous-Modding-API/total?color=success)
 
 ## Table of Contents
 
