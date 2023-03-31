@@ -81,13 +81,19 @@ namespace ModdingAPI
 
             foreach (string folder in Directory.GetDirectories(levelsPath))
             {
+                // Check if the mod associated with these level edits is active
+                string modName = folder.Substring(folder.LastIndexOf('\\') + 1);
+                if (!isModEnabled(modName))
+                    continue;
+                Main.LogMessage(Main.MOD_NAME, "Loading level modifications for " + modName);
+
+                // For each individual level file, load it
                 foreach (string file in Directory.GetFiles(folder))
                 {
                     string levelName = file.Substring(file.LastIndexOf('\\') + 1);
                     levelName = levelName.Substring(0, levelName.LastIndexOf('.'));
                     LevelStructure levelStructure = jsonObject<LevelStructure>(File.ReadAllText(file));
 
-                    Main.LogMessage(Main.MOD_NAME, "Loading level modifications for " + levelName);
                     if (allLevels.ContainsKey(levelName))
                         allLevels[levelName].CombineLevel(levelStructure);
                     else
@@ -96,6 +102,16 @@ namespace ModdingAPI
             }
 
             return allLevels;
+
+            bool isModEnabled(string modName)
+            {
+                foreach (Mod mod in Main.moddingAPI.GetMods())
+                {
+                    if (mod.ModName == modName)
+                        return true;
+                }
+                return false;
+            }
         }
 
         internal string[] loadLocalization()
