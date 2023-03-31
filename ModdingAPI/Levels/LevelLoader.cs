@@ -265,7 +265,7 @@ namespace ModdingAPI.Levels
         {
             GameObject newItem = CreateBaseObject(ObjectType.Chest, obj, "Chest " + obj.Id);
 
-            newItem.GetComponent<UniqueId>().uniqueId = "Chest-" + obj.Id;
+            newItem.GetComponent<UniqueId>().uniqueId = "CHEST-" + obj.Id;
             InteractableInvAdd addComponent = newItem.GetComponent<InteractableInvAdd>();
             addComponent.item = obj.Id;
             addComponent.itemType = ItemModder.GetItemTypeFromId(obj.Id);
@@ -273,7 +273,7 @@ namespace ModdingAPI.Levels
 
         private void CreateSpikes(AddedObject obj)
         {
-            GameObject spikes = CreateBaseObject(ObjectType.Spikes, obj, "Spikes " + obj.Id);
+            GameObject spikes = CreateBaseObject(ObjectType.Spikes, obj, "Spikes");
             if (obj.FacingDirection)
                 spikes.GetComponent<SpriteRenderer>().flipX = true;
             if (obj.XSize > 0 && obj.YSize > 0)
