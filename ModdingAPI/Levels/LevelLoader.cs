@@ -258,7 +258,7 @@ namespace ModdingAPI.Levels
             newItem.GetComponent<UniqueId>().uniqueId = "ITEM-PICKUP-" + obj.Id;
             InteractableInvAdd addComponent = newItem.GetComponent<InteractableInvAdd>();
             addComponent.item = obj.Id;
-            addComponent.itemType = GetItemType(obj.Id);
+            addComponent.itemType = ItemModder.GetItemTypeFromId(obj.Id);
         }
 
         private void CreateChest(AddedObject obj)
@@ -268,7 +268,7 @@ namespace ModdingAPI.Levels
             newItem.GetComponent<UniqueId>().uniqueId = "Chest-" + obj.Id;
             InteractableInvAdd addComponent = newItem.GetComponent<InteractableInvAdd>();
             addComponent.item = obj.Id;
-            addComponent.itemType = GetItemType(obj.Id);
+            addComponent.itemType = ItemModder.GetItemTypeFromId(obj.Id);
         }
 
         private void CreateSpikes(AddedObject obj)
@@ -283,24 +283,6 @@ namespace ModdingAPI.Levels
         #endregion Creating Objects
 
         #region Helpers
-
-        private InventoryManager.ItemType GetItemType(string id)
-        {
-            if (id != null && id.Length >= 2)
-            {
-                switch (id.Substring(0, 2))
-                {
-                    case "RB": return InventoryManager.ItemType.Bead;
-                    case "PR": return InventoryManager.ItemType.Prayer;
-                    case "RE": return InventoryManager.ItemType.Relic;
-                    case "HE": return InventoryManager.ItemType.Sword;
-                    case "QI": return InventoryManager.ItemType.Quest;
-                    case "CO": return InventoryManager.ItemType.Collectible;
-                }
-            }
-            Main.LogError(Main.MOD_NAME, "Could not determine item type for " + id);
-            return InventoryManager.ItemType.Bead;
-        }
 
         private bool GetTypeFromObject(AddedObject obj, out ObjectType type)
         {

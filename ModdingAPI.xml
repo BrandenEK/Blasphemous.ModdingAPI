@@ -207,6 +207,30 @@
             <param name="useRawInput">Whether to use the raw axis data</param>
             <returns>The axis status</returns>
         </member>
+        <member name="T:ModdingAPI.ItemModder">
+            <summary>
+            A collection of methods used to work with items
+            </summary>
+        </member>
+        <member name="M:ModdingAPI.ItemModder.GetItemTypeFromId(System.String)">
+            <summary>
+            Gets the item type based off of the item's prefix
+            </summary>
+            <param name="id">The id of the item</param>
+            <returns>The type of the item</returns>
+        </member>
+        <member name="M:ModdingAPI.ItemModder.AddAndDisplayItem(System.String)">
+            <summary>
+            Adds an item to the inventory, or tears if it is already owned, and displays the item
+            </summary>
+            <param name="itemId">The id of the item to add</param>
+        </member>
+        <member name="M:ModdingAPI.ItemModder.RemoveAndDisplayItem(System.String)">
+            <summary>
+            Removes an item from the inventory, and displays the item if it was previously owned
+            </summary>
+            <param name="itemId">The id of the item to remove</param>
+        </member>
         <member name="T:ModdingAPI.Items.ModItem">
             <summary>
             An abstract representation of a custom item
