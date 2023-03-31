@@ -23,13 +23,7 @@ namespace ModdingAPI.Levels
                         if (DisabledObjects.Decoration == null)
                             DisabledObjects.Decoration = other.DisabledObjects.Decoration;
                         else
-                        {
-                            foreach (string otherObject in other.DisabledObjects.Decoration)
-                            {
-                                if (!DisabledObjects.Decoration.Contains(otherObject))
-                                    DisabledObjects.Decoration.Add(otherObject);
-                            }
-                        }
+                            DisabledObjects.Decoration.AddRange(other.DisabledObjects.Decoration);
                     }
                     // Add disabled layout objects
                     if (other.DisabledObjects.Layout != null)
@@ -37,13 +31,7 @@ namespace ModdingAPI.Levels
                         if (DisabledObjects.Layout == null)
                             DisabledObjects.Layout = other.DisabledObjects.Layout;
                         else
-                        {
-                            foreach (string otherObject in other.DisabledObjects.Layout)
-                            {
-                                if (!DisabledObjects.Layout.Contains(otherObject))
-                                    DisabledObjects.Layout.Add(otherObject);
-                            }
-                        }
+                            DisabledObjects.Layout.AddRange(other.DisabledObjects.Layout);
                     }
                     // Add disabled logic objects
                     if (other.DisabledObjects.Logic != null)
@@ -51,13 +39,7 @@ namespace ModdingAPI.Levels
                         if (DisabledObjects.Logic == null)
                             DisabledObjects.Logic = other.DisabledObjects.Logic;
                         else
-                        {
-                            foreach (string otherObject in other.DisabledObjects.Logic)
-                            {
-                                if (!DisabledObjects.Logic.Contains(otherObject))
-                                    DisabledObjects.Logic.Add(otherObject);
-                            }
-                        }
+                            DisabledObjects.Logic.AddRange(other.DisabledObjects.Logic);
                     }
                 }
             }
@@ -68,13 +50,7 @@ namespace ModdingAPI.Levels
                 if (AddedObjects == null)
                     AddedObjects = other.AddedObjects;
                 else
-                {
-                    foreach (AddedObject otherObj in other.AddedObjects)
-                    {
-                        if (!AddedObjects.Contains(otherObj))
-                            AddedObjects.Add(otherObj);
-                    }
-                }
+                    AddedObjects.AddRange(other.AddedObjects);
             }
         }
     }
@@ -99,15 +75,15 @@ namespace ModdingAPI.Levels
         public float Rotation { get; set; }
         public bool FacingDirection { get; set; }
 
-        public override bool Equals(object obj)
-        {
-            AddedObject addedObject = (AddedObject)obj;
-            return Type == addedObject.Type && Id == addedObject.Id;
-        }
+        //public override bool Equals(object obj)
+        //{
+        //    AddedObject addedObject = (AddedObject)obj;
+        //    return Type == addedObject.Type && Id == addedObject.Id;
+        //}
 
-        public override int GetHashCode()
-        {
-            return (Type.ToString() + Id).GetHashCode();
-        }
+        //public override int GetHashCode()
+        //{
+        //    return (Type.ToString() + Id).GetHashCode();
+        //}
     }
 }
