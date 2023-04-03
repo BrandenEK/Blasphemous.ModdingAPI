@@ -131,7 +131,7 @@ ExampleMod.zip
 
 ### The Mod Class
 
-Every mod should derive from this class, as it has many useful features and handles most of the repitive parts of the code.  When calling the the constructor for this class, the modding api automatically registers the mod and patches all harmony functions in its assembly.
+Every mod should derive from this class, as it has many useful features and handles most of the repitive parts of the code.  When calling the constructor for this class, the modding api automatically registers the mod and patches all harmony functions in its assembly.
 
 ```cs
 public class Example : Mod
@@ -260,7 +260,7 @@ public class Example : PersistentMod
         // Called whenever game data is reset
     }
 
-    public abstract void NewGame()
+    public abstract void NewGame(bool NGPlus)
     {
         // Called whenever a new save game is started
     }
@@ -343,6 +343,50 @@ public class ExampleCommand : ModCommand
 
 ### Custom Penitences
 
+If you want to add a custom penitence that can be chosen from the penitence selector, all you have to do is fill out its data and register it in the mod's Initialize function.  Generally you will just want to set a flag in its Activate/Deactivate methods and handle the functionality elsewhere.
+
+Penitence class:
+```cs
+public class PenitenceExample : ModPenitence
+{
+    // The unique id of the penitence - Should start with "PE_"
+    protected override string Id => "PE_EXAMPLE";
+
+    // The display name of the penitence
+    protected override string Name => "Example Name";
+
+    // The description of the penitence
+    protected override string Description => "Example Description";
+
+    // The item to give when completing the penitence, or null if no item should be given
+    protected override string ItemIdToGive => "RB999";
+
+    // The type of the item to give for completing the penitence
+    protected override InventoryManager.ItemType ItemTypeToGive => InventoryManager.ItemType.Bead;
+
+    protected override void Activate()
+    {
+        // Set flag the penitence is active
+    }
+
+    protected override void Deactivate()
+    {
+        // Unset flag that the penitence is active
+    }
+
+    protected override void LoadImages(out Sprite inProgress, out Sprite completed, out Sprite abandoned, out Sprite gameplay, out Sprite chooseSelected, out Sprite chooseUnselected)
+    {
+        // Load all of the images and set them here
+    }
+```
+
+Mod class:
+```cs
+protected override void Initialize()
+{
+    RegisterPenitence(new PenitenceExample());
+}
+```
 
 ### Custom Items
 
