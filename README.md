@@ -244,9 +244,6 @@ public class Example : Mod
         {
             LogError("Enemy names could not be loaded!");
         }
-        
-        // Write to the log file
-        FileUtil.appendLog("Initialization complete");
     }
 }
 
@@ -458,7 +455,7 @@ public class BeadExample : ModRosaryBead
     protected override string Id => "RB999";
 
     // The name of the item
-    protected override string Name => "Example Bead;
+    protected override string Name => "Example Bead";
 
     // The description of the item
     protected override string Description => "Example description";
@@ -472,7 +469,7 @@ public class BeadExample : ModRosaryBead
     // Whether or not the item will add percent completion to the save file
     protected override bool AddToPercentCompletion => false;
 
-    // Whether or not an extra item slot should be added to the inventory for this tiems
+    // Whether or not an extra item slot should be added to the inventory for this item
     protected override bool AddInventorySlot => true;
 
     // Whether or not the item should be given when starting a new save file
@@ -480,7 +477,7 @@ public class BeadExample : ModRosaryBead
 
     protected override void LoadImages(out Sprite picture)
     {
-        // Load the item image and set it here
+        // Load the item image using the FileUtil and set it here
     }
 }
 ```
@@ -493,7 +490,7 @@ public class ExampleEffect : ModItemEffectOnEquip
 {
     protected override void ApplyEffect()
     {
-        // Set the active to true
+        // Set the active flag to true
     }
 
     protected override void RemoveEffect()
@@ -513,6 +510,22 @@ protected override void Initialize()
 
 ### Level Modifications
 
+Level modifications, including removing, changing, or adding objects to/from a scene can be accomplished by creating a level file and placing it in the levels directory.  Currently, the only objects that can be added are CollectibleItems, Chests, and Spikes; however, any object already in a scene can be easily disabled.
+
+levels/D17Z01S02.json:
+```
+{
+    "AddedObjects":
+    [
+        {
+            "Type": "Chest",
+            "Id": "PR999",
+            "XPos": -923.5,
+            "YPos": 6
+        }
+    ]
+}
+```
 
 ### Harmony Patching
 
