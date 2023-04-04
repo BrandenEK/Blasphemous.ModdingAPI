@@ -133,6 +133,7 @@ ExampleMod.zip
 
 Every mod should derive from this class, as it has many useful features and handles most of the repitive parts of the code.  When calling the constructor for this class, the modding api automatically registers the mod and patches all harmony functions in its assembly.
 
+Mod class structure:
 ```cs
 public class Example : Mod
 {
@@ -167,6 +168,26 @@ public class Example : Mod
     {
         // Called right before a scene is unloaded
     }
+}
+```
+
+The mod class also has a public property for checking player input.
+```cs
+protected override void Update()
+{
+    if (Input.GetButtonDown(InputHandler.ButtonCode.Jump))
+    {
+        // Executes whenever the jump button is pressed	
+    }
+}
+```
+
+The mod class also has a public method for checking whether another mod is installed or not.
+```cs
+protected override void Initialize()
+{
+    if (IsModLoaded("com.damocles.blasphemous.randomizer"))
+        LogWarning("The randomizer mod is active!");
 }
 ```
 
