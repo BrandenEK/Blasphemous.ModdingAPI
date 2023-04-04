@@ -22,6 +22,7 @@
   - [The Mod Class](https://github.com/BrandenEK/Blasphemous-Modding-API#the-mod-class)
   - [Logging](https://github.com/BrandenEK/Blasphemous-Modding-API#logging)
   - [File Utility](https://github.com/BrandenEK/Blasphemous-Modding-API#file-utility)
+  - [Localization](https://github.com/BrandenEK/Blasphemous-Modding-API#localization)
   - [Persistent Data](https://github.com/BrandenEK/Blasphemous-Modding-API#persistent-data)
   - [Commands](https://github.com/BrandenEK/Blasphemous-Modding-API#commands)
   - [Custom Penitences](https://github.com/BrandenEK/Blasphemous-Modding-API#custom-penitences)
@@ -172,7 +173,7 @@ public class Example : Mod
 
 ### Logging
 
-Every mod has public methods for logging messages to the unity console.  There is a separate one for logging messages, warnings, and errors.
+Every mod has public methods for logging messages to the unity console.  There is a separate one for logging messages, warnings, and errors.  You can also display text directly to the user with the LogDisplay method.
 
 ```cs
 public class Example : Mod
@@ -193,6 +194,8 @@ public class Example : Mod
         {
             LogError("This is an error");
         }
+		
+        LogDisplay("You have entered a new scene: " + newLevel);
     }
 }
 ```
@@ -232,6 +235,33 @@ public class ExampleConfig
     public int numberSetting;
     public string textSetting;
 }
+```
+
+### Localization
+
+To translate your mod into different languages, you just have to include a text file in the localization directory.  In the code for the mod, instead of directly referencing a string, you can instead call the main mod's Localize method to convert a key term into whatever the game's current language is.
+
+Mod class:
+```cs
+protected override void LevelLoaded(string oldLevel, string newLevel)
+{
+    if (newLevel == "D08Z01S01")
+    {
+        LogDisplay(Localize("bridge"));
+    }
+}
+```
+
+Localization/ModName.txt:
+```
+lang: en
+bridge: English text
+
+lang: es
+bridge: Spanish text
+
+lang: de
+bridge: German text
 ```
 
 ### Persistent Data
@@ -376,8 +406,9 @@ public class PenitenceExample : ModPenitence
 
     protected override void LoadImages(out Sprite inProgress, out Sprite completed, out Sprite abandoned, out Sprite gameplay, out Sprite chooseSelected, out Sprite chooseUnselected)
     {
-        // Load all of the images and set them here
+        // Load all of the images using the FileUtil and set them here
     }
+}
 ```
 
 Mod class:
