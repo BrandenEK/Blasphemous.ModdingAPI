@@ -402,34 +402,34 @@ using ModdingAPI.Items
 
 public class BeadExample : ModRosaryBead
 {
-	// The unique id of the item.  Must start with the appropriate prefix followed by a number
-	protected override string Id => "RB999";
+    // The unique id of the item.  Must start with the appropriate prefix followed by a number
+    protected override string Id => "RB999";
 
-	// The name of the item
-	protected override string Name => "Example Bead;
+    // The name of the item
+    protected override string Name => "Example Bead;
 
-	// The description of the item
-	protected override string Description => "Example description";
+    // The description of the item
+    protected override string Description => "Example description";
 
-	// The lore of the item
-	protected override string Lore => "Example lore";
+    // The lore of the item
+    protected override string Lore => "Example lore";
 
-	// Whether or not the item should be kept when moving to NG+
-	protected override bool PreserveInNGPlus => true;
+    // Whether or not the item should be kept when moving to NG+
+    protected override bool PreserveInNGPlus => true;
 
-	// Whether or not the item will add percent completion to the save file
-	protected override bool AddToPercentCompletion => false;
+    // Whether or not the item will add percent completion to the save file
+    protected override bool AddToPercentCompletion => false;
 
-	// Whether or not an extra item slot should be added to the inventory for this tiems
-	protected override bool AddInventorySlot => true;
+    // Whether or not an extra item slot should be added to the inventory for this tiems
+    protected override bool AddInventorySlot => true;
 
-	// Whether or not the item should be given when starting a new save file
-	protected override bool CarryOnStart => false;
+    // Whether or not the item should be given when starting a new save file
+    protected override bool CarryOnStart => false;
 
-	protected override void LoadImages(out Sprite picture)
-	{
-		// Load the item image and set it here
-	}
+    protected override void LoadImages(out Sprite picture)
+    {
+        // Load the item image and set it here
+    }
 }
 ```
 
@@ -439,15 +439,15 @@ using ModdingAPI.Items;
 
 public class ExampleEffect : ModItemEffectOnEquip
 {
-	protected override void ApplyEffect()
-	{
-		// Set the active to true
-	}
+    protected override void ApplyEffect()
+    {
+        // Set the active to true
+    }
 
-	protected override void RemoveEffect()
-	{
-		// Set the active flag to false
-	}
+    protected override void RemoveEffect()
+    {
+        // Set the active flag to false
+    }
 }
 ```
 
@@ -464,7 +464,7 @@ protected override void Initialize()
 
 ### Harmony Patching
 
-Most mods will want to patch game functions with harmony.  The actual patching is already handled by the modding api, so all the mod has to do is create the patch functions.  Refer to the harmony docs on how to implement patches: ***Link to harmony***.
+Most mods will want to patch game functions with harmony.  The actual patching is already handled by the modding api, so all the mod has to do is create the patch functions.  Refer to the harmony docs on how to implement patches: https://harmony.pardeike.net/articles/patching.html
 
 ## Examples
 
@@ -509,7 +509,7 @@ namespace ExampleMod
     public class Example : PersistentMod
     {
         public Example(string modId, string modName, string modVersion) : base(modId, modName, modVersion) { }
-	
+    
         protected override void Initialize()
         {
             Log("Example Mod has been initialized!");
