@@ -347,6 +347,8 @@ If you want to add a custom penitence that can be chosen from the penitence sele
 
 Penitence class:
 ```cs
+using ModdingAPI.Penitences
+
 public class PenitenceExample : ModPenitence
 {
     // The unique id of the penitence - Should start with "PE_"
@@ -390,6 +392,72 @@ protected override void Initialize()
 
 ### Custom Items
 
+To add a custom item into the game, all you have to do is fill out its data and register it in the mod's Initialize function.  However, to make the item actually do something when equipped or used, you will also want to add an item effect to it.
+
+There are a few different methods of giving the player the custom item, you can either set the CarryOnStart property to true, add an interactable item pickup to a scene using the level editor, or use the ItemModder class to give and display the item.
+
+Item class:
+```cs
+using ModdingAPI.Items
+
+public class BeadExample : ModRosaryBead
+{
+	// The unique id of the item.  Must start with the appropriate prefix followed by a number
+	protected override string Id => "RB999";
+
+	// The name of the item
+	protected override string Name => "Example Bead;
+
+	// The description of the item
+	protected override string Description => "Example description";
+
+	// The lore of the item
+	protected override string Lore => "Example lore";
+
+	// Whether or not the item should be kept when moving to NG+
+	protected override bool PreserveInNGPlus => true;
+
+	// Whether or not the item will add percent completion to the save file
+	protected override bool AddToPercentCompletion => false;
+
+	// Whether or not an extra item slot should be added to the inventory for this tiems
+	protected override bool AddInventorySlot => true;
+
+	// Whether or not the item should be given when starting a new save file
+	protected override bool CarryOnStart => false;
+
+	protected override void LoadImages(out Sprite picture)
+	{
+		// Load the item image and set it here
+	}
+}
+```
+
+Item Effect class:
+```cs
+using ModdingAPI.Items;
+
+public class ExampleEffect : ModItemEffectOnEquip
+{
+	protected override void ApplyEffect()
+	{
+		// Set the active to true
+	}
+
+	protected override void RemoveEffect()
+	{
+		// Set the active flag to false
+	}
+}
+```
+
+Mod class:
+```cs
+protected override void Initialize()
+{
+    RegisterItem(new BeadExample().AddEffect<ExampleEffect>());
+}
+```
 
 ### Level Modifications
 
