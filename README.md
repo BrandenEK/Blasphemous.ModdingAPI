@@ -134,6 +134,7 @@ ExampleMod.zip
 
 Every mod should derive from this class, as it has many useful features and handles most of the repitive parts of the code.  When calling the constructor for this class, the modding api automatically registers the mod and patches all harmony functions in its assembly.
 
+Mod class structure:
 ```cs
 public class Example : Mod
 {
@@ -168,6 +169,26 @@ public class Example : Mod
     {
         // Called right before a scene is unloaded
     }
+}
+```
+
+The mod class also has a public property for checking player input.
+```cs
+protected override void Update()
+{
+    if (Input.GetButtonDown(InputHandler.ButtonCode.Jump))
+    {
+        // Executes whenever the jump button is pressed	
+    }
+}
+```
+
+The mod class also has a public method for checking whether another mod is installed or not.
+```cs
+protected override void Initialize()
+{
+    if (IsModLoaded("com.damocles.blasphemous.randomizer"))
+        LogWarning("The randomizer mod is active!");
 }
 ```
 
@@ -377,6 +398,8 @@ If you want to add a custom penitence that can be chosen from the penitence sele
 
 Penitence class:
 ```cs
+using ModdingAPI.Penitences
+
 public class PenitenceExample : ModPenitence
 {
     // The unique id of the penitence - Should start with "PE_"
@@ -421,13 +444,79 @@ protected override void Initialize()
 
 ### Custom Items
 
+To add a custom item into the game, all you have to do is fill out its data and register it in the mod's Initialize function.  However, to make the item actually do something when equipped or used, you will also want to add an item effect to it.
+
+There are a few different methods of giving the player the custom item, you can either set the CarryOnStart property to true, add an interactable item pickup to a scene using the level editor, or use the ItemModder class to give and display the item.
+
+Item class:
+```cs
+using ModdingAPI.Items
+
+public class BeadExample : ModRosaryBead
+{
+    // The unique id of the item.  Must start with the appropriate prefix followed by a number
+    protected override string Id => "RB999";
+
+    // The name of the item
+    protected override string Name => "Example Bead;
+
+    // The description of the item
+    protected override string Description => "Example description";
+
+    // The lore of the item
+    protected override string Lore => "Example lore";
+
+    // Whether or not the item should be kept when moving to NG+
+    protected override bool PreserveInNGPlus => true;
+
+    // Whether or not the item will add percent completion to the save file
+    protected override bool AddToPercentCompletion => false;
+
+    // Whether or not an extra item slot should be added to the inventory for this tiems
+    protected override bool AddInventorySlot => true;
+
+    // Whether or not the item should be given when starting a new save file
+    protected override bool CarryOnStart => false;
+
+    protected override void LoadImages(out Sprite picture)
+    {
+        // Load the item image and set it here
+    }
+}
+```
+
+Item Effect class:
+```cs
+using ModdingAPI.Items;
+
+public class ExampleEffect : ModItemEffectOnEquip
+{
+    protected override void ApplyEffect()
+    {
+        // Set the active to true
+    }
+
+    protected override void RemoveEffect()
+    {
+        // Set the active flag to false
+    }
+}
+```
+
+Mod class:
+```cs
+protected override void Initialize()
+{
+    RegisterItem(new BeadExample().AddEffect<ExampleEffect>());
+}
+```
 
 ### Level Modifications
 
 
 ### Harmony Patching
 
-Most mods will want to patch game functions with harmony.  The actual patching is already handled by the modding api, so all the mod has to do is create the patch functions.  Refer to the harmony docs on how to implement patches: ***Link to harmony***.
+Most mods will want to patch game functions with harmony.  The actual patching is already handled by the modding api, so all the mod has to do is create the patch functions.  Refer to the harmony docs on how to implement patches: https://harmony.pardeike.net/articles/patching.html
 
 ## Examples
 
@@ -472,7 +561,7 @@ namespace ExampleMod
     public class Example : PersistentMod
     {
         public Example(string modId, string modName, string modVersion) : base(modId, modName, modVersion) { }
-	
+    
         protected override void Initialize()
         {
             Log("Example Mod has been initialized!");
