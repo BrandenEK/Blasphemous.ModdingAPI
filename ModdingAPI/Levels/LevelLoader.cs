@@ -110,6 +110,14 @@ namespace ModdingAPI.Levels
             {
                 yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.Chest, "D20Z02S02_LOGIC", "ACT_Wooden Chest"));
             }
+            if (necessaryObjects.Contains(ObjectType.Platform))
+            {
+                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.Platform, "D05Z02S12_LOGIC", "LOGIC/INTERACTABLES/{0}"));
+            }
+            if (necessaryObjects.Contains(ObjectType.Lantern))
+            {
+                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.Lantern, "D20Z01S02_LOGIC", "LOGIC/INTERACTABLES/Chain Hook"));
+            }
 
             // Fix camera after scene loads
             Camera.main.transform.position = new Vector3(0, 0, -10);
@@ -229,15 +237,11 @@ namespace ModdingAPI.Levels
         {
             switch (objectType)
             {
-                case ObjectType.CollectibleItem:
-                    CreateCollectibleItem(obj);
-                    break;
-                case ObjectType.Chest:
-                    CreateChest(obj);
-                    break;
-                case ObjectType.Spikes:
-                    CreateSpikes(obj);
-                    break;
+                case ObjectType.CollectibleItem: CreateCollectibleItem(obj); break;
+                case ObjectType.Chest: CreateChest(obj); break;
+                case ObjectType.Spikes: CreateSpikes(obj); break;
+                case ObjectType.Platform: CreatePlatform(obj); break;
+                case ObjectType.Lantern: CreateLantern(obj); break;
             }
         }
 
@@ -278,6 +282,16 @@ namespace ModdingAPI.Levels
                 spikes.GetComponent<SpriteRenderer>().flipX = true;
             if (obj.XSize > 0 && obj.YSize > 0)
                 spikes.GetComponent<BoxCollider2D>().size = new Vector2(obj.XSize, obj.YSize);
+        }
+
+        private void CreatePlatform(AddedObject obj)
+        {
+            CreateBaseObject(ObjectType.Platform, obj, "Platform");
+        }
+
+        private void CreateLantern(AddedObject obj)
+        {
+            CreateBaseObject(ObjectType.Lantern, obj, "Lantern");
         }
 
         #endregion Creating Objects
