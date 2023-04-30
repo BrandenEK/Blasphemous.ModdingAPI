@@ -24,7 +24,6 @@ namespace ModdingAPI.Levels
             if (!LevelLoader.SettingBloodPlatforms)
                 return true;
 
-            Main.LogError(Main.MOD_NAME, "Setting fiath platofm prpos!");
             ___firstPlatform = LevelLoader.BloodFirst;
             ___target = LevelLoader.BloodObjects;
             return false;
