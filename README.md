@@ -509,7 +509,18 @@ protected override void Initialize()
 
 ### Level Modifications
 
-Level modifications, including removing, changing, or adding objects to/from a scene can be accomplished by creating a level file and placing it in the levels directory.  Currently, the only objects that can be added are CollectibleItems, Chests, and Spikes; however, any object already in a scene can be easily disabled.
+Level modifications, including removing, changing, or adding objects to/from a scene can be accomplished by creating a level file and placing it in the levels directory.  Not all objects can be added to a scene; however, any object already in a scene can be easily disabled.
+<br>
+Supported objects:
+- CollectibleItem
+- SwordHeartItem
+- ChestIron
+- ChestGold
+- ChestRelic
+- PlatformWood
+- PlatformBlood
+- Lantern
+- Spikes
 
 levels/D17Z01S02.json:
 ```
@@ -517,7 +528,7 @@ levels/D17Z01S02.json:
     "AddedObjects":
     [
         {
-            "Type": "Chest",
+            "Type": "ChestGold",
             "Id": "PR999",
             "XPos": -923.5,
             "YPos": 6
