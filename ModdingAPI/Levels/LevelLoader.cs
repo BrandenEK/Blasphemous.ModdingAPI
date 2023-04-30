@@ -93,10 +93,9 @@ namespace ModdingAPI.Levels
 
             // Items
             if (necessaryObjects.Contains(ObjectType.CollectibleItem))
-            {
                 yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.CollectibleItem, "D02Z02S14_LOGIC", "LOGIC/INTERACTABLES/ACT_Collectible"));
-            }
-            // sword heart
+            if (necessaryObjects.Contains(ObjectType.SwordHeartItem))
+                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.SwordHeartItem, "D06Z01S22_LOGIC", "LOGIC/INTERACTABLES"));
 
             // Chests
             if (necessaryObjects.Contains(ObjectType.ChestIron))
@@ -248,6 +247,7 @@ namespace ModdingAPI.Levels
             switch (objectType)
             {
                 case ObjectType.CollectibleItem: CreateCollectibleItem(obj); break;
+                case ObjectType.SwordHeartItem: CreateSwordHeartItem(obj); break;
                 case ObjectType.ChestIron:
                 case ObjectType.ChestGold:
                 case ObjectType.ChestRelic:
@@ -278,6 +278,23 @@ namespace ModdingAPI.Levels
             InteractableInvAdd addComponent = newItem.GetComponent<InteractableInvAdd>();
             addComponent.item = obj.Id;
             addComponent.itemType = ItemModder.GetItemTypeFromId(obj.Id);
+        }
+
+        private void CreateSwordHeartItem(AddedObject obj)
+        {
+            GameObject newObj = CreateBaseObject(ObjectType.SwordHeartItem, obj, "SwordHeart Shrine " + obj.Id);
+
+            GameObject item = newObj.transform.GetChild(0).gameObject;
+            item.transform.localPosition = new Vector3(obj.FacingDirection ? 1 : -1, 1, 0);
+            item.GetComponent<UniqueId>().uniqueId = "Sword-Heart-Shrine-" + obj.Id;
+            InteractableInvAdd addComponent = item.GetComponent<InteractableInvAdd>();
+            addComponent.item = obj.Id;
+            addComponent.itemType = ItemModder.GetItemTypeFromId(obj.Id);
+
+            GameObject shrine = newObj.transform.GetChild(1).gameObject;
+            shrine.transform.localPosition = Vector3.zero;
+            if (!obj.FacingDirection)
+                shrine.GetComponent<SpriteRenderer>().flipX = true;
         }
 
         private void CreateChest(AddedObject obj, ObjectType type)

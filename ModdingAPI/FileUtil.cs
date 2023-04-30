@@ -32,7 +32,6 @@ namespace ModdingAPI
         {
             Directory.CreateDirectory(Path.GetFullPath("Modding\\config\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\data\\"));
-            Directory.CreateDirectory(Path.GetFullPath("Modding\\docs\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\levels\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\localization\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\logs\\"));
