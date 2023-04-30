@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Tools.Level.Actionables;
 using Framework.Managers;
 using Framework.Inventory;
 using Framework.Util;
@@ -105,10 +106,13 @@ namespace ModdingAPI.Levels
             if (necessaryObjects.Contains(ObjectType.ChestRelic))
                 yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.ChestRelic, "D17BZ01S01_LOGIC", "LOGIC/INTERACTABLES/ACT_Relicarium"));
 
-            // Rooms
+            // Platforms
             if (necessaryObjects.Contains(ObjectType.PlatformWood))
                 yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.PlatformWood, "D05Z02S12_LOGIC", "LOGIC/INTERACTABLES/{0}"));
-            // other platforms
+            if (necessaryObjects.Contains(ObjectType.PlatformBlood))
+                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.PlatformBlood, "D17Z01S10_LOGIC", "LOGIC/INTERACTABLES/{0}"));
+
+            // Room objects
             if (necessaryObjects.Contains(ObjectType.Lantern))
                 yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.Lantern, "D20Z01S02_LOGIC", "LOGIC/INTERACTABLES/Chain Hook"));
             if (necessaryObjects.Contains(ObjectType.Spikes))
@@ -248,9 +252,11 @@ namespace ModdingAPI.Levels
                 case ObjectType.ChestGold:
                 case ObjectType.ChestRelic:
                     CreateChest(obj, objectType); break;
+
+                case ObjectType.PlatformWood: CreateBaseObject(ObjectType.PlatformWood, obj, "Platform"); break;
+                case ObjectType.PlatformBlood: CreateBloodPlatform(obj); break;
+                case ObjectType.Lantern: CreateBaseObject(ObjectType.Lantern, obj, "Lantern"); break;
                 case ObjectType.Spikes: CreateSpikes(obj); break;
-                case ObjectType.PlatformWood: CreatePlatform(obj); break;
-                case ObjectType.Lantern: CreateLantern(obj); break;
             }
         }
 
@@ -293,15 +299,27 @@ namespace ModdingAPI.Levels
                 spikes.GetComponent<BoxCollider2D>().size = new Vector2(obj.XSize, obj.YSize);
         }
 
-        private void CreatePlatform(AddedObject obj)
+        private void CreateBloodPlatform(AddedObject obj)
         {
-            CreateBaseObject(ObjectType.PlatformWood, obj, "Platform");
+            // Must be added in reverse order so that previous platforms can reference their new ones
+            GameObject platform = CreateBaseObject(ObjectType.PlatformBlood, obj, obj.Id);
+            FaithPlatform faith = platform.GetComponent<FaithPlatform>();
+            if (faith == null) return;
+
+            SettingBloodPlatforms = true;
+            BloodFirst = obj.FacingDirection;
+            string[] faithIds = obj.ExtraData.Split(',');
+            BloodObjects = new GameObject[faithIds.Length];
+            for (int i = 0; i < faithIds.Length; i++)
+            {
+                Transform targetPlatform = CurrentObjectHolder.Find(faithIds[i]);
+                if (targetPlatform != null)
+                    BloodObjects[i] = targetPlatform.gameObject;
+            }
+            faith.Use();
+            SettingBloodPlatforms = false;
         }
 
-        private void CreateLantern(AddedObject obj)
-        {
-            CreateBaseObject(ObjectType.Lantern, obj, "Lantern");
-        }
 
         #endregion Creating Objects
 
@@ -323,5 +341,9 @@ namespace ModdingAPI.Levels
         }
 
         #endregion Helpers
+
+        public static bool SettingBloodPlatforms { get; private set; }
+        public static GameObject[] BloodObjects { get; private set; }
+        public static bool BloodFirst { get; private set; }
     }
 }

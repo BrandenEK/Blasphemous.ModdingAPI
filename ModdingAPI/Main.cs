@@ -14,7 +14,7 @@ namespace ModdingAPI
     {
         public const string MOD_ID = "com.damocles.blasphemous.modding-api";
         public const string MOD_NAME = "Modding API";
-        public const string MOD_VERSION = "1.3.3";
+        public const string MOD_VERSION = "1.3.4";
 
         internal static ModdingAPI moddingAPI;
         private static Dictionary<string, BepInEx.Logging.ManualLogSource> loggers;
