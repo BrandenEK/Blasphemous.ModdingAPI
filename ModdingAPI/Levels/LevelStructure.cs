@@ -74,6 +74,7 @@ namespace ModdingAPI.Levels
         public float YSize { get; set; }
         public float Rotation { get; set; }
         public bool FacingDirection { get; set; }
+        public string Condition { get; set; }
         public string ExtraData { get; set; }
 
         //public override bool Equals(object obj)

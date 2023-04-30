@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using Tools.Level.Actionables;
 using Framework.Managers;
 using Framework.Inventory;
+using Framework.Penitences;
 using Framework.Util;
 
 namespace ModdingAPI.Levels
@@ -40,7 +41,7 @@ namespace ModdingAPI.Levels
                 foreach (AddedObject obj in levelModification.AddedObjects)
                 {
                     // Calculate object type and make sure that object has been loaded
-                    if (GetTypeFromObject(obj, out ObjectType objectType) && LoadedObjects.ContainsKey(objectType))
+                    if (GetTypeFromObject(obj, out ObjectType objectType) && LoadedObjects.ContainsKey(objectType) && CheckCondition(obj.Condition))
                         CreateNewObject(objectType, obj);
                 }
             }
@@ -69,6 +70,25 @@ namespace ModdingAPI.Levels
                 LoadedObjects = new Dictionary<ObjectType, GameObject>();
                 Main.Instance.StartCoroutine(LoadRequiredItems());
             }
+        }
+
+        private bool CheckCondition(string condition)
+        {
+            if (condition == null) return true;
+            int colon = condition.IndexOf(':');
+            string conditionType = condition.Substring(0, colon);
+            string conditionValue = condition.Substring(colon + 1);
+
+            if (conditionType == "flag")
+            {
+                return Core.Events.GetFlag(conditionValue);
+            }
+            if (conditionType == "penitence")
+            {
+                IPenitence penitence = Core.PenitenceManager.GetCurrentPenitence();
+                return penitence != null && penitence.Id == conditionValue;
+            }
+            return true;
         }
 
         #region Loading Objects
