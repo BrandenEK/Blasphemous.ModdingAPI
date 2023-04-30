@@ -104,7 +104,17 @@ namespace ModdingAPI
         }
 
         /// <summary>
-        /// Called when a scene is loaded by the modding API
+        /// Called when a scene is preloaded by the Modding API
+        /// </summary>
+        /// <param name="oldLevel">The name of the old level</param>
+        /// <param name="newLevel">The name of the new level</param>
+        protected internal virtual void LevelPreloaded(string oldLevel, string newLevel)
+        {
+
+        }
+
+        /// <summary>
+        /// Called when a scene is loaded by the Modding API
         /// </summary>
         /// <param name="oldLevel">The name of the old level</param>
         /// <param name="newLevel">The name of the new level</param>
@@ -114,7 +124,7 @@ namespace ModdingAPI
         }
 
         /// <summary>
-        /// Called when a scene is unloaded by the modding API
+        /// Called when a scene is unloaded by the Modding API
         /// </summary>
         /// <param name="oldLevel">The name of the old level</param>
         /// <param name="newLevel">The name of the new level</param>

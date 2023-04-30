@@ -101,6 +101,12 @@ namespace ModdingAPI
 
         public void LevelPreLoaded(Level oldLevel, Level newLevel)
         {
+            string oLevel = oldLevel == null ? string.Empty : oldLevel.LevelName, nLevel = newLevel == null ? string.Empty : newLevel.LevelName;
+            for (int i = 0; i < mods.Count; i++)
+            {
+                mods[i].LevelPreloaded(oLevel, nLevel);
+            }
+
             LevelLoader.LevelPreLoaded(newLevel.LevelName);
         }
 
