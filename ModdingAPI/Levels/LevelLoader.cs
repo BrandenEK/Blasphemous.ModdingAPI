@@ -10,7 +10,7 @@ namespace ModdingAPI.Levels
 {
     internal class LevelLoader
     {
-        private enum ObjectType { Nothing, CollectibleItem, Chest, PrieDieu, Lever, Gate, Platform, Ladder, Lantern, Spikes, BloodFloor, RootWall, Enemy, Trap }
+        private enum ObjectType { Nothing, CollectibleItem, SwordHeartItem, ChestIron, ChestGold, ChestRelic, Spikes, Lantern, PlatformWood, PlatformStone, PlatformBlood,    PrieDieu, Lever, Gate, Ladder, RootWall, Enemy, Trap }
 
         public bool InLoadProcess { get; private set; }
         private Transform CurrentObjectHolder { get; set; } // Only accessed when adding objects, so always set when loading scene with objects to add
@@ -89,10 +89,28 @@ namespace ModdingAPI.Levels
             }
 
             // Load any necessary objects from various scenes
+
+            // Items
             if (necessaryObjects.Contains(ObjectType.CollectibleItem))
             {
                 yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.CollectibleItem, "D02Z02S14_LOGIC", "LOGIC/INTERACTABLES/ACT_Collectible"));
             }
+            // sword heart
+
+            // Chests
+            if (necessaryObjects.Contains(ObjectType.ChestIron))
+                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.ChestIron, "D01Z05S11_LOGIC", "LOGIC/INTERACTABLES/ACT_Iron Chest"));
+            if (necessaryObjects.Contains(ObjectType.ChestGold))
+                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.ChestGold, "D20Z02S02_LOGIC", "ACT_Wooden Chest"));
+            if (necessaryObjects.Contains(ObjectType.ChestRelic))
+                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.ChestRelic, "D17BZ01S01_LOGIC", "LOGIC/INTERACTABLES/ACT_Relicarium"));
+
+            // Rooms
+            if (necessaryObjects.Contains(ObjectType.PlatformWood))
+                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.PlatformWood, "D05Z02S12_LOGIC", "LOGIC/INTERACTABLES/{0}"));
+            // other platforms
+            if (necessaryObjects.Contains(ObjectType.Lantern))
+                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.Lantern, "D20Z01S02_LOGIC", "LOGIC/INTERACTABLES/Chain Hook"));
             if (necessaryObjects.Contains(ObjectType.Spikes))
             {
                 yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.Spikes, "D01Z03S01_DECO", "MIDDLEGROUND/AfterPlayer/Spikes/{0}"));
@@ -105,18 +123,6 @@ namespace ModdingAPI.Levels
                     collider.isTrigger = true;
                     collider.size = new Vector2(1.8f, 0.8f);
                 }
-            }
-            if (necessaryObjects.Contains(ObjectType.Chest))
-            {
-                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.Chest, "D20Z02S02_LOGIC", "ACT_Wooden Chest"));
-            }
-            if (necessaryObjects.Contains(ObjectType.Platform))
-            {
-                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.Platform, "D05Z02S12_LOGIC", "LOGIC/INTERACTABLES/{0}"));
-            }
-            if (necessaryObjects.Contains(ObjectType.Lantern))
-            {
-                yield return Main.Instance.StartCoroutine(LoadSceneForObject(ObjectType.Lantern, "D20Z01S02_LOGIC", "LOGIC/INTERACTABLES/Chain Hook"));
             }
 
             // Fix camera after scene loads
@@ -238,9 +244,12 @@ namespace ModdingAPI.Levels
             switch (objectType)
             {
                 case ObjectType.CollectibleItem: CreateCollectibleItem(obj); break;
-                case ObjectType.Chest: CreateChest(obj); break;
+                case ObjectType.ChestIron:
+                case ObjectType.ChestGold:
+                case ObjectType.ChestRelic:
+                    CreateChest(obj, objectType); break;
                 case ObjectType.Spikes: CreateSpikes(obj); break;
-                case ObjectType.Platform: CreatePlatform(obj); break;
+                case ObjectType.PlatformWood: CreatePlatform(obj); break;
                 case ObjectType.Lantern: CreateLantern(obj); break;
             }
         }
@@ -265,9 +274,9 @@ namespace ModdingAPI.Levels
             addComponent.itemType = ItemModder.GetItemTypeFromId(obj.Id);
         }
 
-        private void CreateChest(AddedObject obj)
+        private void CreateChest(AddedObject obj, ObjectType type)
         {
-            GameObject newItem = CreateBaseObject(ObjectType.Chest, obj, "Chest " + obj.Id);
+            GameObject newItem = CreateBaseObject(type, obj, "Chest " + obj.Id);
 
             newItem.GetComponent<UniqueId>().uniqueId = "CHEST-" + obj.Id;
             InteractableInvAdd addComponent = newItem.GetComponent<InteractableInvAdd>();
@@ -286,7 +295,7 @@ namespace ModdingAPI.Levels
 
         private void CreatePlatform(AddedObject obj)
         {
-            CreateBaseObject(ObjectType.Platform, obj, "Platform");
+            CreateBaseObject(ObjectType.PlatformWood, obj, "Platform");
         }
 
         private void CreateLantern(AddedObject obj)
