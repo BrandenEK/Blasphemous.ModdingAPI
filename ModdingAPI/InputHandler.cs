@@ -1,4 +1,5 @@
 ﻿using Rewired;
+using UnityEngine;
 
 namespace ModdingAPI
 {
@@ -132,6 +133,36 @@ namespace ModdingAPI
         public float GetAxisTimeActive(AxisCode axis, bool useRawInput)
         {
             return Rewired != null && useRawInput ? Rewired.GetAxisRawTimeActive((int)axis) : Rewired.GetAxisTimeActive((int)axis);
+        }
+
+        /// <summary>
+        /// Checks whether a key is currently being held down
+        /// </summary>
+        /// <param name="action">The name of the action key to check for</param>
+        /// <returns>The key status</returns>
+        public bool GetKey(string action)
+        {
+            return Input.GetKey(KeyCode.Q);
+        }
+
+        /// <summary>
+        /// Checks whether a key was pressed during this frame
+        /// </summary>
+        /// <param name="action">The name of the action key to check for</param>
+        /// <returns>The key status</returns>
+        public bool GetKeyDown(string action)
+        {
+            return Input.GetKeyDown(KeyCode.Q);
+        }
+
+        /// <summary>
+        /// Checks whether a key was released during this frame
+        /// </summary>
+        /// <param name="action">The name of the action key to check for</param>
+        /// <returns>The key status</returns>
+        public bool GetKeyUp(string action)
+        {
+            return Input.GetKeyUp(KeyCode.Q);
         }
     }
 }
