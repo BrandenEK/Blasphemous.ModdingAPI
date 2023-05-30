@@ -263,6 +263,7 @@ namespace ModdingAPI
         /// <param name="pointFilter">Whether a point filter should be applied to the image</param>
         /// <param name="output">The data images, or null if the file deosn't exist</param>
         /// <returns>Whether the data was loaded successfully or not</returns>
+        [System.Obsolete("Use the overloaded method that allows you to specify a custom pivot")]
         public bool loadDataImages(string fileName, int spriteWidth, int spriteHeight, int pixelsPerUnit, int border, bool pointFilter, out Sprite[] output)
         {
             string path = dataPath + fileName;
@@ -285,6 +286,46 @@ namespace ModdingAPI
                 for (int j = 0; j < w; j += spriteWidth)
                 {
                     Sprite sprite = Sprite.Create(tex, new Rect(j, i, spriteWidth, spriteHeight), new Vector2(0.5f, 0.5f), pixelsPerUnit, 0, SpriteMeshType.Tight, new Vector4(border, border, border, border));
+                    output[count] = sprite;
+                    count++;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Loads an array of images from an image file in the data folder
+        /// </summary>
+        /// <param name="fileName">The name of the data file</param>
+        /// <param name="size">The (width, height) of each sprite in pixels</param>
+        /// <param name="pivot">The (x, y) point where the origin of each sprite should be</param>
+        /// <param name="pixelsPerUnit">The pixels per unit of each sprite in the image</param>
+        /// <param name="border">The border size of each sprite in the image</param>
+        /// <param name="pointFilter">Whether a point filter should be applied to the image</param>
+        /// <param name="output">The data images, or null if the file deosn't exist</param>
+        /// <returns>Whether the data was loaded successfully or not</returns>
+        public bool loadDataImages(string fileName, Vector2Int size, Vector2 pivot, int pixelsPerUnit, int border, bool pointFilter, out Sprite[] output)
+        {
+            string path = dataPath + fileName;
+            if (!File.Exists(path))
+            {
+                output = null;
+                return false;
+            }
+
+            byte[] bytes = File.ReadAllBytes(path);
+            Texture2D tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            tex.LoadImage(bytes);
+            if (pointFilter) tex.filterMode = FilterMode.Point;
+            int w = tex.width, h = tex.height;
+            output = new Sprite[w * h / size.x / size.y];
+
+            int count = 0;
+            for (int i = h - size.y; i >= 0; i -= size.y)
+            {
+                for (int j = 0; j < w; j += size.x)
+                {
+                    Sprite sprite = Sprite.Create(tex, new Rect(j, i, size.x, size.y), pivot, pixelsPerUnit, 0, SpriteMeshType.Tight, new Vector4(border, border, border, border));
                     output[count] = sprite;
                     count++;
                 }
