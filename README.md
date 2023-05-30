@@ -67,6 +67,7 @@ Manual installation
 - Press 'backslash' at any time to open the debug console and enter commands
 - All registered mods should be displayed in the top right corner of the main menu
 - Mods can be disabled by simply moving them out of the "Modding/plugins" folder
+- Keyboard input can be configured by modifying the files in the "Modding/keybindings" folder
 
 ### Custom skins
 
