@@ -35,10 +35,7 @@ namespace ModdingAPI
         /// <summary>
         /// The utility class for checking player input
         /// </summary>
-        public InputHandler Input
-        {
-            get { return Main.moddingAPI.Input; }
-        }
+        public InputHandler Input { get; private set; }
         /// <summary>
         /// Set to true to disable the mod from writing to the log file
         /// </summary>
@@ -59,6 +56,9 @@ namespace ModdingAPI
 
             // Set up localization
             localizer = new Localizer(FileUtil.loadLocalization());
+
+            // Set up input
+            Input = new InputHandler(FileUtil.LoadKeybindings());
 
             // Set up logging
             FileUtil.clearLog();

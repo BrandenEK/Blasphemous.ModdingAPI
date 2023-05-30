@@ -14,6 +14,7 @@ namespace ModdingAPI
         private readonly string rootPath = "";
         private readonly string configPath = "";
         private readonly string dataPath = "";
+        private readonly string keybindingsPath = "";
         private readonly string localizationPath = "";
         private readonly string logPath = "";
 
@@ -23,6 +24,7 @@ namespace ModdingAPI
             rootPath = Directory.GetCurrentDirectory() + "\\";
             configPath = Path.GetFullPath("Modding\\config\\" + mod.ModName + ".cfg");
             dataPath = Path.GetFullPath("Modding\\data\\" + mod.ModName + "\\");
+            keybindingsPath = Path.GetFullPath("Modding\\keybindings\\" + mod.ModName + ".txt");
             logPath = Path.GetFullPath("Modding\\logs\\" + mod.ModName + ".log");
             localizationPath = Path.GetFullPath("Modding\\localization\\" + mod.ModName + ".txt");
         }
@@ -32,6 +34,7 @@ namespace ModdingAPI
         {
             Directory.CreateDirectory(Path.GetFullPath("Modding\\config\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\data\\"));
+            Directory.CreateDirectory(Path.GetFullPath("Modding\\keybindings\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\levels\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\localization\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\logs\\"));
@@ -120,6 +123,25 @@ namespace ModdingAPI
                 return File.ReadAllLines(localizationPath);
             }
             return null;
+        }
+
+        internal Dictionary<string, KeyCode> LoadKeybindings()
+        {
+            Dictionary<string, KeyCode> keybindings = new Dictionary<string, KeyCode>();
+
+            if (File.Exists(keybindingsPath))
+            {
+                string[] lines = File.ReadAllLines(keybindingsPath);
+                foreach (string line in lines)
+                {
+                    string[] sections = line.Split(':');
+                    string action = sections[0].Trim();
+                    KeyCode key = (KeyCode)System.Enum.Parse(typeof(KeyCode), sections[1].Trim());
+                    keybindings.Add(action, key);
+                }
+            }
+
+            return keybindings;
         }
 
         private bool read(string path, out string text)

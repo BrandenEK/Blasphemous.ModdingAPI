@@ -40,7 +40,7 @@ namespace ModdingAPI
             LevelLoader = new LevelLoader();
             fileUtil = new FileUtil();
             localizer = new Localizer(fileUtil.loadLocalization());
-            Input = new InputHandler();
+            Input = new InputHandler(null);
             initialized = false;
         }
 

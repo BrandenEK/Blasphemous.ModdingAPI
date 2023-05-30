@@ -1,4 +1,5 @@
-﻿using Rewired;
+﻿using System.Collections.Generic;
+using Rewired;
 using UnityEngine;
 
 namespace ModdingAPI
@@ -8,6 +9,13 @@ namespace ModdingAPI
     /// </summary>
     public class InputHandler
     {
+        private Dictionary<string, KeyCode> keybindings;
+
+        internal InputHandler(Dictionary<string, KeyCode> keybindings)
+        {
+            this.keybindings = keybindings ?? new Dictionary<string, KeyCode>();
+        }
+
         /// <summary>
         /// The button code for each input action
         /// </summary>
@@ -62,15 +70,7 @@ namespace ModdingAPI
         }
 
         private Player rewired;
-        private Player Rewired
-        {
-            get
-            {
-                if (rewired == null && ReInput.players != null && ReInput.players.GetPlayer(0) != null)
-                    rewired = ReInput.players.GetPlayer(0);
-                return rewired;
-            }
-        }
+        private Player Rewired => rewired ??= ReInput.players?.GetPlayer(0);
 
         /// <summary>
         /// Checks whether a button is currently being held down
@@ -142,7 +142,7 @@ namespace ModdingAPI
         /// <returns>The key status</returns>
         public bool GetKey(string action)
         {
-            return Input.GetKey(KeyCode.Q);
+            return keybindings.TryGetValue(action, out KeyCode key) && Input.GetKey(key);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace ModdingAPI
         /// <returns>The key status</returns>
         public bool GetKeyDown(string action)
         {
-            return Input.GetKeyDown(KeyCode.Q);
+            return keybindings.TryGetValue(action, out KeyCode key) && Input.GetKeyDown(key);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace ModdingAPI
         /// <returns>The key status</returns>
         public bool GetKeyUp(string action)
         {
-            return Input.GetKeyUp(KeyCode.Q);
+            return keybindings.TryGetValue(action, out KeyCode key) && Input.GetKeyUp(key);
         }
     }
 }
