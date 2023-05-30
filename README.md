@@ -48,6 +48,13 @@
 ### Installation
 **Note:** *If you have used other mods before without the API, make sure to delete the BepInEx folder and restore any modified files before installing the modding api!*
 
+<br>
+
+Automatic installation
+- This mod can be automatically installed using the [Blasphemous Mod Installer](https://github.com/BrandenEK/Blasphemous-Mod-Installer)<br>
+<br>
+
+Manual installation
 1. Navigate to the game's root directory, which should be in 
 ```C:\Program Files (x86)\Steam\steamapps\common\Blasphemous```
     - (Optional) Make a duplicate of this folder for playing Blasphemous mods, so that the original game files remain unchanged
