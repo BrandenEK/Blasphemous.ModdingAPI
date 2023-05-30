@@ -5,7 +5,7 @@ namespace ModdingAPI
 {
     internal class Localizer
     {
-        private Dictionary<string, Dictionary<string, string>> localizationByLanguage;
+        private readonly Dictionary<string, Dictionary<string, string>> localizationByLanguage;
 
         public Localizer(string[] localizationText)
         {

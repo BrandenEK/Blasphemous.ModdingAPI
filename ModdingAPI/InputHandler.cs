@@ -9,7 +9,7 @@ namespace ModdingAPI
     /// </summary>
     public class InputHandler
     {
-        private Dictionary<string, KeyCode> keybindings;
+        private readonly Dictionary<string, KeyCode> keybindings;
 
         internal InputHandler(Dictionary<string, KeyCode> keybindings)
         {
