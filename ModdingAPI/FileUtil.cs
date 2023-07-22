@@ -67,7 +67,7 @@ namespace ModdingAPI
 
                 skinInfo = File.ReadAllText(path + "\\info.txt");
                 byte[] bytes = File.ReadAllBytes(path + "\\texture.png");
-                Texture2D tex = new Texture2D(256, 1, TextureFormat.RGB24, false);
+                Texture2D tex = new Texture2D(256, 1, TextureFormat.ARGB32, false);
                 tex.LoadImage(bytes);
                 tex.filterMode = FilterMode.Point;
                 skinTexture = Sprite.Create(tex, new Rect(0, 0, 256, 1), new Vector2(0.5f, 0.5f));
