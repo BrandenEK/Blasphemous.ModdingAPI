@@ -34,7 +34,7 @@ namespace ModdingAPI
         {
             Text version = __instance.GetComponent<Text>();
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("{0} v{1}\n", Main.MOD_NAME, Main.MOD_VERSION);
+            sb.AppendFormat("{0} v{1}\n", Main.MOD_NAME, MyPluginInfo.PLUGIN_VERSION);
 
             foreach (Mod mod in Main.moddingAPI.GetMods())
             {
