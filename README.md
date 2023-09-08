@@ -96,7 +96,20 @@ The Modding API is available in these other languages in addition to English:
 
 ## Creating an example mod
 
-### Project Setup
+### Project Setup (New)
+
+To develop a mod for Blasphemous, run these commands to create a new template project:
+
+```dotnet new install Blasphemous.Modding.Templates```
+
+```dotnet new blas1mod -n ProjectName -m ModName -au AuthorName -ve GameVersion```
+
+For example, to create a mod that adds the Boots of Pleading item, I would run the command:
+
+```dotnet new blas1mod -n BootsOfPleading -m "Boots of Pleading" -au Damocles```
+
+
+### Project Setup (Old)
 
 1. Create a folder called "ExampleMod"
 2. Open the command prompt in this folder and run these two commands: <br>
