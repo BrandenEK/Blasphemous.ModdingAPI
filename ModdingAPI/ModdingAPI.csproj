@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net35</TargetFramework>
-    <AssemblyName>ModdingAPI</AssemblyName>
-    <BepInExPluginGuid>com.damocles.blasphemous.modding-api</BepInExPluginGuid>
-    <BepInExPluginName>Modding API</BepInExPluginName>
-    <Description>A modding api for the game blasphemous that allows other mods to run</Description>
-    <Version>1.4.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
-    <RootNamespace>ModdingAPI</RootNamespace>
+
+    <TargetName>ModdingAPI</TargetName>
+    <AssemblyName>com.damocles.blasphemous.modding-api</AssemblyName>
+    <Product>Modding API</Product>
+    <Description>A modding api for the game blasphemous that allows other mods to run</Description>
+    <Version>1.5.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -38,9 +38,9 @@
     <ItemGroup>
       <Config Include="$(ResourcesFolder)config\*" />
       <DataDlls Include="$(ResourcesFolder)data\*" />
-      <DataFiles Include="$(ResourcesFolder)data\$(BepInExPluginName)\*" />
+      <DataFiles Include="$(ResourcesFolder)data\$(Product)\*" />
       <Keybindings Include="$(ResourcesFolder)keybindings\*" />
-      <Levels Include="$(ResourcesFolder)levels\$(BepInExPluginName)\*" />
+      <Levels Include="$(ResourcesFolder)levels\$(Product)\*" />
       <Localization Include="$(ResourcesFolder)localization\*" />
     </ItemGroup>
 
@@ -51,9 +51,9 @@
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(DevFolder)plugins" />
     <Copy SourceFiles="@(Config)" DestinationFolder="$(DevFolder)config" />
     <Copy SourceFiles="@(DataDlls)" DestinationFolder="$(DevFolder)data" />
-    <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(DevFolder)data\$(BepInExPluginName)" />
+    <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(DevFolder)data\$(Product)" />
     <Copy SourceFiles="@(Keybindings)" DestinationFolder="$(DevFolder)keybindings" />
-    <Copy SourceFiles="@(Levels)" DestinationFolder="$(DevFolder)levels\$(BepInExPluginName)" />
+    <Copy SourceFiles="@(Levels)" DestinationFolder="$(DevFolder)levels\$(Product)" />
     <Copy SourceFiles="@(Localization)" DestinationFolder="$(DevFolder)localization" />
 
     <!-- Export & zip all mod files -->
@@ -63,9 +63,9 @@
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ExportFolder)plugins" />
     <Copy SourceFiles="@(Config)" DestinationFolder="$(ExportFolder)config" />
     <Copy SourceFiles="@(DataDlls)" DestinationFolder="$(ExportFolder)data" />
-    <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(ExportFolder)data\$(BepInExPluginName)" />
+    <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(ExportFolder)data\$(Product)" />
     <Copy SourceFiles="@(Keybindings)" DestinationFolder="$(ExportFolder)keybindings" />
-    <Copy SourceFiles="@(Levels)" DestinationFolder="$(ExportFolder)levels\$(BepInExPluginName)" />
+    <Copy SourceFiles="@(Levels)" DestinationFolder="$(ExportFolder)levels\$(Product)" />
     <Copy SourceFiles="@(Localization)" DestinationFolder="$(ExportFolder)localization" />
     <ZipDirectory SourceDirectory="$(ExportFolder)" DestinationFile="$(ExportFolder)..\$(TargetName).zip" Overwrite="true" />
 

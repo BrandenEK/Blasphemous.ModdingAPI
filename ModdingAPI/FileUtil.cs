@@ -16,7 +16,6 @@ namespace ModdingAPI
         private readonly string dataPath = "";
         private readonly string keybindingsPath = "";
         private readonly string localizationPath = "";
-        private readonly string logPath = "";
 
         // Constructor called by mods to set up their paths
         internal FileUtil(Mod mod)
@@ -25,7 +24,6 @@ namespace ModdingAPI
             configPath = Path.GetFullPath("Modding\\config\\" + mod.ModName + ".cfg");
             dataPath = Path.GetFullPath("Modding\\data\\" + mod.ModName + "\\");
             keybindingsPath = Path.GetFullPath("Modding\\keybindings\\" + mod.ModName + ".txt");
-            logPath = Path.GetFullPath("Modding\\logs\\" + mod.ModName + ".log");
             localizationPath = Path.GetFullPath("Modding\\localization\\" + mod.ModName + ".txt");
         }
 
@@ -37,7 +35,6 @@ namespace ModdingAPI
             Directory.CreateDirectory(Path.GetFullPath("Modding\\keybindings\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\levels\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\localization\\"));
-            Directory.CreateDirectory(Path.GetFullPath("Modding\\logs\\"));
             Directory.CreateDirectory(Path.GetFullPath("Modding\\skins\\"));
             localizationPath = Path.GetFullPath("Modding\\localization\\Modding API.txt");
             dataPath = Path.GetFullPath("Modding\\data\\Modding API\\");
@@ -183,18 +180,6 @@ namespace ModdingAPI
         public void saveConfig<T>(T config)
         {
             File.WriteAllText(configPath, jsonString(config));
-        }
-
-        // Log files
-
-        internal void appendLog(string line)
-        {
-            File.AppendAllText(logPath, line + "\n");
-        }
-
-        internal void clearLog()
-        {
-            File.WriteAllText(logPath, string.Empty);
         }
 
         // Data files
