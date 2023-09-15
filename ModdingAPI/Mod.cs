@@ -1,6 +1,4 @@
-﻿using System;
-using HarmonyLib;
-using Framework.Managers;
+﻿using HarmonyLib;
 using Gameplay.UI;
 using ModdingAPI.Commands;
 using ModdingAPI.Items;
@@ -13,8 +11,7 @@ namespace ModdingAPI
     /// </summary>
     public abstract class Mod
     {
-        private Localizer localizer;
-        private string lastLevelLogged;
+        private readonly Localizer localizer;
 
         /// <summary>
         /// The unique id of this mod used for harmony patching
@@ -36,9 +33,11 @@ namespace ModdingAPI
         /// The utility class for checking player input
         /// </summary>
         public InputHandler Input { get; private set; }
+
         /// <summary>
         /// Set to true to disable the mod from writing to the log file
         /// </summary>
+        [System.Obsolete("Mods no longer log to an extra file")]
         public bool DisableFileLogging { get; set; }
 
         /// <summary>
@@ -59,11 +58,6 @@ namespace ModdingAPI
 
             // Set up input
             Input = new InputHandler(FileUtil.LoadKeybindings());
-
-            // Set up logging
-            FileUtil.clearLog();
-            FileUtil.appendLog(DateTime.Now.ToString() + "\n");
-            lastLevelLogged = "";
 
             // Register and patch this mod
             Main.moddingAPI.registerMod(this);
@@ -186,33 +180,30 @@ namespace ModdingAPI
         }
 
         /// <summary>
-        /// Logs a message to the console and log file
+        /// Logs a message to the console
         /// </summary>
         /// <param name="message">The message to display</param>
         public void Log(string message)
         {
             Main.LogMessage(ModName, message);
-            LogFile("   " + message);
         }
 
         /// <summary>
-        /// Logs a warning to the console and log file
+        /// Logs a warning to the console
         /// </summary>
         /// <param name="warning">The warning to display</param>
         public void LogWarning(string warning)
         {
             Main.LogWarning(ModName, warning);
-            LogFile("*  " + warning);
         }
 
         /// <summary>
-        /// Logs an error to the console and log file
+        /// Logs an error to the console
         /// </summary>
         /// <param name="error">The error to display</param>
         public void LogError(string error)
         {
             Main.LogError(ModName, error);
-            LogFile("** " + error);
         }
 
         /// <summary>
@@ -223,23 +214,6 @@ namespace ModdingAPI
         {
             Log(message);
             UIController.instance.ShowPopUp(message, "", 0, false);
-        }
-
-        internal void LogFile(string text)
-        {
-            if (!DisableFileLogging)
-            {
-                string scene = "MainMenu";
-                if (Core.LevelManager.currentLevel != null)
-                    scene = Core.LevelManager.currentLevel.LevelName;
-
-                if (scene != lastLevelLogged)
-                {
-                    FileUtil.appendLog(scene);
-                    lastLevelLogged = scene;
-                }
-                FileUtil.appendLog(text);
-            }
         }
     }
 }
