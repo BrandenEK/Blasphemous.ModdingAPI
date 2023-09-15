@@ -33,8 +33,8 @@ namespace ModdingAPI
         public static void Postfix(VersionNumber __instance)
         {
             Text version = __instance.GetComponent<Text>();
-            StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("{0} v{1}\n", Main.MOD_NAME, MyPluginInfo.PLUGIN_VERSION);
+            StringBuilder sb = new StringBuilder(version.text);
+            sb.AppendFormat("\n\n{0} v{1}\n", Main.MOD_NAME, MyPluginInfo.PLUGIN_VERSION);
 
             foreach (Mod mod in Main.moddingAPI.GetMods())
             {
