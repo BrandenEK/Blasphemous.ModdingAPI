@@ -8,7 +8,7 @@ namespace Blasphemous.ModdingAPI.Console;
 /// </summary>
 public static class ConsoleModder
 {
-    private static readonly List<ModCommand> _commands = [];
+    private static readonly List<ModCommand> _commands = new();
     internal static IEnumerable<ModCommand> AllCommands => _commands;
 
     /// <summary>

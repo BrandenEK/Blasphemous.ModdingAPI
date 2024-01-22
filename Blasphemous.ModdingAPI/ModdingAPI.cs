@@ -1,4 +1,5 @@
 ﻿using Blasphemous.ModdingAPI.Input;
+using Blasphemous.ModdingAPI.Items;
 using Blasphemous.ModdingAPI.Skins;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,5 +19,10 @@ internal class ModdingAPI : BlasMod
         {
             { "Console", KeyCode.Backslash }
         });
+    }
+
+    protected internal override void OnNewGame()
+    {
+        ItemModder.GrantStartingItems();
     }
 }
