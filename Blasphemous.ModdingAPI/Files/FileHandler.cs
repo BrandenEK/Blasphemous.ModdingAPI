@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -287,13 +288,6 @@ public class FileHandler
         File.WriteAllLines(keybindingsPath, keys);
     }
 
-    // Levels
-
-    internal void LoadLevels()
-    {
-
-    }
-
     // Localization
 
     /// <summary>
@@ -302,5 +296,40 @@ public class FileHandler
     internal string[] LoadLocalization()
     {
         return ReadFileLines(localizationPath, out string[] output) ? output : new string[0];
+    }
+
+    // Skins
+
+    internal Dictionary<string, Sprite> LoadSkins()
+    {
+        string skinsPath = Path.GetFullPath("Modding/skins/");
+        Dictionary<string, Sprite> customSkins = new Dictionary<string, Sprite>();
+        string[] skinFolders = Directory.GetDirectories(skinsPath);
+
+        for (int i = 0; i < skinFolders.Length; i++)
+        {
+            if (GetSkinFiles(skinFolders[i], out string skinInfo, out Sprite skinTexture))
+            {
+                if (!customSkins.ContainsKey(skinInfo))
+                    customSkins.Add(skinInfo, skinTexture);
+            }
+        }
+
+        return customSkins;
+    }
+
+    private bool GetSkinFiles(string path, out string skinInfo, out Sprite skinTexture)
+    {
+        skinInfo = null; skinTexture = null;
+        if (!File.Exists(path + "/info.txt") || !File.Exists(path + "/texture.png")) return false;
+
+        skinInfo = File.ReadAllText(path + "/info.txt");
+        byte[] bytes = File.ReadAllBytes(path + "/texture.png");
+        Texture2D tex = new Texture2D(256, 1, TextureFormat.ARGB32, false);
+        tex.LoadImage(bytes);
+        tex.filterMode = FilterMode.Point;
+        skinTexture = Sprite.Create(tex, new Rect(0, 0, 256, 1), new Vector2(0.5f, 0.5f));
+
+        return true;
     }
 }
