@@ -1,4 +1,6 @@
 ﻿using BepInEx.Logging;
+using Blasphemous.ModdingAPI.Files;
+using Blasphemous.ModdingAPI.Localization;
 using Gameplay.UI;
 using HarmonyLib;
 using System.Text;
@@ -40,11 +42,11 @@ public abstract class BlasMod
     //public ConfigHandler ConfigHandler => _configHandler;
     //private readonly ConfigHandler _configHandler;
 
-    ///// <summary>
-    ///// Handles file IO, such as such loading data or writing to a file
-    ///// </summary>
-    //public FileHandler FileHandler => _fileHandler;
-    //private readonly FileHandler _fileHandler;
+    /// <summary>
+    /// Handles file IO, such as such loading data or writing to a file
+    /// </summary>
+    public FileHandler FileHandler => _fileHandler;
+    private readonly FileHandler _fileHandler;
 
     ///// <summary>
     ///// Handles player input, such as custom keybindings
@@ -52,11 +54,11 @@ public abstract class BlasMod
     //public InputHandler InputHandler => _inputHandler;
     //private readonly InputHandler _inputHandler;
 
-    ///// <summary>
-    ///// Handles translations, such as automatic localization on language change
-    ///// </summary>
-    //public LocalizationHandler LocalizationHandler => _localizationHandler;
-    //private readonly LocalizationHandler _localizationHandler;
+    /// <summary>
+    /// Handles translations, such as automatic localization on language change
+    /// </summary>
+    public LocalizationHandler LocalizationHandler => _localizationHandler;
+    private readonly LocalizationHandler _localizationHandler;
 
     ///// <summary>
     ///// Handles displaying menus when beginning or loading a game
@@ -189,9 +191,9 @@ public abstract class BlasMod
         // Set handlers
         //_audioHandler = new AudioHandler();
         //_configHandler = new ConfigHandler(this);
-        //_fileHandler = new FileHandler(this);
+        _fileHandler = new FileHandler(this);
         //_inputHandler = new InputHandler(this);
-        //_localizationHandler = new LocalizationHandler(this);
+        _localizationHandler = new LocalizationHandler(this);
         //_menuHandler = new MenuHandler(this);
         //_messageHandler = new MessageHandler(this);
 

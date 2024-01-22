@@ -9,11 +9,20 @@ internal class ModdingAPI : BlasMod
     protected internal override void OnInitialize()
     {
         LogWarning("Initialize");
+        LocalizationHandler.RegisterDefaultLanguage("en");
+
+        Log(LocalizationHandler.Localize("cr"));
     }
 
     protected internal override void OnAllInitialized()
     {
         LogWarning("All initialized");
+
+        FileHandler.LoadDataAsSprite("test.png", out Sprite s, new Files.SpriteImportOptions()
+        {
+            PixelsPerUnit = 32,
+            UsePointFilter = false
+        });
     }
 
     protected internal override void OnDispose()
@@ -34,8 +43,7 @@ internal class ModdingAPI : BlasMod
 
     protected internal override void OnLevelLoaded(string oldLevel, string newLevel)
     {
-        LogWarning("load: " + newLevel);
-        throw new System.Exception("Test");
+        LogWarning("Load: " + newLevel);
     }
 
     protected internal override void OnLevelPreloaded(string oldLevel, string newLevel)
