@@ -20,47 +20,47 @@ public abstract class BlasMod
 
     // Handlers
 
-    /// <summary>
-    /// Handles playing audio, such as UI sfx
-    /// </summary>
-    public AudioHandler AudioHandler => _audioHandler;
-    private readonly AudioHandler _audioHandler;
+    ///// <summary>
+    ///// Handles playing audio, such as UI sfx
+    ///// </summary>
+    //public AudioHandler AudioHandler => _audioHandler;
+    //private readonly AudioHandler _audioHandler;
 
-    /// <summary>
-    /// Handles storing and retrieving config properties
-    /// </summary>
-    public ConfigHandler ConfigHandler => _configHandler;
-    private readonly ConfigHandler _configHandler;
+    ///// <summary>
+    ///// Handles storing and retrieving config properties
+    ///// </summary>
+    //public ConfigHandler ConfigHandler => _configHandler;
+    //private readonly ConfigHandler _configHandler;
 
-    /// <summary>
-    /// Handles file IO, such as such loading data or writing to a file
-    /// </summary>
-    public FileHandler FileHandler => _fileHandler;
-    private readonly FileHandler _fileHandler;
+    ///// <summary>
+    ///// Handles file IO, such as such loading data or writing to a file
+    ///// </summary>
+    //public FileHandler FileHandler => _fileHandler;
+    //private readonly FileHandler _fileHandler;
 
-    /// <summary>
-    /// Handles player input, such as custom keybindings
-    /// </summary>
-    public InputHandler InputHandler => _inputHandler;
-    private readonly InputHandler _inputHandler;
+    ///// <summary>
+    ///// Handles player input, such as custom keybindings
+    ///// </summary>
+    //public InputHandler InputHandler => _inputHandler;
+    //private readonly InputHandler _inputHandler;
 
-    /// <summary>
-    /// Handles translations, such as automatic localization on language change
-    /// </summary>
-    public LocalizationHandler LocalizationHandler => _localizationHandler;
-    private readonly LocalizationHandler _localizationHandler;
+    ///// <summary>
+    ///// Handles translations, such as automatic localization on language change
+    ///// </summary>
+    //public LocalizationHandler LocalizationHandler => _localizationHandler;
+    //private readonly LocalizationHandler _localizationHandler;
 
-    /// <summary>
-    /// Handles displaying menus when beginning or loading a game
-    /// </summary>
-    public MenuHandler MenuHandler => _menuHandler;
-    private readonly MenuHandler _menuHandler;
+    ///// <summary>
+    ///// Handles displaying menus when beginning or loading a game
+    ///// </summary>
+    //public MenuHandler MenuHandler => _menuHandler;
+    //private readonly MenuHandler _menuHandler;
 
-    /// <summary>
-    /// Handles sending and receiving messages, such as listening for specific broadcasts
-    /// </summary>
-    public MessageHandler MessageHandler => _messageHandler;
-    private readonly MessageHandler _messageHandler;
+    ///// <summary>
+    ///// Handles sending and receiving messages, such as listening for specific broadcasts
+    ///// </summary>
+    //public MessageHandler MessageHandler => _messageHandler;
+    //private readonly MessageHandler _messageHandler;
 
     // Events
 
@@ -179,13 +179,13 @@ public abstract class BlasMod
         this.version = version;
 
         // Set handlers
-        _audioHandler = new AudioHandler();
-        _configHandler = new ConfigHandler(this);
-        _fileHandler = new FileHandler(this);
-        _inputHandler = new InputHandler(this);
-        _localizationHandler = new LocalizationHandler(this);
-        _menuHandler = new MenuHandler(this);
-        _messageHandler = new MessageHandler(this);
+        //_audioHandler = new AudioHandler();
+        //_configHandler = new ConfigHandler(this);
+        //_fileHandler = new FileHandler(this);
+        //_inputHandler = new InputHandler(this);
+        //_localizationHandler = new LocalizationHandler(this);
+        //_menuHandler = new MenuHandler(this);
+        //_messageHandler = new MessageHandler(this);
 
         // Register and patch mod
         Main.ModLoader.RegisterMod(this);
@@ -199,41 +199,4 @@ public abstract class BlasMod
     public bool IsModLoaded(string modId, out BlasMod mod) => Main.ModLoader.IsModLoaded(modId, out mod);
 
     private readonly ManualLogSource _logger;
-
-    /// <summary>
-    /// Registers a command to be used in the debug console for this mod
-    /// </summary>
-    /// <param name="command">The new command to be added</param>
-    protected void RegisterCommand(ModCommand command)
-    {
-        Main.moddingAPI.registerCommand(command);
-    }
-
-    /// <summary>
-    /// Registers a penitence that can be selected from the Brotherhood statue
-    /// </summary>
-    /// <param name="penitence">The new penitence to be added</param>
-    protected void RegisterPenitence(ModPenitence penitence)
-    {
-        Main.moddingAPI.registerPenitence(penitence);
-    }
-
-    /// <summary>
-    /// Registers a custom item to be loaded into the game
-    /// </summary>
-    /// <param name="item">The new item to be added</param>
-    protected void RegisterItem(ModItem item)
-    {
-        Main.moddingAPI.registerItem(item);
-    }
-
-    /// <summary>
-    /// Localizes text based on a key into the game's current language
-    /// </summary>
-    /// <param name="key">The key of the text to localize</param>
-    /// <returns>The localized text</returns>
-    public string Localize(string key)
-    {
-        return localizer.Localize(key);
-    }
 }

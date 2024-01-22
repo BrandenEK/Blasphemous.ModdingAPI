@@ -1,5 +1,4 @@
 ﻿using BepInEx;
-using HarmonyLib;
 using System;
 using System.IO;
 using System.Reflection;
@@ -15,14 +14,13 @@ internal class Main : BaseUnityPlugin
 
     private void Awake()
     {
+        if (Instance == null)
+            Instance = this;
+
+        ModLoader = new ModLoader();
         ModdingAPI = new ModdingAPI();
 
         AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LoadMissingAssemblies);
-        Harmony harmony = new(PluginInfo.PLUGIN_GUID);
-        harmony.PatchAll();
-
-        if (Instance == null)
-            Instance = this;
     }
 
     private void Update() { ModLoader.Update(); }
