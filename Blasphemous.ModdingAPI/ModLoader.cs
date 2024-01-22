@@ -1,4 +1,5 @@
 ﻿using BepInEx.Logging;
+using Blasphemous.ModdingAPI.Persistence;
 using Framework.FrameworkCore;
 using Framework.Managers;
 using System.Collections.Generic;
@@ -61,7 +62,8 @@ internal class ModLoader
 
         ProcessModFunction(mod =>
         {
-            // Check persistence
+            if (mod is IPersistentMod pmod)
+                Core.Persistence.AddPersistentManager(new ModPersistentSystem(pmod));
         });
         _initialized = true;
     }
