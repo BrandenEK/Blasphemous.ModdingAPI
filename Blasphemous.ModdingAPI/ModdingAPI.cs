@@ -1,5 +1,6 @@
 ﻿using Blasphemous.ModdingAPI.Input;
 using Blasphemous.ModdingAPI.Items;
+using Blasphemous.ModdingAPI.Penitence;
 using Blasphemous.ModdingAPI.Skins;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,10 +20,17 @@ internal class ModdingAPI : BlasMod
         {
             { "Console", KeyCode.Backslash }
         });
+
+        PenitenceModder.ResetCustomPenitences();
     }
 
     protected internal override void OnNewGame()
     {
         ItemModder.GrantStartingItems();
+    }
+
+    protected internal override void OnUpdate()
+    {
+        PenitenceModder.UpdateSelection();
     }
 }
