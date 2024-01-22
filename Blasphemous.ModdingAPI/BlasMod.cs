@@ -1,4 +1,5 @@
 ﻿using BepInEx.Logging;
+using Blasphemous.ModdingAPI.Config;
 using Blasphemous.ModdingAPI.Files;
 using Blasphemous.ModdingAPI.Input;
 using Blasphemous.ModdingAPI.Localization;
@@ -31,11 +32,11 @@ public abstract class BlasMod
 
     // Handlers
 
-    ///// <summary>
-    ///// Handles storing and retrieving config properties
-    ///// </summary>
-    //public ConfigHandler ConfigHandler => _configHandler;
-    //private readonly ConfigHandler _configHandler;
+    /// <summary>
+    /// Handles storing and retrieving config properties
+    /// </summary>
+    public ConfigHandler ConfigHandler => _configHandler;
+    private readonly ConfigHandler _configHandler;
 
     /// <summary>
     /// Handles file IO, such as such loading data or writing to a file
@@ -172,7 +173,7 @@ public abstract class BlasMod
         this.version = version;
 
         // Set handlers
-        //_configHandler = new ConfigHandler(this);
+        _configHandler = new ConfigHandler(this);
         _fileHandler = new FileHandler(this);
         _inputHandler = new InputHandler(this);
         _localizationHandler = new LocalizationHandler(this);
