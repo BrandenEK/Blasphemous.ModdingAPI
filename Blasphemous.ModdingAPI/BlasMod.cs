@@ -18,6 +18,14 @@ public abstract class BlasMod
     private readonly string version;
     public string Version => version;
 
+    // Helpers
+
+    /// <summary>
+    /// Handles scene loading, such as checking if on main menu
+    /// </summary>
+    public LoadStatus LoadStatus => loadStatus;
+    private readonly LoadStatus loadStatus = new();
+
     // Handlers
 
     ///// <summary>

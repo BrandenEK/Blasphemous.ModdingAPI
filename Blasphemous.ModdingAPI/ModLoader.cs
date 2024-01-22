@@ -13,8 +13,10 @@ internal class ModLoader
 
     private bool _initialized = false;
     private bool _loadedMenu = false;
+    private string _currentScene = string.Empty;
 
     public IEnumerable<BlasMod> AllMods => _mods;
+    public string CurrentScene => _currentScene;
 
     public ModLoader()
     {
@@ -124,6 +126,8 @@ internal class ModLoader
         }
 
         Main.ModdingAPI.LogSpecial("Loaded level " + nLevel);
+
+        _currentScene = nLevel;
         ProcessModFunction(mod => mod.OnLevelLoaded(oLevel, nLevel));
     }
 
@@ -135,6 +139,7 @@ internal class ModLoader
         string oLevel = oldLevel?.LevelName ?? string.Empty;
         string nLevel = newLevel?.LevelName ?? string.Empty;
 
+        _currentScene = string.Empty;
         ProcessModFunction(mod => mod.OnLevelUnloaded(oLevel, nLevel));
     }
 
