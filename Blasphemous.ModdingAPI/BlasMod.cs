@@ -9,18 +9,30 @@ using System.Text;
 
 namespace Blasphemous.ModdingAPI;
 
+/// <summary>
+/// The main class for the mod, handles access to the API
+/// </summary>
 public abstract class BlasMod
 {
     // Mod info
 
-    private readonly string id;
+    /// <summary>
+    /// The unique id of the mod
+    /// </summary>
     public string Id => id;
+    private readonly string id;
 
-    private readonly string name;
+    /// <summary>
+    /// The display name of the mod
+    /// </summary>
     public string Name => name;
+    private readonly string name;
 
-    private readonly string version;
+    /// <summary>
+    /// The file version of the mod
+    /// </summary>
     public string Version => version;
+    private readonly string version;
 
     // Helpers
 

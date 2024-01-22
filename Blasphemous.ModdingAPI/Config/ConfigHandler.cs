@@ -10,7 +10,6 @@ public class ConfigHandler
 {
     private readonly BlasMod _mod;
 
-    private bool _registered = false;
     private readonly Dictionary<string, object> _properties = [];
 
     internal ConfigHandler(BlasMod mod) => _mod = mod;
