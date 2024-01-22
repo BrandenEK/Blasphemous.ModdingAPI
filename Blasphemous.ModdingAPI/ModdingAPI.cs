@@ -1,16 +1,20 @@
-﻿using UnityEngine;
+﻿using Blasphemous.ModdingAPI.Input;
+using UnityEngine;
 
 namespace Blasphemous.ModdingAPI;
 
 internal class ModdingAPI : BlasMod
 {
-
     public ModdingAPI() : base(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION) { }
 
     protected internal override void OnInitialize()
     {
         LogWarning("Initialize");
         LocalizationHandler.RegisterDefaultLanguage("en");
+        InputHandler.RegisterDefaultKeybindings(new System.Collections.Generic.Dictionary<string, KeyCode>()
+        {
+            { "test", KeyCode.P }
+        });
 
         Log(LocalizationHandler.Localize("cr"));
     }

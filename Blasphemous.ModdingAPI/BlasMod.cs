@@ -1,5 +1,6 @@
 ﻿using BepInEx.Logging;
 using Blasphemous.ModdingAPI.Files;
+using Blasphemous.ModdingAPI.Input;
 using Blasphemous.ModdingAPI.Localization;
 using Gameplay.UI;
 using HarmonyLib;
@@ -31,12 +32,6 @@ public abstract class BlasMod
     // Handlers
 
     ///// <summary>
-    ///// Handles playing audio, such as UI sfx
-    ///// </summary>
-    //public AudioHandler AudioHandler => _audioHandler;
-    //private readonly AudioHandler _audioHandler;
-
-    ///// <summary>
     ///// Handles storing and retrieving config properties
     ///// </summary>
     //public ConfigHandler ConfigHandler => _configHandler;
@@ -48,29 +43,17 @@ public abstract class BlasMod
     public FileHandler FileHandler => _fileHandler;
     private readonly FileHandler _fileHandler;
 
-    ///// <summary>
-    ///// Handles player input, such as custom keybindings
-    ///// </summary>
-    //public InputHandler InputHandler => _inputHandler;
-    //private readonly InputHandler _inputHandler;
+    /// <summary>
+    /// Handles player input, such as custom keybindings
+    /// </summary>
+    public InputHandler InputHandler => _inputHandler;
+    private readonly InputHandler _inputHandler;
 
     /// <summary>
     /// Handles translations, such as automatic localization on language change
     /// </summary>
     public LocalizationHandler LocalizationHandler => _localizationHandler;
     private readonly LocalizationHandler _localizationHandler;
-
-    ///// <summary>
-    ///// Handles displaying menus when beginning or loading a game
-    ///// </summary>
-    //public MenuHandler MenuHandler => _menuHandler;
-    //private readonly MenuHandler _menuHandler;
-
-    ///// <summary>
-    ///// Handles sending and receiving messages, such as listening for specific broadcasts
-    ///// </summary>
-    //public MessageHandler MessageHandler => _messageHandler;
-    //private readonly MessageHandler _messageHandler;
 
     // Events
 
@@ -189,13 +172,10 @@ public abstract class BlasMod
         this.version = version;
 
         // Set handlers
-        //_audioHandler = new AudioHandler();
         //_configHandler = new ConfigHandler(this);
         _fileHandler = new FileHandler(this);
-        //_inputHandler = new InputHandler(this);
+        _inputHandler = new InputHandler(this);
         _localizationHandler = new LocalizationHandler(this);
-        //_menuHandler = new MenuHandler(this);
-        //_messageHandler = new MessageHandler(this);
 
         // Register and patch mod
         Main.ModLoader.RegisterMod(this);
