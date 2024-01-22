@@ -1,0 +1,14 @@
+lang: en
+cr: Created by
+
+lang: es
+cr: Creado por
+
+lang: de
+cr: Erstellt von
+
+lang: zh
+cr: 作者
+
+lang: fr
+cr: Créé par

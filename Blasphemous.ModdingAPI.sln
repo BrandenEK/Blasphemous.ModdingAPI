@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blasphemous.ModdingAPI", "Blasphemous.ModdingAPI\Blasphemous.ModdingAPI.csproj", "{B33D9F93-CF69-4094-8768-14DA0767E3AA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B33D9F93-CF69-4094-8768-14DA0767E3AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B33D9F93-CF69-4094-8768-14DA0767E3AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B33D9F93-CF69-4094-8768-14DA0767E3AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B33D9F93-CF69-4094-8768-14DA0767E3AA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {80AD3DF9-8A9B-4B96-B0F2-A6C6384D5333}
+	EndGlobalSection
+EndGlobal
