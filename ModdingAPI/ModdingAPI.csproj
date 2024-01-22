@@ -5,15 +5,22 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
 
-    <TargetName>ModdingAPI</TargetName>
-    <AssemblyName>com.damocles.blasphemous.modding-api</AssemblyName>
+    <Title>Modding API</Title>
     <Product>Modding API</Product>
+    <Authors>Damocles</Authors>
+    <Company>Damocles</Company>
     <Description>A modding api for the game blasphemous that allows other mods to run</Description>
     <Version>1.5.0</Version>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>\ModdingAPI\ModdingAPI.xml</DocumentationFile>
+    
+    <TargetName>ModdingAPI</TargetName>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>obj\Release\ModdingAPI.xml</DocumentationFile>
+    <RepositoryUrl>https://github.com/BrandenEK/Blasphemous-Modding-API</RepositoryUrl>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    
+    <AssemblyName>com.damocles.blasphemous.modding-api</AssemblyName>
+    <PackageId>Blasphemous.ModdingAPI</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,10 +43,8 @@
       <ResourcesFolder>$(SolutionDir)resources\</ResourcesFolder>
     </PropertyGroup>
     <ItemGroup>
-      <Config Include="$(ResourcesFolder)config\*" />
       <DataDlls Include="$(ResourcesFolder)data\*" />
       <DataFiles Include="$(ResourcesFolder)data\$(Product)\*" />
-      <Keybindings Include="$(ResourcesFolder)keybindings\*" />
       <Levels Include="$(ResourcesFolder)levels\$(Product)\*" />
       <Localization Include="$(ResourcesFolder)localization\*" />
     </ItemGroup>
@@ -49,22 +54,18 @@
       <DevFolder>C:\Program Files (x86)\Steam\steamapps\common\Blasphemous\Modding\</DevFolder>
     </PropertyGroup>
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(DevFolder)plugins" />
-    <Copy SourceFiles="@(Config)" DestinationFolder="$(DevFolder)config" />
     <Copy SourceFiles="@(DataDlls)" DestinationFolder="$(DevFolder)data" />
     <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(DevFolder)data\$(Product)" />
-    <Copy SourceFiles="@(Keybindings)" DestinationFolder="$(DevFolder)keybindings" />
     <Copy SourceFiles="@(Levels)" DestinationFolder="$(DevFolder)levels\$(Product)" />
     <Copy SourceFiles="@(Localization)" DestinationFolder="$(DevFolder)localization" />
 
     <!-- Export & zip all mod files -->
     <PropertyGroup>
-      <ExportFolder>$(SolutionDir)export\$(TargetName)\</ExportFolder>
+      <ExportFolder>$(SolutionDir)publish\$(TargetName)\</ExportFolder>
     </PropertyGroup>
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ExportFolder)plugins" />
-    <Copy SourceFiles="@(Config)" DestinationFolder="$(ExportFolder)config" />
     <Copy SourceFiles="@(DataDlls)" DestinationFolder="$(ExportFolder)data" />
     <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(ExportFolder)data\$(Product)" />
-    <Copy SourceFiles="@(Keybindings)" DestinationFolder="$(ExportFolder)keybindings" />
     <Copy SourceFiles="@(Levels)" DestinationFolder="$(ExportFolder)levels\$(Product)" />
     <Copy SourceFiles="@(Localization)" DestinationFolder="$(ExportFolder)localization" />
     <ZipDirectory SourceDirectory="$(ExportFolder)" DestinationFile="$(ExportFolder)..\$(TargetName).zip" Overwrite="true" />
