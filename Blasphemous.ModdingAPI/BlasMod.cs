@@ -1,0 +1,239 @@
+﻿using BepInEx.Logging;
+using Gameplay.UI;
+using HarmonyLib;
+using System.Text;
+
+namespace Blasphemous.ModdingAPI;
+
+public abstract class BlasMod
+{
+    // Mod info
+
+    private readonly string id;
+    public string Id => id;
+
+    private readonly string name;
+    public string Name => name;
+
+    private readonly string version;
+    public string Version => version;
+
+    // Handlers
+
+    /// <summary>
+    /// Handles playing audio, such as UI sfx
+    /// </summary>
+    public AudioHandler AudioHandler => _audioHandler;
+    private readonly AudioHandler _audioHandler;
+
+    /// <summary>
+    /// Handles storing and retrieving config properties
+    /// </summary>
+    public ConfigHandler ConfigHandler => _configHandler;
+    private readonly ConfigHandler _configHandler;
+
+    /// <summary>
+    /// Handles file IO, such as such loading data or writing to a file
+    /// </summary>
+    public FileHandler FileHandler => _fileHandler;
+    private readonly FileHandler _fileHandler;
+
+    /// <summary>
+    /// Handles player input, such as custom keybindings
+    /// </summary>
+    public InputHandler InputHandler => _inputHandler;
+    private readonly InputHandler _inputHandler;
+
+    /// <summary>
+    /// Handles translations, such as automatic localization on language change
+    /// </summary>
+    public LocalizationHandler LocalizationHandler => _localizationHandler;
+    private readonly LocalizationHandler _localizationHandler;
+
+    /// <summary>
+    /// Handles displaying menus when beginning or loading a game
+    /// </summary>
+    public MenuHandler MenuHandler => _menuHandler;
+    private readonly MenuHandler _menuHandler;
+
+    /// <summary>
+    /// Handles sending and receiving messages, such as listening for specific broadcasts
+    /// </summary>
+    public MessageHandler MessageHandler => _messageHandler;
+    private readonly MessageHandler _messageHandler;
+
+    // Events
+
+    /// <summary>
+    /// Called when starting the game, at the same time as other managers
+    /// </summary>
+    protected internal virtual void OnInitialize() { }
+
+    /// <summary>
+    /// Called when starting the game, after all other mods have been initialized
+    /// </summary>
+    protected internal virtual void OnAllInitialized() { }
+
+    /// <summary>
+    /// Called when exiting the game, at the same time as other managers
+    /// </summary>
+    protected internal virtual void OnDispose() { }
+
+    /// <summary>
+    /// Called every frame after initialization
+    /// </summary>
+    protected internal virtual void OnUpdate() { }
+
+    /// <summary>
+    /// Called at the end of every frame after initialization
+    /// </summary>
+    protected internal virtual void OnLateUpdate() { }
+
+    /// <summary>
+    /// Called when a new level is about to be loaded, including the main menu
+    /// </summary>
+    protected internal virtual void OnLevelPreloaded(string oldLevel, string newLevel) { }
+
+    /// <summary>
+    /// Called when a new level is loaded, including the main menu
+    /// </summary>
+    protected internal virtual void OnLevelLoaded(string oldLevel, string newLevel) { }
+
+    /// <summary>
+    /// Called when an old level is unloaded, including the main menu
+    /// </summary>
+    protected internal virtual void OnLevelUnloaded(string oldLevel, string newLevel) { }
+
+    /// <summary>
+    /// Called when starting a new game on the main menu, after data is reset
+    /// </summary>
+    protected internal virtual void OnNewGame() { }
+
+    /// <summary>
+    /// Called when loading an existing game on the main menu, after data is reset
+    /// </summary>
+    protected internal virtual void OnLoadGame() { }
+
+    /// <summary>
+    /// Called when quiting a game, after returning to the main menu
+    /// </summary>
+    protected internal virtual void OnExitGame() { }
+
+    // Logging
+
+    /// <summary>
+    /// Logs a message in white to the console
+    /// </summary>
+    public void Log(object message) => _logger.LogMessage(message);
+
+    /// <summary>
+    /// Logs a message in yellow to the console
+    /// </summary>
+    public void LogWarning(object warning) => _logger.LogWarning(warning);
+
+    /// <summary>
+    /// Logs a message in red to the console
+    /// </summary>
+    public void LogError(object error) => _logger.LogError(error);
+
+    /// <summary>
+    /// Displays a message with a UI text box
+    /// </summary>
+    public void LogDisplay(string message)
+    {
+        Log(message);
+        UIController.instance.ShowPopUp(message, "", 0, false);
+    }
+
+    /// <summary>
+    /// Formats the message for scene loading
+    /// </summary>
+    internal void LogSpecial(string message)
+    {
+        StringBuilder sb = new();
+        int length = message.Length;
+        while (length > 0)
+        {
+            sb.Append('=');
+            length--;
+        }
+        string line = sb.ToString();
+
+        _logger.LogMessage("");
+        _logger.LogMessage(line);
+        _logger.LogMessage(message);
+        _logger.LogMessage(line);
+        _logger.LogMessage("");
+    }
+
+    // Constructor
+
+    /// <summary>
+    /// Initializes and registers a new BlasII mod
+    /// </summary>
+    public BlasMod(string id, string name, string version)
+    {
+        // Set data
+        this.id = id;
+        this.name = name;
+        this.version = version;
+
+        // Set handlers
+        _audioHandler = new AudioHandler();
+        _configHandler = new ConfigHandler(this);
+        _fileHandler = new FileHandler(this);
+        _inputHandler = new InputHandler(this);
+        _localizationHandler = new LocalizationHandler(this);
+        _menuHandler = new MenuHandler(this);
+        _messageHandler = new MessageHandler(this);
+
+        // Register and patch mod
+        Main.ModLoader.RegisterMod(this);
+        new Harmony(id).PatchAll(GetType().Assembly);
+        _logger = Logger.CreateLogSource(name);
+    }
+
+    /// <summary>
+    /// Checks whether a mod is loaded, and returns it if so
+    /// </summary>
+    public bool IsModLoaded(string modId, out BlasMod mod) => Main.ModLoader.IsModLoaded(modId, out mod);
+
+    private readonly ManualLogSource _logger;
+
+    /// <summary>
+    /// Registers a command to be used in the debug console for this mod
+    /// </summary>
+    /// <param name="command">The new command to be added</param>
+    protected void RegisterCommand(ModCommand command)
+    {
+        Main.moddingAPI.registerCommand(command);
+    }
+
+    /// <summary>
+    /// Registers a penitence that can be selected from the Brotherhood statue
+    /// </summary>
+    /// <param name="penitence">The new penitence to be added</param>
+    protected void RegisterPenitence(ModPenitence penitence)
+    {
+        Main.moddingAPI.registerPenitence(penitence);
+    }
+
+    /// <summary>
+    /// Registers a custom item to be loaded into the game
+    /// </summary>
+    /// <param name="item">The new item to be added</param>
+    protected void RegisterItem(ModItem item)
+    {
+        Main.moddingAPI.registerItem(item);
+    }
+
+    /// <summary>
+    /// Localizes text based on a key into the game's current language
+    /// </summary>
+    /// <param name="key">The key of the text to localize</param>
+    /// <returns>The localized text</returns>
+    public string Localize(string key)
+    {
+        return localizer.Localize(key);
+    }
+}
