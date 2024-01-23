@@ -6,7 +6,7 @@ namespace Blasphemous.ModdingAPI.Console;
 /// <summary> Registers a new console command </summary>
 public static class CommandRegister
 {
-    internal static readonly List<ModCommand> _commands = new();
+    private static readonly List<ModCommand> _commands = new();
     internal static IEnumerable<ModCommand> Commands => _commands;
 
     /// <summary> Registers a new console command </summary>

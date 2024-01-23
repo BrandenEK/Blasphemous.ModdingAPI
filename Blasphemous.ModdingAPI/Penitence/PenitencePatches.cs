@@ -8,10 +8,10 @@ using HarmonyLib;
 using I2.Loc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Tools.Playmaker2.Action;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 
 namespace Blasphemous.ModdingAPI.Penitence;
 
@@ -21,7 +21,7 @@ internal class PenitenceManager_Patch
 {
     public static void Postfix(List<IPenitence> ___allPenitences)
     {
-        ___allPenitences.AddRange(PenitenceModder.All.Select(p => new ModPenitenceSystem(p.Id) as IPenitence));
+        ___allPenitences.AddRange(PenitenceRegister.Penitences.Select(p => new ModPenitenceSystem(p.Id) as IPenitence));
     }
 }
 
@@ -110,7 +110,7 @@ internal class ChoosePenitenceWidgetSelectNone_Patch
         if (currPenitenceIdx > 0)
         {
             Main.ModdingAPI.PenitenceHandler.CurrentSelection = PenitenceHandler.Selection.Custom;
-            ModPenitence currentPenitence = PenitenceModder.AtIndex(currPenitenceIdx - 1);
+            ModPenitence currentPenitence = PenitenceRegister.AtIndex(currPenitenceIdx - 1);
             ___penitenceTitle.text = currentPenitence.Name;
             ___penitenceInfoText.text = currentPenitence.Description;
             Main.ModdingAPI.PenitenceHandler.SelectedButtonImage.sprite = currentPenitence.ChooseSelectedImage;

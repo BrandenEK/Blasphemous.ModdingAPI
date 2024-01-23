@@ -18,28 +18,28 @@ internal class PenitenceHandler
     /// </summary>
     public void Initialize()
     {
-        if (PenitenceModder.All.Count() > 0)
+        if (PenitenceRegister.Total > 0)
             Core.PenitenceManager.ResetPersistence();
     }
 
     public void ActivatePenitence(string id)
     {
-        PenitenceModder.All.FirstOrDefault(p => p.Id == id)?.Activate();
+        PenitenceRegister.Penitences.FirstOrDefault(p => p.Id == id)?.Activate();
     }
 
     public void DeactivatePenitence(string id)
     {
-        PenitenceModder.All.FirstOrDefault(p => p.Id == id)?.Deactivate();
+        PenitenceRegister.Penitences.FirstOrDefault(p => p.Id == id)?.Deactivate();
     }
 
     public ModPenitence GetPenitence(string id)
     {
-        return PenitenceModder.All.FirstOrDefault(p => p.Id == id);
+        return PenitenceRegister.Penitences.FirstOrDefault(p => p.Id == id);
     }
 
     public IEnumerable<SelectSaveSlots.PenitenceData> GetPenitenceData(bool mainMenu)
     {
-        return PenitenceModder.All.Select(penitence => new SelectSaveSlots.PenitenceData()
+        return PenitenceRegister.Penitences.Select(penitence => new SelectSaveSlots.PenitenceData()
         {
             id = penitence.Id,
             InProgress = mainMenu ? penitence.InProgressImage : penitence.GameplayImage,
@@ -50,7 +50,7 @@ internal class PenitenceHandler
 
     public void ConfirmCustomPenitence()
     {
-        ModPenitence newPenitence = PenitenceModder.AtIndex(CurrentSelectedCustomPenitence - 1);
+        ModPenitence newPenitence = PenitenceRegister.AtIndex(CurrentSelectedCustomPenitence - 1);
         Main.ModdingAPI.Log("Activating custom penitence: " + newPenitence.Id);
         Core.PenitenceManager.ActivatePenitence(newPenitence.Id);
         ChooseAction();
@@ -79,10 +79,8 @@ internal class PenitenceHandler
         get => m_CurrentSelectedCustomPenitence;
         set
         {
-            int totalPenitences = PenitenceModder.All.Count();
-
-            m_CurrentSelectedCustomPenitence = value > totalPenitences ? 0
-                : value < 0 ? totalPenitences
+            m_CurrentSelectedCustomPenitence = value > PenitenceRegister.Total ? 0
+                : value < 0 ? PenitenceRegister.Total
                 : value;
         }
     }
