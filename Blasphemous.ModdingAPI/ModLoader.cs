@@ -60,6 +60,9 @@ internal class ModLoader
         Main.ModdingAPI.Log("All mods initialized!");
         ProcessModFunction(mod => mod.OnAllInitialized());
 
+        ModServiceProvider provider = new();
+        ProcessModFunction(mod => mod.OnRegisterServices(provider));
+
         ProcessModFunction(mod =>
         {
             if (mod is IPersistentMod pmod)

@@ -4,9 +4,10 @@ using Gameplay.UI.Others;
 using Gameplay.UI.Widgets;
 using HarmonyLib;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Blasphemous.ModdingAPI.Console;
 
@@ -58,9 +59,6 @@ internal class ConsoleWidgetInitialize_Patch
 {
     public static void Postfix(List<ConsoleCommand> ___commands)
     {
-        foreach (ModCommand command in ConsoleModder.AllCommands)
-        {
-            ___commands.Add(new ModCommandSystem(command));
-        }
+        ___commands.AddRange(CommandRegister.Commands.Select(cmd => new ModCommandSystem(cmd) as ConsoleCommand));
     }
 }

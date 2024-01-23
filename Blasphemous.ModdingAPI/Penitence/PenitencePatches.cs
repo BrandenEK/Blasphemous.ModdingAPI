@@ -22,10 +22,6 @@ internal class PenitenceManager_Patch
     public static void Postfix(List<IPenitence> ___allPenitences)
     {
         ___allPenitences.AddRange(PenitenceModder.All.Select(p => new ModPenitenceSystem(p.Id) as IPenitence));
-        //foreach (ModPenitence penitence in PenitenceModder.All)
-        //{
-        //    ___allPenitences.Add(new ModPenitenceSystem(penitence.Id));
-        //}
     }
 }
 
@@ -47,10 +43,6 @@ internal class GameplayWidget_Patch
     public static void Postfix(List<SelectSaveSlots.PenitenceData> ___PenitencesConfig)
     {
         ___PenitencesConfig.AddRange(Main.ModdingAPI.PenitenceHandler.GetPenitenceData(false));
-        //foreach (SelectSaveSlots.PenitenceData data in Main.ModdingAPI.PenitenceHandler.GetPenitenceData(false))
-        //{
-        //    ___PenitencesConfig.Add(data);
-        //}
     }
 }
 
