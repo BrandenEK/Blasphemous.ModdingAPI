@@ -6,7 +6,7 @@ namespace Blasphemous.ModdingAPI.Items;
 /// <summary> Registers a new item </summary>
 public static class ItemRegister
 {
-    private static readonly List<ModItem> _items = new List<ModItem>();
+    private static readonly List<ModItem> _items = new();
     internal static IEnumerable<ModItem> Items => _items;
 
     /// <summary> Registers a new console command </summary>
