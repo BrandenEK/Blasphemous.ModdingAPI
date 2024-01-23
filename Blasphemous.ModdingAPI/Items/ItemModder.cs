@@ -1,32 +1,14 @@
 ﻿using Framework.Inventory;
 using Framework.Managers;
 using Gameplay.UI;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Blasphemous.ModdingAPI.Items;
 
 /// <summary>
-/// Allows registering custom items and acquiring them
+/// A collection of methods used to work with items
 /// </summary>
 public static class ItemModder
 {
-    private static readonly List<ModItem> _items = new();
-    internal static IEnumerable<ModItem> AllItems => _items;
-
-    /// <summary>
-    /// Registers a new item
-    /// </summary>
-    public static void RegisterItem(ModItem item)
-    {
-        if (_items.Any(i => i.Id == item.Id))
-            return;
-
-        _items.Add(item);
-        //itemLoader.AddItem(item);
-        Main.ModdingAPI.Log($"Registering custom item: {item.Name} ({item.Id})");
-    }
-
     /// <summary>
     /// Gets the item type based off of the item's prefix
     /// </summary>
@@ -73,16 +55,5 @@ public static class ItemModder
         bool removed = Core.InventoryManager.RemoveBaseObject(obj);
         if (removed)
             UIController.instance.ShowObjectPopUp(UIController.PopupItemAction.GiveObject, obj.caption, obj.picture, itemType, 3f, true);
-    }
-
-    /// <summary>
-    /// Give any custom items marked as 'CarryOnStart'
-    /// </summary>
-    internal static void GrantStartingItems()
-    {
-        //foreach (var item in _items.Where(i => i.CarryOnStart))
-        //    item.GiveItem();
-
-        Core.Persistence.SaveGame();
     }
 }

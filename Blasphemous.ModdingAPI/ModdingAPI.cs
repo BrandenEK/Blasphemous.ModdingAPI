@@ -11,6 +11,7 @@ internal class ModdingAPI : BlasMod
 {
     public ModdingAPI() : base(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION) { }
 
+    public ItemHandler ItemHandler { get; } = new();
     public SkinLoader SkinLoader { get; } = new();
     public PenitenceHandler PenitenceHandler { get; } = new();
 
@@ -21,13 +22,17 @@ internal class ModdingAPI : BlasMod
         {
             { "Console", KeyCode.Backslash }
         });
+    }
 
+    protected internal override void OnAllInitialized()
+    {
+        ItemHandler.Initialize();
         PenitenceHandler.Initialize();
     }
 
     protected internal override void OnNewGame()
     {
-        ItemModder.GrantStartingItems();
+        ItemHandler.NewGame();
     }
 
     protected internal override void OnUpdate()
