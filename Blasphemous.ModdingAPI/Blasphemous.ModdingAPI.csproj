@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net35</TargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
 
     <Title>Modding API</Title>

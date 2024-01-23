@@ -1,5 +1,4 @@
-﻿using Framework.Managers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Blasphemous.ModdingAPI.Penitence;
@@ -10,7 +9,6 @@ namespace Blasphemous.ModdingAPI.Penitence;
 public static class PenitenceModder
 {
     private static readonly List<ModPenitence> _penitences = new();
-    internal static IEnumerable<ModPenitence> AllPenitences => _penitences;
 
     /// <summary>
     /// Registers a new penitence
@@ -24,17 +22,7 @@ public static class PenitenceModder
         Main.ModdingAPI.Log($"Registering custom penitence: {penitence.Name} ({penitence.Id})");
     }
 
-    /// <summary>
-    /// When game starts, if there are any custom penitences, reset data
-    /// </summary>
-    internal static void ResetCustomPenitences()
-    {
-        if (_penitences.Count > 0)
-            Core.PenitenceManager.ResetPersistence();
-    }
+    internal static IEnumerable<ModPenitence> All => _penitences;
 
-    internal static void UpdateSelection()
-    {
-
-    }
+    internal static ModPenitence AtIndex(int index) => _penitences[index];
 }

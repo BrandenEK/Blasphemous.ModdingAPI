@@ -23,7 +23,7 @@ public static class ItemModder
             return;
 
         _items.Add(item);
-        itemLoader.AddItem(item);
+        //itemLoader.AddItem(item);
         Main.ModdingAPI.Log($"Registering custom item: {item.Name} ({item.Id})");
     }
 
@@ -80,8 +80,8 @@ public static class ItemModder
     /// </summary>
     internal static void GrantStartingItems()
     {
-        foreach (var item in _items.Where(i => i.CarryOnStart))
-            item.GiveItem();
+        //foreach (var item in _items.Where(i => i.CarryOnStart))
+        //    item.GiveItem();
 
         Core.Persistence.SaveGame();
     }

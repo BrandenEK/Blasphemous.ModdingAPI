@@ -14,18 +14,22 @@ internal class Main : BaseUnityPlugin
 
     private void Awake()
     {
+        AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LoadMissingAssemblies);
+
         if (Instance == null)
             Instance = this;
 
         ModLoader = new ModLoader();
-        ModdingAPI = new ModdingAPI();
-
-        AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LoadMissingAssemblies);
     }
 
-    private void Update() { ModLoader.Update(); }
+    private void Start()
+    {
+        ModdingAPI = new ModdingAPI();
+    }
 
-    private void LateUpdate() { ModLoader.LateUpdate(); }
+    private void Update() => ModLoader.Update();
+
+    private void LateUpdate() => ModLoader.LateUpdate();
 
     private Assembly LoadMissingAssemblies(object send, ResolveEventArgs args)
     {

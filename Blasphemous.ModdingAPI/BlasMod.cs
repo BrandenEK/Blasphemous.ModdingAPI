@@ -191,9 +191,11 @@ public abstract class BlasMod
         _localizationHandler = new LocalizationHandler(this);
 
         // Register and patch mod
-        Main.ModLoader.RegisterMod(this);
-        new Harmony(id).PatchAll(GetType().Assembly);
-        _logger = Logger.CreateLogSource(name);
+        if (Main.ModLoader.RegisterMod(this))
+        {
+            new Harmony(id).PatchAll(GetType().Assembly);
+            _logger = Logger.CreateLogSource(name);
+        }
     }
 
     /// <summary>

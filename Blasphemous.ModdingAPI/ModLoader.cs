@@ -148,16 +148,17 @@ internal class ModLoader
     /// <summary>
     /// Registers a new mod whenever it is first created
     /// </summary>
-    public void RegisterMod(BlasMod mod)
+    public bool RegisterMod(BlasMod mod)
     {
         if (_mods.Any(m => m.Id == mod.Id))
         {
             _logger.LogError($"Mod with id '{mod.Id}' already exists!");
-            return;
+            return false;
         }
 
         _logger.LogMessage($"Registering mod: {mod.Id} ({mod.Version})");
         _mods.Add(mod);
+        return true;
     }
 
     /// <summary>

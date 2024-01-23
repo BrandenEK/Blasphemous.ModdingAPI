@@ -12,6 +12,7 @@ internal class ModdingAPI : BlasMod
     public ModdingAPI() : base(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION) { }
 
     public SkinLoader SkinLoader { get; } = new();
+    public PenitenceHandler PenitenceHandler { get; } = new();
 
     protected internal override void OnInitialize()
     {
@@ -21,7 +22,7 @@ internal class ModdingAPI : BlasMod
             { "Console", KeyCode.Backslash }
         });
 
-        PenitenceModder.ResetCustomPenitences();
+        PenitenceHandler.Initialize();
     }
 
     protected internal override void OnNewGame()
@@ -31,6 +32,6 @@ internal class ModdingAPI : BlasMod
 
     protected internal override void OnUpdate()
     {
-        PenitenceModder.UpdateSelection();
+        PenitenceHandler.Update();
     }
 }
