@@ -54,15 +54,16 @@ internal class ModdingAPI : BlasMod
 
     protected internal override void OnRegisterServices(ModServiceProvider provider)
     {
-        provider.RegisterObjectModifier("item", new ObjectModifier("D02Z02S14_LOGIC", "LOGIC/INTERACTABLES/ACT_Collectible",
-            new CollectibleItemCreator()));
+        provider.RegisterObjectModifier("item", new ObjectCreator(
+            new SceneLoader("D02Z02S14_LOGIC", "LOGIC/INTERACTABLES/ACT_Collectible"),
+            new CollectibleItemModifier()));
 
-        IModifier chestModifier = new ChestCreator();
-        provider.RegisterObjectModifier("chest-iron", new ObjectModifier("D01Z05S11_LOGIC", "LOGIC/INTERACTABLES/ACT_Iron Chest",
-            chestModifier));
-        provider.RegisterObjectModifier("chest-gold", new ObjectModifier("D20Z02S02_LOGIC", "ACT_Wooden Chest",
-            chestModifier));
-        provider.RegisterObjectModifier("chest-relic", new ObjectModifier("D17BZ01S01_LOGIC", "LOGIC/INTERACTABLES/ACT_Relicarium",
-            chestModifier));
+        IModifier chestModifier = new ChestModifier();
+        provider.RegisterObjectModifier("chest-iron", new ObjectCreator(
+            new SceneLoader("D01Z05S11_LOGIC", "LOGIC/INTERACTABLES/ACT_Iron Chest"), chestModifier));
+        provider.RegisterObjectModifier("chest-gold", new ObjectCreator(
+            new SceneLoader("D20Z02S02_LOGIC", "ACT_Wooden Chest"), chestModifier));
+        provider.RegisterObjectModifier("chest-relic", new ObjectCreator(
+            new SceneLoader("D17BZ01S01_LOGIC", "LOGIC/INTERACTABLES/ACT_Relicarium"), chestModifier));
     }
 }

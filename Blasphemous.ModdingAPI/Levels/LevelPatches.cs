@@ -7,5 +7,5 @@ namespace Blasphemous.ModdingAPI.Levels;
 [HarmonyPatch(typeof(LevelInitializer), "Awake")]
 internal class LevelInit_Patch
 {
-    public static bool Prefix() => !Main.ModdingAPI.LevelHandler.InLoadProcess;
+    public static bool Prefix() => !SceneLoader.InLoadProcess;
 }

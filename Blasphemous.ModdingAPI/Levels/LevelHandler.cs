@@ -11,15 +11,13 @@ namespace Blasphemous.ModdingAPI.Levels;
 internal class LevelHandler
 {
     private readonly Dictionary<string, GameObject> _objects = new();
-    private readonly IModifier _baseModifier = new BaseCreator();
+    private readonly IModifier _baseModifier = new BaseModifier();
 
     private readonly Dictionary<string, IEnumerable<ObjectAddition>> _additions = new();
     private readonly Dictionary<string, IEnumerable<ObjectDeletion>> _deletions = new();
 
     private bool _loadedObjects = false;
     private Transform _currentObjectHolder; // Only accessed when adding objects, so always set when loading scene with objects to add
-
-    public bool InLoadProcess { get; private set; }
 
     public void LoadLevelEdits()
     {
@@ -59,12 +57,12 @@ internal class LevelHandler
             if (!_objects.TryGetValue(addition.Type, out GameObject storedObject))
                 continue;
 
-            if (!LevelRegister.TryGetModifier(addition.Type, out ObjectModifier modifier))
+            if (!LevelRegister.TryGetModifier(addition.Type, out IModifier modifier))
                 continue;
 
             GameObject newObject = Object.Instantiate(storedObject, _currentObjectHolder);
             _baseModifier.Apply(newObject, addition);
-            modifier.Modifier.Apply(newObject, addition);
+            modifier.Apply(newObject, addition);
         }
     }
 
@@ -90,10 +88,10 @@ internal class LevelHandler
     private void DisableObjectGroup(Scene scene, IEnumerable<string> disabledObjects)
     {
         // Store dictionary of root objects
-        Dictionary<string, Transform> rootObjects = FindRootObjectsInScene(scene, false);
+        Dictionary<string, Transform> rootObjects = scene.FindRoots(false);
 
         // Loop through disabled objects and locate & disable them
-        foreach (GameObject obj in disabledObjects.Select(x => FindObjectInScene(rootObjects, x)))
+        foreach (GameObject obj in disabledObjects.Select(rootObjects.FindObject))
         {
             if (obj != null)
                 obj.SetActive(false);
@@ -133,13 +131,29 @@ internal class LevelHandler
     {
         foreach (var type in GetNecessaryObjects())
         {
-            if (!LevelRegister.TryGetModifier(type, out var modifier))
+            // Ensure a loader exists for this type of object
+            if (!LevelRegister.TryGetLoader(type, out ILoader loader))
             {
-                Main.ModdingAPI.LogError($"There is no modifier to handle {type} objects");
+                Main.ModdingAPI.LogError($"There is no creator to handle {type} objects");
                 continue;
             }
 
-            yield return Main.Instance.StartCoroutine(LoadSceneForObject(type, modifier.Scene, modifier.Path));
+            // Tell it to load the object somehow
+            yield return loader.Apply();
+            GameObject loadedObject = loader.Result;
+
+            if (loadedObject == null)
+            {
+                Main.ModdingAPI.LogError("Failed to load object of type " + type);
+                continue;
+            }
+
+            // Store it in the dictionary
+            Main.ModdingAPI.Log("Successfully loaded object of type " + type);
+            loadedObject.name = type;
+            loadedObject.transform.position = Vector3.zero;
+            loadedObject.SetActive(false);
+            _objects.Add(type, loadedObject);
         }
 
         // Fix camera after scene loads
@@ -154,106 +168,6 @@ internal class LevelHandler
     private IEnumerable<string> GetNecessaryObjects()
     {
         return _additions.Values.SelectMany(x => x).Select(x => x.Type).Distinct();
-    }
-
-    /// <summary>
-    /// Loads a scene async and adds the object to the dictionary if it is found
-    /// </summary>
-    private IEnumerator LoadSceneForObject(string type, string scene, string objectPath)
-    {
-        InLoadProcess = true;
-
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
-
-        // Load the item from this scene
-        Scene tempScene = SceneManager.GetSceneByName(scene);
-        GameObject sceneObject = FindObjectInScene(tempScene, objectPath, true);
-
-        if (sceneObject == null)
-        {
-            Main.ModdingAPI.LogError($"Failed to load {objectPath} from {scene}");
-        }
-        else
-        {
-            GameObject obj = Object.Instantiate(sceneObject, Main.Instance.transform);
-            obj.name = type;
-            obj.transform.position = Vector3.zero;
-            obj.SetActive(false);
-            _objects.Add(type, obj);
-            Main.ModdingAPI.Log($"Loaded {objectPath} from {scene}");
-        }
-
-        yield return null;
-
-        asyncLoad = SceneManager.UnloadSceneAsync(tempScene);
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
-
-        InLoadProcess = false;
-    }
-
-    /// <summary>
-    /// Finds an object at the given scene and path, if it exists
-    /// </summary>
-    private GameObject FindObjectInScene(Scene scene, string objectPath, bool disableRoots)
-    {
-        return FindObjectInScene(FindRootObjectsInScene(scene, disableRoots), objectPath);
-    }
-
-    /// <summary>
-    /// Finds an object in the given root objects, if it exists
-    /// </summary>
-    private GameObject FindObjectInScene(Dictionary<string, Transform> rootObjects, string objectPath)
-    {
-        string[] transformPath = objectPath.Split('/');
-
-        Transform currTransform = null;
-        for (int i = 0; i < transformPath.Length; i++)
-        {
-            string finder = transformPath[i];
-            if (i == 0)
-            {
-                currTransform = rootObjects.ContainsKey(finder) ? rootObjects[finder] : null;
-            }
-            else if (finder.Length >= 3 && finder[0] == '{' && finder[finder.Length - 1] == '}')
-            {
-                int childIdx = int.Parse(finder.Substring(1, finder.Length - 2));
-                currTransform = currTransform.childCount > childIdx ? currTransform.GetChild(childIdx) : null;
-            }
-            else
-            {
-                currTransform = currTransform.Find(finder);
-            }
-
-            if (currTransform == null)
-                break;
-        }
-
-        return currTransform?.gameObject;
-    }
-
-    /// <summary>
-    /// Finds all root objects in the given scene
-    /// </summary>
-    private Dictionary<string, Transform> FindRootObjectsInScene(Scene scene, bool disableRoots)
-    {
-        Dictionary<string, Transform> rootObjects = new();
-        foreach (GameObject obj in scene.GetRootGameObjects())
-        {
-            if (obj.name[0] != '=' && !rootObjects.ContainsKey(obj.name))
-            {
-                rootObjects.Add(obj.name, obj.transform);
-                if (disableRoots)
-                    obj.SetActive(false);
-            }
-        }
-        return rootObjects;
     }
 
     public LevelHandler()

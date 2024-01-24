@@ -5,22 +5,33 @@ namespace Blasphemous.ModdingAPI.Levels;
 /// <summary> Registers a new level modification </summary>
 public static class LevelRegister
 {
-    private static readonly Dictionary<string, ObjectModifier> _modifiers = new();
-    internal static IEnumerable<KeyValuePair<string, ObjectModifier>> Modifiers => _modifiers;
+    private static readonly Dictionary<string, ObjectCreator> _creators = new();
+    internal static IEnumerable<KeyValuePair<string, ObjectCreator>> Creators => _creators;
     
-    internal static bool TryGetModifier(string type, out ObjectModifier modifier) =>
-        _modifiers.TryGetValue(type, out modifier);
+    internal static bool TryGetLoader(string type, out ILoader loader)
+    {
+        bool success = _creators.TryGetValue(type, out var creator);
+        loader = creator?.Loader;
+        return success;
+    }
+
+    internal static bool TryGetModifier(string type, out IModifier modifier)
+    {
+        bool success = _creators.TryGetValue(type, out var creator);
+        modifier = creator?.Modifier;
+        return success;
+    }
 
     /// <summary> Registers a new level modification </summary>
-    public static void RegisterObjectModifier(this ModServiceProvider provider, string type, ObjectModifier modifier)
+    public static void RegisterObjectModifier(this ModServiceProvider provider, string type, ObjectCreator creator)
     {
         if (provider == null)
             return;
 
-        if (_modifiers.ContainsKey(type))
+        if (_creators.ContainsKey(type))
             return;
 
-        _modifiers.Add(type, modifier);
-        Main.ModdingAPI.Log($"Registered custom object modifier: {type}");
+        _creators.Add(type, creator);
+        Main.ModdingAPI.Log($"Registered custom object creator: {type}");
     }
 }
