@@ -31,10 +31,13 @@ public class ObjectDeletion
     public string Scene { get; }
     public string Path { get; }
 
-    public ObjectDeletion(string scene, string path)
+    public string Condition { get; }
+
+    public ObjectDeletion(string scene, string path, string condition)
     {
         Scene = scene;
         Path = path;
+        Condition = condition;
     }
 }
 

@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Framework.Managers;
+using Framework.Penitences;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,17 +17,28 @@ internal class LevelHandler
     private readonly Dictionary<string, IEnumerable<ObjectDeletion>> _deletions = new();
 
     private bool _loadedObjects = false;
+    private Transform _currentObjectHolder; // Only accessed when adding objects, so always set when loading scene with objects to add
 
     public bool InLoadProcess { get; private set; }
 
-    private GameObject GetObjectOfType(string type)
-    {
-        return _objects.TryGetValue(type, out var obj) ? obj : throw new System.Exception($"Object {type} has not been loaded");
-    }
-
     public void LoadLevelEdits()
     {
+        // Done near initialization:
+        // Loads all json files and parses the disabled and added objects by scene
+    }
 
+    public void PreloadLevel(string level)
+    {
+        bool hasAdditions = _additions.TryGetValue(level, out var additions);
+        bool hasDeletions = _deletions.TryGetValue(level, out var deletions);
+
+        if (!hasAdditions && !hasDeletions) return;
+        Main.ModdingAPI.Log("Applying level modifications for " + level);
+
+        if (hasAdditions)
+            AddObjects(additions);
+        if (hasDeletions)
+            DeleteObjects(deletions, level);
     }
 
     public void LoadLevel(string level)
@@ -35,6 +48,82 @@ internal class LevelHandler
             _loadedObjects = true;
             Main.Instance.StartCoroutine(LoadNecessaryObjects());
         }
+    }
+
+    private void AddObjects(IEnumerable<ObjectAddition> objects)
+    {
+        _currentObjectHolder = GameObject.Find("LOGIC").transform;
+
+        foreach (var addition in objects.Where(x => CheckCondition(x.Condition)))
+        {
+            if (!_objects.TryGetValue(addition.Type, out GameObject storedObject))
+                continue;
+
+            if (!LevelRegister.TryGetModifier(addition.Type, out ObjectModifier modifier))
+                continue;
+
+            GameObject newObject = Object.Instantiate(storedObject, _currentObjectHolder);
+            _baseModifier.Apply(newObject, addition);
+            modifier.Modifier.Apply(newObject, addition);
+        }
+    }
+
+    private void DeleteObjects(IEnumerable<ObjectDeletion> objects, string level)
+    {
+        foreach (var deletion in objects.Where(d => CheckCondition(d.Condition)).GroupBy(d => d.Scene))
+        {
+            Scene scene = SceneManager.GetSceneByName(level + deletion.Key switch
+            {
+                "decoration" => "_DECO",
+                "layout" => "_LAYOUT",
+                "logic" => "_LOGIC",
+                _ => throw new System.Exception("Invalid scene type for object deletion: " + deletion.Key)
+            });
+
+            DisableObjectGroup(scene, deletion.Select(x => x.Path));
+        }
+    }
+
+    /// <summary>
+    /// Deactivates all objects in a scene that exist at a path
+    /// </summary>
+    private void DisableObjectGroup(Scene scene, IEnumerable<string> disabledObjects)
+    {
+        // Store dictionary of root objects
+        Dictionary<string, Transform> rootObjects = FindRootObjectsInScene(scene, false);
+
+        // Loop through disabled objects and locate & disable them
+        foreach (GameObject obj in disabledObjects.Select(x => FindObjectInScene(rootObjects, x)))
+        {
+            if (obj != null)
+                obj.SetActive(false);
+        }
+    }
+
+    /// <summary>
+    /// Checks whether a modification's condition is met
+    /// </summary>
+    private bool CheckCondition(string condition)
+    {
+        if (condition == null)
+            return true;
+
+        int colon = condition.IndexOf(':');
+        string conditionType = condition.Substring(0, colon);
+        string conditionValue = condition.Substring(colon + 1);
+
+        if (conditionType == "flag")
+        {
+            return Core.Events.GetFlag(conditionValue);
+        }
+
+        if (conditionType == "penitence")
+        {
+            IPenitence penitence = Core.PenitenceManager.GetCurrentPenitence();
+            return penitence != null && penitence.Id == conditionValue;
+        }
+
+        return true;
     }
 
     /// <summary>
@@ -169,17 +258,23 @@ internal class LevelHandler
 
     public LevelHandler()
     {
-        _additions.Add("1", new List<ObjectAddition>()
+        _additions.Add("D01Z02S01", new List<ObjectAddition>()
         {
             new ObjectAddition("chest-iron", "RB501", new Vector(), new Vector(), new Vector(), null, null),
             new ObjectAddition("platform", "RB501", new Vector(), new Vector(), new Vector(), null, null),
             new ObjectAddition("chest-iron", "RB501", new Vector(), new Vector(), new Vector(), null, null),
         });
-        _additions.Add("2", new List<ObjectAddition>()
+        _additions.Add("D01Z02S02", new List<ObjectAddition>()
         {
             new ObjectAddition("chest-iron", "RB501", new Vector(), new Vector(), new Vector(), null, null),
             new ObjectAddition("platform", "RB501", new Vector(), new Vector(), new Vector(), null, null),
             new ObjectAddition("chest-relic", "RB501", new Vector(), new Vector(), new Vector(), null, null),
+        });
+        _deletions.Add("D01Z02S01", new List<ObjectDeletion>()
+        {
+            new ObjectDeletion("logic", "fake/path", null),
+            new ObjectDeletion("logic", "fake/path2", null),
+            new ObjectDeletion("decoration", "fake/path3", null),
         });
     }
 }

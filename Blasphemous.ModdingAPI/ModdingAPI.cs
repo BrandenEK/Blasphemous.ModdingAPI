@@ -37,6 +37,11 @@ internal class ModdingAPI : BlasMod
         ItemHandler.NewGame();
     }
 
+    protected internal override void OnLevelPreloaded(string oldLevel, string newLevel)
+    {
+        LevelHandler.PreloadLevel(newLevel);
+    }
+
     protected internal override void OnLevelLoaded(string oldLevel, string newLevel)
     {
         LevelHandler.LoadLevel(newLevel);
