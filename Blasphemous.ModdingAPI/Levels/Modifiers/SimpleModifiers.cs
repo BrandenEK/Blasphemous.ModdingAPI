@@ -9,9 +9,9 @@ public class BaseModifier : IModifier
 {
     public void Apply(GameObject obj, ObjectAddition data)
     {
-        obj.transform.position = data.Position;
-        obj.transform.eulerAngles = data.Rotation;
-        obj.transform.localScale = data.Scale;
+        obj.transform.position = data.position;
+        obj.transform.eulerAngles = data.rotation;
+        obj.transform.localScale = data.scale;
         obj.SetActive(true);
     }
 }
@@ -21,11 +21,11 @@ public class CollectibleItemModifier : IModifier
     public void Apply(GameObject obj, ObjectAddition data)
     {
         UniqueId idComp = obj.GetComponent<UniqueId>();
-        idComp.uniqueId = "ITEM-PICKUP-" + data.Id;
+        idComp.uniqueId = "ITEM-PICKUP-" + data.id;
 
         InteractableInvAdd addComp = obj.GetComponent<InteractableInvAdd>();
-        addComp.item = data.Id;
-        addComp.itemType = ItemModder.GetItemTypeFromId(data.Id);
+        addComp.item = data.id;
+        addComp.itemType = ItemModder.GetItemTypeFromId(data.id);
     }
 }
 
@@ -34,10 +34,10 @@ public class ChestModifier : IModifier
     public void Apply(GameObject obj, ObjectAddition data)
     {
         UniqueId idComp = obj.GetComponent<UniqueId>();
-        idComp.uniqueId = "CHEST-" + data.Id;
+        idComp.uniqueId = "CHEST-" + data.id;
 
         InteractableInvAdd addComp = obj.GetComponent<InteractableInvAdd>();
-        addComp.item = data.Id;
-        addComp.itemType = ItemModder.GetItemTypeFromId(data.Id);
+        addComp.item = data.id;
+        addComp.itemType = ItemModder.GetItemTypeFromId(data.id);
     }
 }

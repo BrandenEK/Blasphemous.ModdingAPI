@@ -1,44 +1,33 @@
-﻿using UnityEngine;
+﻿using Newtonsoft.Json;
+using UnityEngine;
 
 namespace Blasphemous.ModdingAPI.Levels;
 
+public class LevelModification
+{
+    [JsonProperty] public readonly ObjectAddition[] additions = [];
+    [JsonProperty] public readonly ObjectDeletion[] deletions = [];
+}
+
 public class ObjectAddition
 {
-    public string Type { get; }
-    public string Id { get; }
+    [JsonProperty] public readonly string type; // Required
+    [JsonProperty] public readonly string id; // Required
 
-    public Vector Position { get; }
-    public Vector Rotation { get; }
-    public Vector Scale { get; }
+    [JsonProperty] public readonly Vector position = Vector.Zero;
+    [JsonProperty] public readonly Vector rotation = Vector.Zero;
+    [JsonProperty] public readonly Vector scale = Vector.One;
 
-    public string Condition { get; }
-    public string[] Properties { get; }
-
-    public ObjectAddition(string type, string id, Vector position, Vector rotation, Vector scale, string condition, string[] properties)
-    {
-        Type = type;
-        Id = id;
-        Position = position;
-        Rotation = rotation;
-        Scale = scale;
-        Condition = condition;
-        Properties = properties;
-    }
+    [JsonProperty] public readonly string condition = string.Empty;
+    [JsonProperty] public readonly string[] properties = [];
 }
 
 public class ObjectDeletion
 {
-    public string Scene { get; }
-    public string Path { get; }
+    [JsonProperty] public readonly string scene; // Required
+    [JsonProperty] public readonly string path; // Required
 
-    public string Condition { get; }
-
-    public ObjectDeletion(string scene, string path, string condition)
-    {
-        Scene = scene;
-        Path = path;
-        Condition = condition;
-    }
+    [JsonProperty] public readonly string condition = string.Empty;
 }
 
 public readonly record struct Vector
@@ -53,6 +42,11 @@ public readonly record struct Vector
         Y = y;
         Z = z;
     }
+
+    public override string ToString() => $"({X}, {Y}, {Z})";
+
+    public static Vector Zero => new(0, 0, 0);
+    public static Vector One => new(1, 1, 1);
 
     public static implicit operator Vector3(Vector v) => new(v.X, v.Y, v.Z);
     public static implicit operator Vector(Vector3 v) => new(v.x, v.y, v.z);

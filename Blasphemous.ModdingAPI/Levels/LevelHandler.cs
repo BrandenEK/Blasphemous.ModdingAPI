@@ -1,6 +1,7 @@
 ﻿using Blasphemous.ModdingAPI.Levels.Modifiers;
 using Framework.Managers;
 using Framework.Penitences;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,12 +54,12 @@ internal class LevelHandler
     {
         _currentObjectHolder = GameObject.Find("LOGIC").transform;
 
-        foreach (var addition in objects.Where(x => CheckCondition(x.Condition)))
+        foreach (var addition in objects.Where(x => CheckCondition(x.condition)))
         {
-            if (!_objects.TryGetValue(addition.Type, out GameObject storedObject))
+            if (!_objects.TryGetValue(addition.type, out GameObject storedObject))
                 continue;
 
-            if (!LevelRegister.TryGetModifier(addition.Type, out IModifier modifier))
+            if (!LevelRegister.TryGetModifier(addition.type, out IModifier modifier))
                 continue;
 
             GameObject newObject = Object.Instantiate(storedObject, _currentObjectHolder);
@@ -69,7 +70,7 @@ internal class LevelHandler
 
     private void DeleteObjects(IEnumerable<ObjectDeletion> objects, string level)
     {
-        foreach (var deletion in objects.Where(d => CheckCondition(d.Condition)).GroupBy(d => d.Scene))
+        foreach (var deletion in objects.Where(d => CheckCondition(d.condition)).GroupBy(d => d.scene))
         {
             Scene scene = SceneManager.GetSceneByName(level + deletion.Key switch
             {
@@ -79,7 +80,7 @@ internal class LevelHandler
                 _ => throw new System.Exception("Invalid scene type for object deletion: " + deletion.Key)
             });
 
-            DisableObjectGroup(scene, deletion.Select(x => x.Path));
+            DisableObjectGroup(scene, deletion.Select(x => x.path));
         }
     }
 
@@ -168,38 +169,58 @@ internal class LevelHandler
     /// </summary>
     private IEnumerable<string> GetNecessaryObjects()
     {
-        return _additions.Values.SelectMany(x => x).Select(x => x.Type).Distinct();
+        return _additions.Values.SelectMany(x => x).Select(x => x.type).Distinct();
     }
 
-    public LevelHandler()
+    public void TempLoad()
     {
-        _additions.Add("D01Z02S01", new List<ObjectAddition>()
-        {
-            new ObjectAddition("chest-iron", "RB501", new Vector(), new Vector(), new Vector(), null, null),
-            new ObjectAddition("platform", "RB501", new Vector(), new Vector(), new Vector(), null, null),
-            new ObjectAddition("chest-iron", "RB501", new Vector(), new Vector(), new Vector(), null, null),
-        });
-        _additions.Add("D01Z02S02", new List<ObjectAddition>()
-        {
-            new ObjectAddition("chest-iron", "RB501", new Vector(), new Vector(), new Vector(), null, null),
-            new ObjectAddition("platform", "RB501", new Vector(), new Vector(), new Vector(), null, null),
-            new ObjectAddition("chest-relic", "RB501", new Vector(), new Vector(), new Vector(), null, null),
-        });
-        _deletions.Add("D01Z02S01", new List<ObjectDeletion>()
-        {
-            new ObjectDeletion("logic", "fake/path", null),
-            new ObjectDeletion("logic", "fake/path2", null),
-            new ObjectDeletion("decoration", "fake/path3", null),
-        });
+        //_additions.Add("D01Z02S01", new List<ObjectAddition>()
+        //{
+        //    new ObjectAddition("chest-iron", "RB501", new Vector(), new Vector(), new Vector(), null, null),
+        //    new ObjectAddition("platform", "RB501", new Vector(), new Vector(), new Vector(), null, null),
+        //    new ObjectAddition("chest-iron", "RB501", new Vector(), new Vector(), new Vector(), null, null),
+        //});
+        //_additions.Add("D01Z02S02", new List<ObjectAddition>()
+        //{
+        //    new ObjectAddition("chest-iron", "RB501", new Vector(), new Vector(), new Vector(), null, null),
+        //    new ObjectAddition("platform", "RB501", new Vector(), new Vector(), new Vector(), null, null),
+        //    new ObjectAddition("chest-relic", "RB501", new Vector(), new Vector(), new Vector(), null, null),
+        //});
+        //_deletions.Add("D01Z02S01", new List<ObjectDeletion>()
+        //{
+        //    new ObjectDeletion("logic", "fake/path", null),
+        //    new ObjectDeletion("logic", "fake/path2", null),
+        //    new ObjectDeletion("decoration", "fake/path3", null),
+        //});
 
-        _additions.Add("D01Z04S19", new List<ObjectAddition>()
+        string json = "{\r\n\t\"additions\": [\r\n\t\t{\r\n\t\t\t\"type\": \"item\",\r\n\t\t\t\"id\": \"QI38\",\r\n\t\t\t\"position\": { \"x\": -130, \"y\": -102 }\r\n\t\t}\r\n\t],\r\n}";
+
+        LevelModification mod = JsonConvert.DeserializeObject<LevelModification>(json);
+        if (mod == null)
+            Main.ModdingAPI.LogWarning("Failed to deserialize");
+
+        foreach (var add in mod.additions)
         {
-            new ObjectAddition("item", "QI38", new Vector(-130, -102, 0), new Vector(), new Vector(1, 1, 1), null, null),
-            new ObjectAddition("chest-iron", "QI39", new Vector(-126, -102, 0), new Vector(), new Vector(1, 1, 1), null, null)
-        });
-        _deletions.Add("D01Z04S19", new List<ObjectDeletion>()
+            Main.ModdingAPI.LogWarning(add.type);
+            Main.ModdingAPI.LogWarning(add.id);
+            Main.ModdingAPI.LogWarning(add.position);
+            Main.ModdingAPI.LogWarning(add.scale);
+            Main.ModdingAPI.LogWarning(add.properties);
+        }
+
+        foreach (var del in mod.deletions)
         {
-            new ObjectDeletion("logic", "LOGIC/INTERACTABLES/ACT_PenitenceAltar", null)
-        });
+            Main.ModdingAPI.LogError(del.scene);
+        }
+
+        //_additions.Add("D01Z04S19", new List<ObjectAddition>()
+        //{
+        //    new ObjectAddition("item", "QI38", new Vector(-130, -102, 0), new Vector(), new Vector(1, 1, 1), null, null),
+        //    new ObjectAddition("chest-iron", "QI39", new Vector(-126, -102, 0), new Vector(), new Vector(1, 1, 1), null, null)
+        //});
+        //_deletions.Add("D01Z04S19", new List<ObjectDeletion>()
+        //{
+        //    new ObjectDeletion("logic", "LOGIC/INTERACTABLES/ACT_PenitenceAltar", null)
+        //});
     }
 }
