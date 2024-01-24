@@ -1,6 +1,8 @@
 ﻿using Blasphemous.ModdingAPI.Input;
 using Blasphemous.ModdingAPI.Items;
 using Blasphemous.ModdingAPI.Levels;
+using Blasphemous.ModdingAPI.Levels.Loaders;
+using Blasphemous.ModdingAPI.Levels.Modifiers;
 using Blasphemous.ModdingAPI.Penitence;
 using Blasphemous.ModdingAPI.Skins;
 using System.Collections.Generic;

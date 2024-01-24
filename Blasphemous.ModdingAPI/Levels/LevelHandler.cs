@@ -1,4 +1,5 @@
-﻿using Framework.Managers;
+﻿using Blasphemous.ModdingAPI.Levels.Modifiers;
+using Framework.Managers;
 using Framework.Penitences;
 using System.Collections;
 using System.Collections.Generic;
@@ -189,6 +190,16 @@ internal class LevelHandler
             new ObjectDeletion("logic", "fake/path", null),
             new ObjectDeletion("logic", "fake/path2", null),
             new ObjectDeletion("decoration", "fake/path3", null),
+        });
+
+        _additions.Add("D01Z04S19", new List<ObjectAddition>()
+        {
+            new ObjectAddition("item", "QI38", new Vector(-130, -102, 0), new Vector(), new Vector(1, 1, 1), null, null),
+            new ObjectAddition("chest-iron", "QI39", new Vector(-126, -102, 0), new Vector(), new Vector(1, 1, 1), null, null)
+        });
+        _deletions.Add("D01Z04S19", new List<ObjectDeletion>()
+        {
+            new ObjectDeletion("logic", "LOGIC/INTERACTABLES/ACT_PenitenceAltar", null)
         });
     }
 }
