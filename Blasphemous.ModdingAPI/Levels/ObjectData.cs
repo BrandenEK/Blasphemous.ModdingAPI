@@ -35,43 +35,6 @@ public class ObjectData
     [JsonProperty] public readonly string[] properties = [];
 }
 
-//public class ObjectAddition
-//{
-//    [JsonProperty] public readonly string type; // Required
-//    [JsonProperty] public readonly string id; // Required
-
-//    [JsonProperty] public readonly Vector position = Vector.Zero;
-//    [JsonProperty] public readonly Vector rotation = Vector.Zero;
-//    [JsonProperty] public readonly Vector scale = Vector.One;
-
-//    [JsonProperty] public readonly string condition = string.Empty;
-//    [JsonProperty] public readonly string[] properties = [];
-//}
-
-//public class ObjectModification
-//{
-//    [JsonProperty] public readonly string scene; // Required
-//    [JsonProperty] public readonly string path; // Required
-
-//    [JsonProperty] public readonly string type; // Required
-//    [JsonProperty] public readonly string id; // Required
-
-//    [JsonProperty] public readonly Vector position = Vector.Zero;
-//    [JsonProperty] public readonly Vector rotation = Vector.Zero;
-//    [JsonProperty] public readonly Vector scale = Vector.One;
-
-//    [JsonProperty] public readonly string condition = string.Empty;
-//    [JsonProperty] public readonly string[] properties = [];
-//}
-
-//public class ObjectDeletion
-//{
-//    [JsonProperty] public readonly string scene; // Required
-//    [JsonProperty] public readonly string path; // Required
-
-//    [JsonProperty] public readonly string condition = string.Empty;
-//}
-
 public readonly record struct Vector
 {
     public float X { get; }

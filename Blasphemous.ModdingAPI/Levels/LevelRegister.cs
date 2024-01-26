@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Blasphemous.ModdingAPI.Levels.Loaders;
+using Blasphemous.ModdingAPI.Levels.Modifiers;
+using System.Collections.Generic;
 
 namespace Blasphemous.ModdingAPI.Levels;
 
@@ -23,7 +25,7 @@ public static class LevelRegister
     }
 
     /// <summary> Registers a new level modification </summary>
-    public static void RegisterObjectModifier(this ModServiceProvider provider, string type, ObjectCreator creator)
+    public static void RegisterObjectCreator(this ModServiceProvider provider, string type, ObjectCreator creator)
     {
         if (provider == null)
             return;

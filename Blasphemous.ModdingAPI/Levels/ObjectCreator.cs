@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using Blasphemous.ModdingAPI.Levels.Loaders;
+using Blasphemous.ModdingAPI.Levels.Modifiers;
 
 namespace Blasphemous.ModdingAPI.Levels;
 
@@ -13,16 +13,4 @@ public class ObjectCreator
         Loader = loader;
         Modifier = modifier;
     }
-}
-
-public interface ILoader
-{
-    public IEnumerator Apply();
-
-    public GameObject Result { get; }
-}
-
-public interface IModifier
-{
-    public void Apply(GameObject obj, ObjectData data);
 }
