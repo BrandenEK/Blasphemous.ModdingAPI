@@ -32,7 +32,7 @@ internal class ModdingAPI : BlasMod
     {
         ItemHandler.Initialize();
         PenitenceHandler.Initialize();
-        LevelHandler.TempLoad();
+        LevelHandler.Initialize();
     }
 
     protected internal override void OnNewGame()
