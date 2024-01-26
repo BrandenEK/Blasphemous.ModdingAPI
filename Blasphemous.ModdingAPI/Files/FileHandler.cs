@@ -305,13 +305,13 @@ public class FileHandler
     /// <summary>
     /// Loads all of the level modifications associated with this mod
     /// </summary>
-    internal Dictionary<string, LevelModification> LoadLevels()
+    internal Dictionary<string, LevelEdit> LoadLevels()
     {
         if (!Directory.Exists(levelsPath))
             return [];
 
         return Directory.GetFiles(levelsPath).ToDictionary(Path.GetFileNameWithoutExtension,
-            path => JsonConvert.DeserializeObject<LevelModification>(File.ReadAllText(path)));
+            path => JsonConvert.DeserializeObject<LevelEdit>(File.ReadAllText(path)));
     }
 
     // Skins

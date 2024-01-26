@@ -24,5 +24,5 @@ public interface ILoader
 
 public interface IModifier
 {
-    public void Apply(GameObject obj, ObjectAddition data);
+    public void Apply(GameObject obj, ObjectData data);
 }

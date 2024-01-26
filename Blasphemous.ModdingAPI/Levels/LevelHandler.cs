@@ -14,29 +14,31 @@ internal class LevelHandler
     private readonly Dictionary<string, GameObject> _objects = new();
     private readonly IModifier _baseModifier = new BaseModifier();
 
-    private readonly Dictionary<string, IEnumerable<ObjectAddition>> _additions = new();
-    private readonly Dictionary<string, IEnumerable<ObjectDeletion>> _deletions = new();
+    private readonly Dictionary<string, IEnumerable<ObjectData>> _additions = new();
+    private readonly Dictionary<string, IEnumerable<ObjectData>> _modifications = new();
+    private readonly Dictionary<string, IEnumerable<ObjectData>> _deletions = new();
 
     private bool _loadedObjects = false;
     private Transform _currentObjectHolder; // Only accessed when adding objects, so always set when loading scene with objects to add
 
     public void Initialize()
     {
-        Main.ModLoader.ProcessModFunction(mod => ProcessModifications(mod.FileHandler.LoadLevels()));
+        Main.ModLoader.ProcessModFunction(mod => ProcessLevelEdits(mod.FileHandler.LoadLevels()));
     }
 
     public void PreloadLevel(string level)
     {
         bool hasAdditions = _additions.TryGetValue(level, out var additions);
+        bool hasModifications = _modifications.TryGetValue(level, out var modifications);
         bool hasDeletions = _deletions.TryGetValue(level, out var deletions);
 
-        if (!hasAdditions && !hasDeletions) return;
-        Main.ModdingAPI.Log("Applying level modifications for " + level);
+        if (!hasAdditions && !hasModifications && !hasDeletions)
+            return;
 
-        if (hasAdditions)
-            AddObjects(additions);
-        if (hasDeletions)
-            DeleteObjects(deletions, level);
+        Main.ModdingAPI.Log("Applying level modifications for " + level);
+        if (hasAdditions) AddObjects(additions);
+        if (hasModifications) ModifyObjects(modifications, level);
+        if (hasDeletions) DeleteObjects(deletions, level);
     }
 
     public void LoadLevel(string level)
@@ -48,27 +50,34 @@ internal class LevelHandler
         }
     }
 
-    private void ProcessModifications(Dictionary<string, LevelModification> modifications)
+    private void ProcessLevelEdits(Dictionary<string, LevelEdit> edits)
     {
-        foreach (var modification in modifications)
+        foreach (var edit in edits)
         {
-            if (modification.Value.additions.Length > 0)
+            if (edit.Value.additions.Length > 0)
             {
-                _additions[modification.Key] = _additions.TryGetValue(modification.Key, out var addition)
-                    ? addition.Concat(modification.Value.additions)
-                    : modification.Value.additions;
+                _additions[edit.Key] = _additions.TryGetValue(edit.Key, out var addition)
+                    ? addition.Concat(edit.Value.additions)
+                    : edit.Value.additions;
             }
 
-            if (modification.Value.deletions.Length > 0)
+            if (edit.Value.modifications.Length > 0)
             {
-                _deletions[modification.Key] = _deletions.TryGetValue(modification.Key, out var deletion)
-                    ? deletion.Concat(modification.Value.deletions)
-                    : modification.Value.deletions;
+                _modifications[edit.Key] = _modifications.TryGetValue(edit.Key, out var modification)
+                    ? modification.Concat(edit.Value.modifications)
+                    : edit.Value.modifications;
+            }
+
+            if (edit.Value.deletions.Length > 0)
+            {
+                _deletions[edit.Key] = _deletions.TryGetValue(edit.Key, out var deletion)
+                    ? deletion.Concat(edit.Value.deletions)
+                    : edit.Value.deletions;
             }
         }
     }
 
-    private void AddObjects(IEnumerable<ObjectAddition> objects)
+    private void AddObjects(IEnumerable<ObjectData> objects)
     {
         _currentObjectHolder = GameObject.Find("LOGIC").transform;
 
@@ -86,18 +95,31 @@ internal class LevelHandler
         }
     }
 
-    private void DeleteObjects(IEnumerable<ObjectDeletion> objects, string level)
+    private void ModifyObjects(IEnumerable<ObjectData> objects, string level)
+    {
+        _currentObjectHolder = GameObject.Find("LOGIC").transform;
+
+        foreach (var modification in objects.Where(x => CheckCondition(x.condition)))
+        {
+            if (!LevelRegister.TryGetModifier(modification.type, out IModifier modifier))
+                continue;
+
+            Scene scene = GetSceneFromObjectData(level, modification.scene);
+            GameObject existingObject = scene.FindObject(modification.path, false);
+
+            if (existingObject == null)
+                return;
+
+            _baseModifier.Apply(existingObject, modification);
+            modifier.Apply(existingObject, modification);
+        }
+    }
+
+    private void DeleteObjects(IEnumerable<ObjectData> objects, string level)
     {
         foreach (var deletion in objects.Where(d => CheckCondition(d.condition)).GroupBy(d => d.scene))
         {
-            Scene scene = SceneManager.GetSceneByName(level + deletion.Key switch
-            {
-                "decoration" => "_DECO",
-                "layout" => "_LAYOUT",
-                "logic" => "_LOGIC",
-                _ => throw new System.Exception("Invalid scene type for object deletion: " + deletion.Key)
-            });
-
+            Scene scene = GetSceneFromObjectData(level, deletion.Key);
             DisableObjectGroup(scene, deletion.Select(x => x.path));
         }
     }
@@ -142,6 +164,20 @@ internal class LevelHandler
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Gets the unity scene referenced by a modification or deletion
+    /// </summary>
+    private Scene GetSceneFromObjectData(string level, string scene)
+    {
+        return SceneManager.GetSceneByName(level + scene switch
+        {
+            "decoration" => "_DECO",
+            "layout" => "_LAYOUT",
+            "logic" => "_LOGIC",
+            _ => throw new System.Exception("Invalid scene type for object deletion: " + scene)
+        });
     }
 
     /// <summary>

@@ -7,7 +7,7 @@ namespace Blasphemous.ModdingAPI.Levels.Modifiers;
 
 public class BaseModifier : IModifier
 {
-    public void Apply(GameObject obj, ObjectAddition data)
+    public void Apply(GameObject obj, ObjectData data)
     {
         obj.transform.position = data.position;
         obj.transform.eulerAngles = data.rotation;
@@ -18,7 +18,7 @@ public class BaseModifier : IModifier
 
 public class CollectibleItemModifier : IModifier
 {
-    public void Apply(GameObject obj, ObjectAddition data)
+    public void Apply(GameObject obj, ObjectData data)
     {
         UniqueId idComp = obj.GetComponent<UniqueId>();
         idComp.uniqueId = "ITEM-PICKUP-" + data.id;
@@ -31,7 +31,7 @@ public class CollectibleItemModifier : IModifier
 
 public class ChestModifier : IModifier
 {
-    public void Apply(GameObject obj, ObjectAddition data)
+    public void Apply(GameObject obj, ObjectData data)
     {
         UniqueId idComp = obj.GetComponent<UniqueId>();
         idComp.uniqueId = "CHEST-" + data.id;
