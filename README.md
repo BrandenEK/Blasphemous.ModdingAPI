@@ -3,15 +3,6 @@
 ![Last commit](https://img.shields.io/github/last-commit/BrandenEK/Blasphemous-Modding-API?color=important)
 ![Downloads](https://img.shields.io/github/downloads/BrandenEK/Blasphemous-Modding-API/total?color=success)
 
-## Table of Contents
-
-- [Features](https://github.com/BrandenEK/Blasphemous-Modding-API#features)
-- [Usage](https://github.com/BrandenEK/Blasphemous-Modding-API#usage)
-- [Save compatibility](https://github.com/BrandenEK/Blasphemous-Modding-API#save-compatibility)
-- [Translations](https://github.com/BrandenEK/Blasphemous-Modding-API#translations)
-
----
-
 ## Features
 
 - Enables the console for all registered mods
