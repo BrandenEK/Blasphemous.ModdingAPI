@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Blasphemous.ModdingAPI.Levels.Modifiers;
 
-public class GroundItemModifier : IModifier
+internal class GroundItemModifier : IModifier
 {
     public void Apply(GameObject obj, ObjectData data)
     {
@@ -20,7 +20,7 @@ public class GroundItemModifier : IModifier
     }
 }
 
-public class ShrineItemModifier : IModifier
+internal class ShrineItemModifier : IModifier
 {
     public void Apply(GameObject obj, ObjectData data)
     {
@@ -41,7 +41,7 @@ public class ShrineItemModifier : IModifier
     }
 }
 
-public class ChestModifier : IModifier
+internal class ChestModifier : IModifier
 {
     public void Apply(GameObject obj, ObjectData data)
     {

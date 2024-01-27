@@ -6,21 +6,31 @@ using UnityEngine;
 
 namespace Blasphemous.ModdingAPI.Levels.Loaders;
 
+/// <summary>
+/// Loads an object by finding it in a scene
+/// </summary>
 public class SceneLoader : ILoader
 {
     private readonly string _scene;
     private readonly string _path;
 
+    /// <summary>
+    /// The loaded object
+    /// </summary>
     public GameObject Result { get; private set; }
 
-    public static bool InLoadProcess { get; private set; }
-
+    /// <summary>
+    /// Creates a new scene loader
+    /// </summary>
     public SceneLoader(string scene, string path)
     {
         _scene = scene;
         _path = path;
     }
 
+    /// <summary>
+    /// Coroutine to load the object
+    /// </summary>
     public IEnumerator Apply()
     {
         InLoadProcess = true;
@@ -50,6 +60,8 @@ public class SceneLoader : ILoader
 
         InLoadProcess = false;
     }
+
+    internal static bool InLoadProcess { get; private set; }
 }
 
 // Prevent init functions when loading temp level

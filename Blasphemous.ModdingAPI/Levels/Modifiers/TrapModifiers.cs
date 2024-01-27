@@ -2,7 +2,7 @@
 
 namespace Blasphemous.ModdingAPI.Levels.Modifiers;
 
-public class SpikeModifier : IModifier
+internal class SpikeModifier : IModifier
 {
     public void Apply(GameObject obj, ObjectData data)
     {

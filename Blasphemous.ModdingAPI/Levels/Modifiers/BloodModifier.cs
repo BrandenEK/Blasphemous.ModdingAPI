@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Blasphemous.ModdingAPI.Levels.Modifiers;
 
-public class BloodModifier : IModifier
+internal class BloodModifier : IModifier
 {
     public void Apply(GameObject obj, ObjectData data)
     {
