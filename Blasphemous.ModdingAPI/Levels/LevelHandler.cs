@@ -20,11 +20,26 @@ internal class LevelHandler
     private readonly Dictionary<string, IEnumerable<ObjectData>> _deletions = new();
 
     private bool _loadedObjects = false;
-    private Transform _currentObjectHolder; // Only accessed when adding objects, so always set when loading scene with objects to add
+
+    // Only accessed when adding objects, so always set when loading scene with objects to add
+    private Transform m_currentObjectHolder;
+    public Transform CurrentObjectHolder
+    {
+        get
+        {
+            if (m_currentObjectHolder == null)
+                m_currentObjectHolder = GameObject.Find("LOGIC").transform;
+
+            return m_currentObjectHolder;
+        }
+    }
 
     public void Initialize()
     {
         Main.ModLoader.ProcessModFunction(mod => ProcessLevelEdits(mod.FileHandler.LoadLevels()));
+
+        int amount = _additions.Concat(_modifications).Concat(_deletions).Distinct().Count();
+        Main.ModdingAPI.Log($"Loaded level modifications for {amount} scenes");
     }
 
     public void PreloadLevel(string level)
@@ -80,8 +95,6 @@ internal class LevelHandler
 
     private void AddObjects(IEnumerable<ObjectData> objects)
     {
-        _currentObjectHolder = GameObject.Find("LOGIC").transform;
-
         foreach (var addition in objects.Where(x => CheckCondition(x.condition)))
         {
             if (!_objects.TryGetValue(addition.type, out GameObject storedObject))
@@ -90,7 +103,7 @@ internal class LevelHandler
             if (!LevelRegister.TryGetModifier(addition.type, out IModifier modifier))
                 continue;
 
-            GameObject newObject = Object.Instantiate(storedObject, _currentObjectHolder);
+            GameObject newObject = Object.Instantiate(storedObject, CurrentObjectHolder);
             _baseModifier.Apply(newObject, addition);
             modifier.Apply(newObject, addition);
         }
@@ -98,8 +111,6 @@ internal class LevelHandler
 
     private void ModifyObjects(IEnumerable<ObjectData> objects, string level)
     {
-        _currentObjectHolder = GameObject.Find("LOGIC").transform;
-
         foreach (var modification in objects.Where(x => CheckCondition(x.condition)))
         {
             if (!LevelRegister.TryGetModifier(modification.type, out IModifier modifier))
@@ -146,7 +157,7 @@ internal class LevelHandler
     /// </summary>
     private bool CheckCondition(string condition)
     {
-        if (condition == null)
+        if (string.IsNullOrEmpty(condition))
             return true;
 
         int colon = condition.IndexOf(':');
