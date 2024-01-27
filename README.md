@@ -7,7 +7,6 @@
 
 - [Features](https://github.com/BrandenEK/Blasphemous-Modding-API#features)
 - [How to use](https://github.com/BrandenEK/Blasphemous-Modding-API#how-to-use)
-  - [Installation](https://github.com/BrandenEK/Blasphemous-Modding-API#installation)
   - [Usage](https://github.com/BrandenEK/Blasphemous-Modding-API#usage)
   - [Custom skins](https://github.com/BrandenEK/Blasphemous-Modding-API#custom-skins)
   - [Save Compatibility](https://github.com/BrandenEK/Blasphemous-Modding-API#save-compatibility)
@@ -45,23 +44,6 @@
 
 ## How to use
 
-### Installation
-**Note:** *If you have used other mods before without the API, make sure to delete the BepInEx folder and restore any modified files before installing the modding api!*
-
-<br>
-
-Automatic installation
-- This mod can be automatically installed using the [Blasphemous Mod Installer](https://github.com/BrandenEK/Blasphemous-Mod-Installer)<br>
-<br>
-
-Manual installation
-1. Navigate to the game's root directory, which should be in 
-```C:\Program Files (x86)\Steam\steamapps\common\Blasphemous```
-    - (Optional) Make a duplicate of this folder for playing Blasphemous mods, so that the original game files remain unchanged
-4. Download the latest release of the Modding API from the [Releases](https://github.com/BrandenEK/Blasphemous-Modding-API/releases) page
-5. Extract the contents of the ModdingAPI.zip file into the blasphemous root folder
-6. Verify that a new folder called "Modding" now exists in the same folder as "Blasphemous.exe"
-
 ### Usage
 
 - Press 'backslash' at any time to open the debug console and enter commands
@@ -96,7 +78,7 @@ The Modding API is available in these other languages in addition to English:
 
 ## Creating an example mod
 
-### Project Setup (New)
+### Project Setup
 
 To develop a mod for Blasphemous, run these commands to create a new template project:
 
@@ -106,21 +88,7 @@ To develop a mod for Blasphemous, run these commands to create a new template pr
 
 For example, to create a mod that adds the Boots of Pleading item, I would run the command:
 
-```dotnet new blas1mod -n BootsOfPleading -m "Boots of Pleading" -au Damocles```
-
-
-### Project Setup (Old)
-
-1. Create a folder called "ExampleMod"
-2. Open the command prompt in this folder and run these two commands: <br>
-```dotnet new -i BepInEx.Templates --nuget-source https://nuget.bepinex.dev/v3/index.json``` <br>
-```dotnet new bepinex5plugin -n ExampleMod -T net35 -U 2017.4.40```
-3. Open the newly created "ExampleMod.csproj" in Visual Studio
-4. Go to "Project > Add Assembly Reference > Browse" and add a reference to any required assemblies.  This will include "ModdingAPI.dll", "BepInEx.dll", "Assembly-CSharp.dll", "UnityEngine.dll", and likely many more
-5. Download the "ModdingAPI.xml file from the source code and place it in the same folder as the required assemblies
-6. Rename the "Plugin.cs" file to "Main.cs"
-7. Create a new file called "Example.cs" that contains a class that derives from Mod
-8. Follow the [Examples](https://github.com/BrandenEK/Blasphemous-Modding-API#examples) section on how to program the mod
+```dotnet new blas1mod -n Blasphemous.SpikeProtection -m "Boots of Pleading" -au Damocles```
 
 ### Exporting
 
@@ -129,19 +97,20 @@ Each mod must export the ExampleMod.dll, and it can also export any config files
 ```
 ExampleMod.zip
 ├── config
-│   └── ExampleMod.cfg
+│   └── Mod Name.cfg
 ├── data
-│   ├── ExampleMod
+│   ├── Mod Name
 │   │   ├── dataFileOne.dat
 │   │   └── dataFileTwo.dat
 │   └── RequiredDLL.dll
 ├── docs
-│   └── ExampleMod.txt
+│   └── Mod Name.txt
 ├── levels
-│   ├── D04Z02S01.json
-│   └── D17Z01S02.json
+│   └── Mod Name
+│       ├── D04Z02S01.json
+│       └── D17Z01S02.json
 ├── localization
-│   └── ExampleMod.txt
+│   └── Mod Name.txt
 └── plugins
     └── ExampleMod.dll
 ```
