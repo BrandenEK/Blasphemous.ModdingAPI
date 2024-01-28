@@ -29,6 +29,12 @@ public abstract class BlasMod
     private readonly string name;
 
     /// <summary>
+    /// The developer of the mod
+    /// </summary>
+    public string Author => author;
+    private readonly string author;
+
+    /// <summary>
     /// The file version of the mod
     /// </summary>
     public string Version => version;
@@ -182,11 +188,12 @@ public abstract class BlasMod
     /// <summary>
     /// Initializes and registers a new BlasII mod
     /// </summary>
-    public BlasMod(string id, string name, string version)
+    public BlasMod(string id, string name, string author, string version)
     {
         // Set data
         this.id = id;
         this.name = name;
+        this.author = author;
         this.version = version;
 
         // Set handlers
