@@ -67,5 +67,5 @@ Every mod can register various services in this method through extension methods
 
 ```cs
 // Called when mods are able to register services
-protected internal virtual void OnRegisterServices(ModServiceProvider provider) { }
+protected internal virtual void OnRegisterServices(ModServiceProvider provider)
 ```
