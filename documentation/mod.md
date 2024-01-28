@@ -60,3 +60,12 @@ protected internal virtual void OnLoadGame()
 // Called when quiting a game, after returning to the main menu
 protected internal virtual void OnExitGame()
 ```
+
+### Services
+
+Every mod can register various services in this method through extension methods on the 'ModServiceProvider' class
+
+```cs
+// Called when mods are able to register services
+protected internal virtual void OnRegisterServices(ModServiceProvider provider) { }
+```
