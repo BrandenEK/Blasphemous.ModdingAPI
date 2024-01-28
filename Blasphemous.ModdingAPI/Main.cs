@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Blasphemous.ModdingAPI;
 
-[BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+[BepInPlugin(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_VERSION)]
 internal class Main : BaseUnityPlugin
 {
     public static ModLoader ModLoader { get; private set; }

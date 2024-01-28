@@ -12,7 +12,7 @@ namespace Blasphemous.ModdingAPI;
 
 internal class ModdingAPI : BlasMod
 {
-    public ModdingAPI() : base(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION) { }
+    public ModdingAPI() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
     public ItemHandler ItemHandler { get; } = new();
     public LevelHandler LevelHandler { get; } = new();
