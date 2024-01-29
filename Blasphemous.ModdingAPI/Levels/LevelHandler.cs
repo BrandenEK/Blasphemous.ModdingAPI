@@ -38,7 +38,7 @@ internal class LevelHandler
     {
         Main.ModLoader.ProcessModFunction(mod => ProcessLevelEdits(mod.FileHandler.LoadLevels()));
 
-        int amount = _additions.Concat(_modifications).Concat(_deletions).Distinct().Count();
+        int amount = _additions.Keys.Concat(_modifications.Keys).Concat(_deletions.Keys).Distinct().Count();
         Main.ModdingAPI.Log($"Loaded level modifications for {amount} scenes");
     }
 
