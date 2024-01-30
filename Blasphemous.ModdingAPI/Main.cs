@@ -37,12 +37,12 @@ internal class Main : BaseUnityPlugin
 
         if (File.Exists(assemblyPath))
         {
-            ModdingAPI.LogWarning("Successfully loaded missing assembly: " + args.Name);
+            Logger.LogWarning("Successfully loaded missing assembly: " + args.Name);
             return Assembly.LoadFrom(assemblyPath);
         }
         else
         {
-            ModdingAPI.LogWarning("Failed to load missing assembly: " + args.Name);
+            Logger.LogWarning("Failed to load missing assembly: " + args.Name);
             return null;
         }
     }
