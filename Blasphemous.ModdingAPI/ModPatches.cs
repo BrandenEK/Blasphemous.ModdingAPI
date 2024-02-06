@@ -28,6 +28,8 @@ class Mod_NewLoad_Patch
             Main.ModLoader.ProcessModFunction(mod => mod.OnNewGame());
         else
             Main.ModLoader.ProcessModFunction(mod => mod.OnLoadGame());
+
+        Core.Persistence.SaveGame();
     }
 }
 

@@ -20,8 +20,6 @@ internal class ItemHandler
     {
         foreach (var item in ItemRegister.Items.Where(i => i.CarryOnStart))
             item.GiveItem();
-
-        Core.Persistence.SaveGame();
     }
 
     public void Initialize()

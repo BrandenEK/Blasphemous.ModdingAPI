@@ -30,6 +30,11 @@ public abstract class ModItem
     protected internal abstract string Lore { get; }
 
     /// <summary>
+    /// The icon for the item
+    /// </summary>
+    protected internal abstract Sprite Picture { get; }
+
+    /// <summary>
     /// Whether or not the item should be given upon starting a new game
     /// </summary>
     protected internal abstract bool CarryOnStart { get; }
@@ -65,20 +70,9 @@ public abstract class ModItem
 
     internal abstract ModItemType ItemType { get; }
 
-    internal Sprite Picture { get; private set; }
-
     internal List<ModItemEffect> Effects { get; } = new();
 
-    internal ModItem()
-    {
-        LoadImages(out Sprite picture);
-        Picture = picture;
-    }
-
-    /// <summary>
-    /// Stores the associated images for the item - only executed on startup
-    /// </summary>
-    protected abstract void LoadImages(out Sprite picture);
+    private Sprite _picture;
 
     /// <summary>
     /// Adds an item effect to the custom item
@@ -116,7 +110,7 @@ public abstract class ModItem
         item.caption = Name;
         item.description = Description;
         item.lore = Lore;
-        item.picture = Picture;
+        item.picture = _picture ??= Picture;
         item.carryonstart = CarryOnStart;
         item.preserveInNewGamePlus = PreserveInNGPlus;
 
