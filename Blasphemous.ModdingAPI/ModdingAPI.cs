@@ -1,10 +1,7 @@
-﻿using Blasphemous.ModdingAPI.Input;
-using Blasphemous.ModdingAPI.Levels;
+﻿using Blasphemous.ModdingAPI.Levels;
 using Blasphemous.ModdingAPI.Levels.Loaders;
 using Blasphemous.ModdingAPI.Levels.Modifiers;
 using Blasphemous.ModdingAPI.Skins;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Blasphemous.ModdingAPI;
 
@@ -18,10 +15,6 @@ internal class ModdingAPI : BlasMod
     protected internal override void OnInitialize()
     {
         LocalizationHandler.RegisterDefaultLanguage("en");
-        InputHandler.RegisterDefaultKeybindings(new Dictionary<string, KeyCode>()
-        {
-            { "Console", KeyCode.Backslash }
-        });
     }
 
     protected internal override void OnAllInitialized()
