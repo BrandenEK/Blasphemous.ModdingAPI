@@ -1,5 +1,4 @@
 ﻿using Blasphemous.ModdingAPI.Input;
-using Blasphemous.ModdingAPI.Items;
 using Blasphemous.ModdingAPI.Levels;
 using Blasphemous.ModdingAPI.Levels.Loaders;
 using Blasphemous.ModdingAPI.Levels.Modifiers;
@@ -14,7 +13,6 @@ internal class ModdingAPI : BlasMod
 {
     public ModdingAPI() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
-    public ItemHandler ItemHandler { get; } = new();
     public LevelHandler LevelHandler { get; } = new();
     public SkinLoader SkinLoader { get; } = new();
     public PenitenceHandler PenitenceHandler { get; } = new();
@@ -30,14 +28,8 @@ internal class ModdingAPI : BlasMod
 
     protected internal override void OnAllInitialized()
     {
-        ItemHandler.Initialize();
         PenitenceHandler.Initialize();
         LevelHandler.Initialize();
-    }
-
-    protected internal override void OnNewGame()
-    {
-        ItemHandler.NewGame();
     }
 
     protected internal override void OnLevelPreloaded(string oldLevel, string newLevel)
