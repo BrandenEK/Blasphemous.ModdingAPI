@@ -2,7 +2,6 @@
 using Blasphemous.ModdingAPI.Levels;
 using Blasphemous.ModdingAPI.Levels.Loaders;
 using Blasphemous.ModdingAPI.Levels.Modifiers;
-using Blasphemous.ModdingAPI.Penitence;
 using Blasphemous.ModdingAPI.Skins;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +14,6 @@ internal class ModdingAPI : BlasMod
 
     public LevelHandler LevelHandler { get; } = new();
     public SkinLoader SkinLoader { get; } = new();
-    public PenitenceHandler PenitenceHandler { get; } = new();
 
     protected internal override void OnInitialize()
     {
@@ -28,7 +26,6 @@ internal class ModdingAPI : BlasMod
 
     protected internal override void OnAllInitialized()
     {
-        PenitenceHandler.Initialize();
         LevelHandler.Initialize();
     }
 
@@ -40,11 +37,6 @@ internal class ModdingAPI : BlasMod
     protected internal override void OnLevelLoaded(string oldLevel, string newLevel)
     {
         LevelHandler.LoadLevel(newLevel);
-    }
-
-    protected internal override void OnUpdate()
-    {
-        PenitenceHandler.Update();
     }
 
     protected internal override void OnRegisterServices(ModServiceProvider provider)
