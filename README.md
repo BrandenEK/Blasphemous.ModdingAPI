@@ -5,17 +5,13 @@
 
 ## Features
 
-- Enables the console for all registered mods
-- Allows loading custom skins
 - Ensures compatibility between all mods
-- Adds support for custom penitences and items
 - Very simple process of installing new mods
+- Standard functionality for mods to take advantage of
 
 ## Usage
 
-- Press 'backslash' at any time to open the debug console and enter commands
 - All registered mods should be displayed in the top right corner of the main menu
-- Mods can be disabled by simply moving them out of the "Modding/plugins" folder
 - Keyboard input can be configured by modifying the files in the "Modding/keybindings" folder
 
 ## Save compatibility
