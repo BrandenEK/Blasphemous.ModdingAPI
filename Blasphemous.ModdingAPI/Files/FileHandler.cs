@@ -1,9 +1,6 @@
-﻿using Blasphemous.ModdingAPI.Levels;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 
 namespace Blasphemous.ModdingAPI.Files;
@@ -17,7 +14,6 @@ public class FileHandler
     private readonly string configPath;
     private readonly string dataPath;
     private readonly string keybindingsPath;
-    private readonly string levelsPath;
     private readonly string localizationPath;
 
     internal FileHandler(BlasMod mod)
@@ -26,7 +22,6 @@ public class FileHandler
         configPath = Path.GetFullPath($"Modding/config/{mod.Name}.cfg");
         dataPath = Path.GetFullPath($"Modding/data/{mod.Name}/");
         keybindingsPath = Path.GetFullPath($"Modding/keybindings/{mod.Name}.txt");
-        levelsPath = Path.GetFullPath($"Modding/levels/{mod.Name}/");
         localizationPath = Path.GetFullPath($"Modding/localization/{mod.Name}.txt");
     }
 
@@ -298,19 +293,5 @@ public class FileHandler
     internal string[] LoadLocalization()
     {
         return ReadFileLines(localizationPath, out string[] output) ? output : new string[0];
-    }
-
-    // Levels
-
-    /// <summary>
-    /// Loads all of the level modifications associated with this mod
-    /// </summary>
-    internal Dictionary<string, LevelEdit> LoadLevels()
-    {
-        if (!Directory.Exists(levelsPath))
-            return [];
-
-        return Directory.GetFiles(levelsPath).ToDictionary(Path.GetFileNameWithoutExtension,
-            path => JsonConvert.DeserializeObject<LevelEdit>(File.ReadAllText(path)));
     }
 }
