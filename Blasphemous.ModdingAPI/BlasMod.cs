@@ -213,7 +213,12 @@ public abstract class BlasMod
     /// <summary>
     /// Checks whether a mod is loaded, and returns it if so
     /// </summary>
-    public bool IsModLoaded(string modId, out BlasMod mod) => Main.ModLoader.IsModLoaded(modId, out mod);
+    public bool IsModLoadedId(string id, out BlasMod mod) => Main.ModLoader.IsModLoadedId(id, out mod);
+
+    /// <summary>
+    /// Checks whether a mod is loaded, and returns it if so
+    /// </summary>
+    public bool IsModLoadedName(string name, out BlasMod mod) => Main.ModLoader.IsModLoadedName(name, out mod);
 
     private readonly ManualLogSource _logger;
 }

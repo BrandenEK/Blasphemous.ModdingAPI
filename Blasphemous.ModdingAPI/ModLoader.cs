@@ -168,8 +168,16 @@ internal class ModLoader
     /// <summary>
     /// Checks whether a mod is already loaded
     /// </summary>
-    public bool IsModLoaded(string modId, out BlasMod mod)
+    public bool IsModLoadedId(string Id, out BlasMod mod)
     {
-        return (mod = _mods.FirstOrDefault(m => m.Id == modId)) != null;
+        return (mod = _mods.FirstOrDefault(m => m.Id == Id)) != null;
+    }
+
+    /// <summary>
+    /// Checks whether a mod is already loaded
+    /// </summary>
+    public bool IsModLoadedName(string name, out BlasMod mod)
+    {
+        return (mod = _mods.FirstOrDefault(m => m.Name == name)) != null;
     }
 }
