@@ -1,7 +1,6 @@
 ﻿using Blasphemous.ModdingAPI.Levels;
 using Blasphemous.ModdingAPI.Levels.Loaders;
 using Blasphemous.ModdingAPI.Levels.Modifiers;
-using Blasphemous.ModdingAPI.Skins;
 
 namespace Blasphemous.ModdingAPI;
 
@@ -10,12 +9,6 @@ internal class ModdingAPI : BlasMod
     public ModdingAPI() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
     public LevelHandler LevelHandler { get; } = new();
-    public SkinLoader SkinLoader { get; } = new();
-
-    protected internal override void OnInitialize()
-    {
-        LocalizationHandler.RegisterDefaultLanguage("en");
-    }
 
     protected internal override void OnAllInitialized()
     {
