@@ -10,19 +10,36 @@ namespace Blasphemous.ModdingAPI.Files;
 /// </summary>
 public class FileHandler
 {
-    private readonly string rootPath;
     private readonly string configPath;
     private readonly string dataPath;
     private readonly string keybindingsPath;
     private readonly string localizationPath;
+    private readonly string outputPath;
+
+    /// <summary>
+    /// The full path of the modding folder
+    /// </summary>
+    public string ModdingFolder => Path.GetFullPath("Modding/");
+
+    /// <summary>
+    /// The full path of the output folder for this mod
+    /// </summary>
+    public string OutputFolder
+    {
+        get
+        {
+            EnsureDirectoryExists(outputPath);
+            return outputPath;
+        }
+    }
 
     internal FileHandler(BlasMod mod)
     {
-        rootPath = $"{Directory.GetCurrentDirectory()}/";
         configPath = Path.GetFullPath($"Modding/config/{mod.Name}.cfg");
         dataPath = Path.GetFullPath($"Modding/data/{mod.Name}/");
         keybindingsPath = Path.GetFullPath($"Modding/keybindings/{mod.Name}.txt");
         localizationPath = Path.GetFullPath($"Modding/localization/{mod.Name}.txt");
+        outputPath = Path.GetFullPath($"Modding/output/{mod.Name}/");
     }
 
     // General
@@ -70,14 +87,6 @@ public class FileHandler
 
         output = null;
         return false;
-    }
-
-    /// <summary>
-    /// Writes data to a text file in the game's root directory
-    /// </summary>
-    public void WriteToFile(string fileName, string text)
-    {
-        File.WriteAllText(rootPath + fileName, text);
     }
 
     /// <summary>
