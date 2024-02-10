@@ -2,7 +2,7 @@
 using Framework.Managers;
 using Gameplay.UI;
 
-namespace Blasphemous.ModdingAPI.Items;
+namespace Blasphemous.ModdingAPI;
 
 /// <summary>
 /// A collection of methods used to work with items
