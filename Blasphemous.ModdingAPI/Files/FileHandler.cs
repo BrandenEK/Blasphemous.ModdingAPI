@@ -1,9 +1,6 @@
-﻿using Blasphemous.ModdingAPI.Levels;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 
 namespace Blasphemous.ModdingAPI.Files;
@@ -13,21 +10,36 @@ namespace Blasphemous.ModdingAPI.Files;
 /// </summary>
 public class FileHandler
 {
-    private readonly string rootPath;
     private readonly string configPath;
     private readonly string dataPath;
     private readonly string keybindingsPath;
-    private readonly string levelsPath;
     private readonly string localizationPath;
+    private readonly string outputPath;
+
+    /// <summary>
+    /// The full path of the modding folder
+    /// </summary>
+    public string ModdingFolder => Path.GetFullPath("Modding/");
+
+    /// <summary>
+    /// The full path of the output folder for this mod
+    /// </summary>
+    public string OutputFolder
+    {
+        get
+        {
+            EnsureDirectoryExists(outputPath);
+            return outputPath;
+        }
+    }
 
     internal FileHandler(BlasMod mod)
     {
-        rootPath = $"{Directory.GetCurrentDirectory()}/";
         configPath = Path.GetFullPath($"Modding/config/{mod.Name}.cfg");
         dataPath = Path.GetFullPath($"Modding/data/{mod.Name}/");
         keybindingsPath = Path.GetFullPath($"Modding/keybindings/{mod.Name}.txt");
-        levelsPath = Path.GetFullPath($"Modding/levels/{mod.Name}/");
         localizationPath = Path.GetFullPath($"Modding/localization/{mod.Name}.txt");
+        outputPath = Path.GetFullPath($"Modding/output/{mod.Name}/");
     }
 
     // General
@@ -75,14 +87,6 @@ public class FileHandler
 
         output = null;
         return false;
-    }
-
-    /// <summary>
-    /// Writes data to a text file in the game's root directory
-    /// </summary>
-    public void WriteToFile(string fileName, string text)
-    {
-        File.WriteAllText(rootPath + fileName, text);
     }
 
     /// <summary>
@@ -298,54 +302,5 @@ public class FileHandler
     internal string[] LoadLocalization()
     {
         return ReadFileLines(localizationPath, out string[] output) ? output : new string[0];
-    }
-
-    // Levels
-
-    /// <summary>
-    /// Loads all of the level modifications associated with this mod
-    /// </summary>
-    internal Dictionary<string, LevelEdit> LoadLevels()
-    {
-        if (!Directory.Exists(levelsPath))
-            return [];
-
-        return Directory.GetFiles(levelsPath).ToDictionary(Path.GetFileNameWithoutExtension,
-            path => JsonConvert.DeserializeObject<LevelEdit>(File.ReadAllText(path)));
-    }
-
-    // Skins
-
-    internal Dictionary<string, Sprite> LoadSkins()
-    {
-        string skinsPath = Path.GetFullPath("Modding/skins/");
-        Dictionary<string, Sprite> customSkins = new Dictionary<string, Sprite>();
-        string[] skinFolders = Directory.GetDirectories(skinsPath);
-
-        for (int i = 0; i < skinFolders.Length; i++)
-        {
-            if (GetSkinFiles(skinFolders[i], out string skinInfo, out Sprite skinTexture))
-            {
-                if (!customSkins.ContainsKey(skinInfo))
-                    customSkins.Add(skinInfo, skinTexture);
-            }
-        }
-
-        return customSkins;
-    }
-
-    private bool GetSkinFiles(string path, out string skinInfo, out Sprite skinTexture)
-    {
-        skinInfo = null; skinTexture = null;
-        if (!File.Exists(path + "/info.txt") || !File.Exists(path + "/texture.png")) return false;
-
-        skinInfo = File.ReadAllText(path + "/info.txt");
-        byte[] bytes = File.ReadAllBytes(path + "/texture.png");
-        Texture2D tex = new Texture2D(256, 1, TextureFormat.ARGB32, false);
-        tex.LoadImage(bytes);
-        tex.filterMode = FilterMode.Point;
-        skinTexture = Sprite.Create(tex, new Rect(0, 0, 256, 1), new Vector2(0.5f, 0.5f));
-
-        return true;
     }
 }

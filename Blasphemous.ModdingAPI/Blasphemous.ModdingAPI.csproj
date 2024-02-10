@@ -8,8 +8,8 @@
     <Product>Modding API</Product>
     <Authors>Damocles</Authors>
     <Company>Damocles</Company>
-    <Description>A modding api for the game blasphemous that allows other mods to run</Description>
-    <Version>2.0.2</Version>
+    <Description>A modding API that assists the creation of mods for Blasphemous 1</Description>
+    <Version>2.1.0</Version>
 
     <TargetName>ModdingAPI</TargetName>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
