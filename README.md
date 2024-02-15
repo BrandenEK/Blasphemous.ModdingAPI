@@ -1,4 +1,5 @@
 # Blasphemous Modding API
+
 ![Release version](https://img.shields.io/github/v/release/BrandenEK/Blasphemous-Modding-API)
 ![Last commit](https://img.shields.io/github/last-commit/BrandenEK/Blasphemous-Modding-API?color=important)
 ![Downloads](https://img.shields.io/github/downloads/BrandenEK/Blasphemous-Modding-API/total?color=success)
@@ -12,6 +13,7 @@
 ## Usage
 
 - All registered mods should be displayed in the top right corner of the main menu
+- Mod settings can be configured by modifying the files in the "Modding/config" folder
 - Keyboard input can be configured by modifying the files in the "Modding/keybindings" folder
 
 ## Save compatibility
