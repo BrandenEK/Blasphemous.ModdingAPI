@@ -14,8 +14,8 @@
     <TargetName>ModdingAPI</TargetName>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <DocumentationFile>obj\Release\ModdingAPI.xml</DocumentationFile>
-    <RepositoryUrl>https://github.com/BrandenEK/Blasphemous-Modding-API</RepositoryUrl>
+    <DocumentationFile>obj\Release\$(TargetName).xml</DocumentationFile>
+    <RepositoryUrl>https://github.com/BrandenEK/Blasphemous.ModdingAPI</RepositoryUrl>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
