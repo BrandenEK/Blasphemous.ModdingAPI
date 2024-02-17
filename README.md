@@ -1,8 +1,12 @@
 # Blasphemous Modding API
 
-![Release version](https://img.shields.io/github/v/release/BrandenEK/Blasphemous-Modding-API)
-![Last commit](https://img.shields.io/github/last-commit/BrandenEK/Blasphemous-Modding-API?color=important)
-![Downloads](https://img.shields.io/github/downloads/BrandenEK/Blasphemous-Modding-API/total?color=success)
+<div>
+  <img src="https://img.shields.io/github/v/release/BrandenEK/Blasphemous.ModdingAPI?style=for-the-badge">
+  <img src="https://img.shields.io/github/last-commit/BrandenEK/Blasphemous.ModdingAPI?color=important&style=for-the-badge">
+  <img src="https://img.shields.io/github/downloads/BrandenEK/Blasphemous.ModdingAPI/total?color=success&style=for-the-badge">
+</div>
+
+---
 
 ## Features
 
@@ -22,6 +26,6 @@
 - To prevent save corruption, don't load a save file with different mods installed than were present when the save file was created
 - If corruption does happen, strange effects may take place, such as rosary beads being randomly equipped.  Removing all existing save files should fix this problem
 
-## Documentation
+## Development
 
 Full documentation, along with examples can be found here: [Blasphemous Modding API Documentation](documentation/main.md)
