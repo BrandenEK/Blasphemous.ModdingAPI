@@ -5,13 +5,9 @@ on:
   push:
     tags: [ "**" ]
 
-env:
-  MOD_NAME: "Modding API"
-  DLL_NAME: "ModdingAPI"
-
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
@@ -19,11 +15,22 @@ jobs:
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 3.1.x
 
     - name: Build Project
       run: |
         dotnet restore
         dotnet build --configuration Release --no-restore
+
+    - name: Export Settings
+      run: |
+        MOD_TITLE=$(grep -oP '<Title>\K[^<]+' ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj)
+        echo "MOD_TITLE=$MOD_TITLE" >> $GITHUB_ENV
+        MOD_NAME=$(grep -oP '<TargetName>\K[^<]+' ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj)
+        echo "MOD_NAME=$MOD_NAME" >> $GITHUB_ENV
+        MOD_VERSION=$(grep -oP '<Version>\K[^<]+' ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj)
+        echo "MOD_VERSION=$MOD_VERSION" >> $GITHUB_ENV
 
     - name: Create Release
       id: create_release
@@ -32,7 +39,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: ${{ env.MOD_NAME }} v${{ github.ref_name }}
+        release_name: ${{ env.MOD_TITLE }} v${{ github.ref_name }}
 
     - name: Upload Release
       uses: actions/upload-release-asset@v1
@@ -40,8 +47,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: publish/${{ env.DLL_NAME }}.zip
-        asset_name: ${{ env.DLL_NAME }}.zip
+        asset_path: publish/${{ env.MOD_NAME }}.zip
+        asset_name: ${{ env.MOD_NAME }}.zip
         asset_content_type: application/zip
 
     - name: Upload Nuget
