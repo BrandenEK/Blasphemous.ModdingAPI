@@ -1,10 +1,6 @@
 # Blasphemous Modding API
 
-<div>
-  <img src="https://img.shields.io/github/v/release/BrandenEK/Blasphemous.ModdingAPI?style=for-the-badge">
-  <img src="https://img.shields.io/github/last-commit/BrandenEK/Blasphemous.ModdingAPI?color=important&style=for-the-badge">
-  <img src="https://img.shields.io/github/downloads/BrandenEK/Blasphemous.ModdingAPI/total?color=success&style=for-the-badge">
-</div>
+<img src="https://img.shields.io/github/downloads/BrandenEK/Blasphemous.ModdingAPI/total?color=6495ED&style=for-the-badge">
 
 ---
 
