@@ -52,7 +52,7 @@ internal class ModdingAPI : BlasMod
 
         // Create text for mod list
         StringBuilder sb = new StringBuilder($"Loaded {Main.ModLoader.AllMods.Count()} mods:").AppendLine();
-        foreach (var mod in Main.ModLoader.AllMods)
+        foreach (var mod in Main.ModLoader.AllMods.OrderBy(GetModPriority))
         {
             sb.AppendLine($"{mod.Name} v{mod.Version}");
         }
@@ -75,5 +75,16 @@ internal class ModdingAPI : BlasMod
         t.fontSize = 32;
 
         _modList = t.gameObject;
+    }
+
+    private int GetModPriority(BlasMod mod)
+    {
+        if (mod == this)
+            return -1;
+
+        if (mod.Name.EndsWith("Framework"))
+            return 0;
+
+        return 1;
     }
 }
