@@ -1,7 +1,8 @@
 ﻿using Framework.Managers;
 using Gameplay.UI.Others.MenuLogic;
 using HarmonyLib;
-using System.Text;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,20 +34,30 @@ class Mod_NewLoad_Patch
     }
 }
 
+/// <summary>
+/// Store the blasphemous font when game is started
+/// </summary>
 [HarmonyPatch(typeof(VersionNumber), "Start")]
 internal class VersionNumber_Patch
 {
     public static void Postfix(VersionNumber __instance)
     {
-        Text version = __instance.GetComponent<Text>();
+        Text text = __instance.GetComponent<Text>();
+        if (text == null || text.font == null)
+            return;
 
-        var sb = new StringBuilder(version.text).AppendLine().AppendLine();
-        foreach (var mod in Main.ModLoader.AllMods)
-        {
-            sb.AppendLine($"{mod.Name} v{mod.Version}");
-        }
+        Main.ModdingAPI.BlasFont = text.font;
+    }
+}
 
-        version.alignment = TextAnchor.UpperRight;
-        version.text = sb.ToString();
+/// <summary>
+/// Show the mod list if any of the menu buttons are selected
+/// </summary>
+[HarmonyPatch(typeof(NewMainMenu), "Update")]
+class Menu_Update_Patch
+{
+    public static void Postfix(List<Button> ___AllButtons)
+    {
+        Main.ModdingAPI.ShowMenu = ___AllButtons.Any(x => x.transform.GetChild(1).GetComponent<Text>().color != Color.white);
     }
 }
