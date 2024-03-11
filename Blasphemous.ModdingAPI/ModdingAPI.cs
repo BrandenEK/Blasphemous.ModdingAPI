@@ -51,10 +51,11 @@ internal class ModdingAPI : BlasMod
             return;
 
         // Create text for mod list
-        StringBuilder sb = new StringBuilder($"Loaded {Main.ModLoader.AllMods.Count()} mods:").AppendLine();
-        foreach (var mod in Main.ModLoader.AllMods.OrderBy(GetModPriority))
+        //StringBuilder sb = new StringBuilder($"Loaded {Main.ModLoader.AllMods.Count()} mods:").AppendLine().AppendLine();
+        StringBuilder sb = new();
+        foreach (var mod in Main.ModLoader.AllMods.OrderBy(GetModPriority).ThenBy(x => x.Name))
         {
-            sb.AppendLine($"{mod.Name} v{mod.Version}");
+            sb.AppendLine(GetModText(mod));
         }
 
         // Create rect transform
@@ -73,6 +74,7 @@ internal class ModdingAPI : BlasMod
         t.alignment = TextAnchor.UpperLeft;
         t.font = BlasFont;
         t.fontSize = 32;
+        t.supportRichText = true;
 
         _modList = t.gameObject;
     }
@@ -86,5 +88,14 @@ internal class ModdingAPI : BlasMod
             return 0;
 
         return 1;
+    }
+
+    private string GetModText(BlasMod mod)
+    {
+        bool dependency = mod == this || mod.Name.EndsWith("Framework");
+        string line = $"{mod.Name} v{mod.Version}";
+
+        string color = dependency ? "7CA7BF" : "D3D3D3";
+        return $"<color=#{color}>{line}</color>";
     }
 }
