@@ -51,14 +51,15 @@ internal class ModdingAPI : BlasMod
             return;
 
         // Create text for mod list
-        //StringBuilder sb = new StringBuilder($"Loaded {Main.ModLoader.AllMods.Count()} mods:").AppendLine().AppendLine();
-        StringBuilder sb = new();
+        StringBuilder fullText = new();
+        StringBuilder shadowText = new();
         foreach (var mod in Main.ModLoader.AllMods.OrderBy(GetModPriority).ThenBy(x => x.Name))
         {
-            sb.AppendLine(GetModText(mod));
+            fullText.AppendLine(GetModText(mod, true));
+            shadowText.AppendLine(GetModText(mod, false));
         }
 
-        // Create rect transform
+        // Create rect transform for shadow
         RectTransform r = new GameObject().AddComponent<RectTransform>();
         r.name = "Mod list";
         r.SetParent(canvas.transform, false);
@@ -68,15 +69,23 @@ internal class ModdingAPI : BlasMod
         r.anchoredPosition = new Vector2(20, -15);
         r.sizeDelta = new Vector2(400, 100);
 
-        // Create text
+        // Create text for shadow
         Text t = r.gameObject.AddComponent<Text>();
-        t.text = sb.ToString();
+        t.text = shadowText.ToString();
         t.alignment = TextAnchor.UpperLeft;
+        t.color = Color.black;
         t.font = BlasFont;
         t.fontSize = 32;
-        t.supportRichText = true;
 
+        // Store game object
         _modList = t.gameObject;
+
+        // Duplicate shadow for real text
+        GameObject real = Object.Instantiate(_modList, _modList.transform);
+        Text st = real.GetComponent<Text>();
+        st.supportRichText = true;
+        st.text = fullText.ToString();
+        st.rectTransform.anchoredPosition = new Vector2(-1, 2);
     }
 
     private int GetModPriority(BlasMod mod)
@@ -90,12 +99,14 @@ internal class ModdingAPI : BlasMod
         return 1;
     }
 
-    private string GetModText(BlasMod mod)
+    private string GetModText(BlasMod mod, bool addColor)
     {
-        bool dependency = mod == this || mod.Name.EndsWith("Framework");
         string line = $"{mod.Name} v{mod.Version}";
 
-        string color = dependency ? "7CA7BF" : "D3D3D3";
+        if (!addColor)
+            return line;
+
+        string color = mod == this || mod.Name.EndsWith("Framework") ? "7CA7BF" : "D3D3D3";
         return $"<color=#{color}>{line}</color>";
     }
 }
