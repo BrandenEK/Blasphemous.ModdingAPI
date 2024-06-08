@@ -156,10 +156,26 @@ public abstract class BlasMod
     /// <summary>
     /// Displays a message with a UI text box
     /// </summary>
+    public void LogDisplay(object message)
+    {
+        try
+        {
+            Log(message);
+            UIController.instance.ShowPopUp(message?.ToString(), "", 0, false);
+        }
+        catch
+        {
+            LogError("Tried to call 'LogDisplay' before the UIController was initialized");
+        }
+    }
+
+    /// <summary>
+    /// Displays a message with a UI text box
+    /// </summary>
+    [System.Obsolete("Use overload with an object parameter instead")]
     public void LogDisplay(string message)
     {
-        Log(message);
-        UIController.instance.ShowPopUp(message, "", 0, false);
+        LogDisplay(message as object);
     }
 
     /// <summary>
