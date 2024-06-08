@@ -6,5 +6,13 @@ namespace Blasphemous.ModdingAPI;
 /// </summary>
 public class ModServiceProvider
 {
-    internal ModServiceProvider() { }
+    internal ModServiceProvider(BlasMod mod)
+    {
+        RegisteringMod = mod;
+    }
+
+    /// <summary>
+    /// The mod that is registering this service
+    /// </summary>
+    public BlasMod RegisteringMod { get; }
 }

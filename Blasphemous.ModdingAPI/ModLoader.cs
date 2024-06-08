@@ -58,8 +58,7 @@ internal class ModLoader
         Main.ModdingAPI.Log("Initializing mods...");
         ProcessModFunction(mod => mod.OnInitialize());
 
-        ModServiceProvider provider = new();
-        ProcessModFunction(mod => mod.OnRegisterServices(provider));
+        ProcessModFunction(mod => mod.OnRegisterServices(new ModServiceProvider(mod)));
 
         Main.ModdingAPI.Log("All mods initialized!");
         ProcessModFunction(mod => mod.OnAllInitialized());
