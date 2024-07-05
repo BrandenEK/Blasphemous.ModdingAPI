@@ -1,4 +1,5 @@
 ﻿using Framework.Managers;
+using Gameplay.GameControllers.Entities;
 using Gameplay.UI.Others.MenuLogic;
 using HarmonyLib;
 using System.Collections.Generic;
@@ -59,5 +60,24 @@ class Menu_Update_Patch
     public static void Postfix(List<Button> ___AllButtons)
     {
         Main.ModdingAPI.ShowMenu = ___AllButtons.Any(x => x.transform.GetChild(1).GetComponent<Text>().color != Color.white);
+    }
+}
+
+/// <summary>
+/// Save the actual fervour amount when the game is first loaded
+/// </summary>
+[HarmonyPatch(typeof(EntityStats), nameof(EntityStats.SetCurrentPersistentState))]
+class Stats_Load_Patch
+{
+    public static void Postfix(PersistentManager.PersistentData data, bool isloading)
+    {
+        if (!isloading)
+            return;
+
+        EntityStats.StatsPersistenceData statsData = data as EntityStats.StatsPersistenceData;
+        float fervourAmount = statsData.currentValues[EntityStats.StatsTypes.Fervour];
+
+        Main.ModdingAPI.Log($"Storing {fervourAmount} fervour to be restored after loading the game");
+        Main.ModdingAPI.UnsavedFervourAmount = fervourAmount;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Framework.Managers;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +13,20 @@ internal class ModdingAPI : BlasMod
     private GameObject _modList;
     private bool _loadedMenu;
 
+    /// <summary>
+    /// Stores the Blasphemous pixel font to use for the mod list
+    /// </summary>
     public Font BlasFont { get; set; }
+
+    /// <summary>
+    /// Stores the amount of fervour that should be held after loading the game
+    /// </summary>
+    public float UnsavedFervourAmount { get; set; }
+
+    protected internal override void OnLoadGame()
+    {
+        Core.Logic.Penitent.Stats.Fervour.Current = UnsavedFervourAmount;
+    }
 
     protected internal override void OnLevelLoaded(string oldLevel, string newLevel)
     {
