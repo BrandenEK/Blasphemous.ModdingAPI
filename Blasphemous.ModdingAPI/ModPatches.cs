@@ -31,11 +31,6 @@ class Mod_NewLoad_Patch
         else
             Main.ModLoader.ProcessModFunction(mod => mod.OnLoadGame());
 
-        //Main.ModdingAPI.LogError("Alsm: " + Core.Alms.GetAltarLevel());
-        //Main.ModdingAPI.LogError("Fervour: " + (Core.Logic.Penitent?.Stats.Fervour.Current ?? 99));
-
-        //Core.Logic.Penitent.Stats.Fervour.SetToCurrentMax();
-        Core.Logic.Penitent.Stats.Fervour.Current = Main.ModdingAPI.UnsavedFervourAmount;
         Core.Persistence.SaveGame();
     }
 }
@@ -68,6 +63,9 @@ class Menu_Update_Patch
     }
 }
 
+/// <summary>
+/// Save the actual fervour amount when the game is first loaded
+/// </summary>
 [HarmonyPatch(typeof(EntityStats), nameof(EntityStats.SetCurrentPersistentState))]
 class Stats_Load_Patch
 {
@@ -81,7 +79,5 @@ class Stats_Load_Patch
 
         Main.ModdingAPI.Log($"Storing {fervourAmount} fervour to be restored after loading the game");
         Main.ModdingAPI.UnsavedFervourAmount = fervourAmount;
-        //Main.ModdingAPI.LogWarning("Is loading during save: " + isloading);
-        //Main.ModdingAPI.LogWarning("Fervour amount: " + fervourAmount);
     }
 }

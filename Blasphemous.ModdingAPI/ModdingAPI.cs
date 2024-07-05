@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Framework.Managers;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +22,11 @@ internal class ModdingAPI : BlasMod
     /// Stores the amount of fervour that should be held after loading the game
     /// </summary>
     public float UnsavedFervourAmount { get; set; }
+
+    protected internal override void OnLoadGame()
+    {
+        Core.Logic.Penitent.Stats.Fervour.Current = UnsavedFervourAmount;
+    }
 
     protected internal override void OnLevelLoaded(string oldLevel, string newLevel)
     {
