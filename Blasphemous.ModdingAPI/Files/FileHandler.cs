@@ -17,7 +17,12 @@ public class FileHandler
     private readonly string outputPath;
 
     /// <summary>
-    /// The full path of the modding folder
+    /// The full path of the game's root folder
+    /// </summary>
+    public string RootFolder => $"{Directory.GetCurrentDirectory()}/";
+
+    /// <summary>
+    /// The full path of the game's modding folder
     /// </summary>
     public string ModdingFolder => Path.GetFullPath("Modding/");
 
