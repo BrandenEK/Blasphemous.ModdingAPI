@@ -172,7 +172,6 @@ public abstract class BlasMod
     /// <summary>
     /// Displays a message with a UI text box
     /// </summary>
-    [System.Obsolete("Use overload with an object parameter instead")]
     public void LogDisplay(string message)
     {
         LogDisplay(message as object);
