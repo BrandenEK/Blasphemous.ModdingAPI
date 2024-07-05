@@ -1,4 +1,5 @@
 ﻿using Framework.Managers;
+using Gameplay.GameControllers.Entities;
 using Gameplay.UI.Others.MenuLogic;
 using HarmonyLib;
 using System.Collections.Generic;
@@ -30,6 +31,11 @@ class Mod_NewLoad_Patch
         else
             Main.ModLoader.ProcessModFunction(mod => mod.OnLoadGame());
 
+        //Main.ModdingAPI.LogError("Alsm: " + Core.Alms.GetAltarLevel());
+        //Main.ModdingAPI.LogError("Fervour: " + (Core.Logic.Penitent?.Stats.Fervour.Current ?? 99));
+
+        //Core.Logic.Penitent.Stats.Fervour.SetToCurrentMax();
+        Core.Logic.Penitent.Stats.Fervour.Current = Main.ModdingAPI.UnsavedFervourAmount;
         Core.Persistence.SaveGame();
     }
 }
@@ -59,5 +65,23 @@ class Menu_Update_Patch
     public static void Postfix(List<Button> ___AllButtons)
     {
         Main.ModdingAPI.ShowMenu = ___AllButtons.Any(x => x.transform.GetChild(1).GetComponent<Text>().color != Color.white);
+    }
+}
+
+[HarmonyPatch(typeof(EntityStats), nameof(EntityStats.SetCurrentPersistentState))]
+class Stats_Load_Patch
+{
+    public static void Postfix(PersistentManager.PersistentData data, bool isloading)
+    {
+        if (!isloading)
+            return;
+
+        EntityStats.StatsPersistenceData statsData = data as EntityStats.StatsPersistenceData;
+        float fervourAmount = statsData.currentValues[EntityStats.StatsTypes.Fervour];
+
+        Main.ModdingAPI.Log($"Storing {fervourAmount} fervour to be restored after loading the game");
+        Main.ModdingAPI.UnsavedFervourAmount = fervourAmount;
+        //Main.ModdingAPI.LogWarning("Is loading during save: " + isloading);
+        //Main.ModdingAPI.LogWarning("Fervour amount: " + fervourAmount);
     }
 }
