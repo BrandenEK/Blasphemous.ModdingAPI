@@ -11,10 +11,10 @@ namespace Blasphemous.ModdingAPI.Files;
 public class FileHandler
 {
     private readonly string configPath;
+    private readonly string contentPath;
     private readonly string dataPath;
     private readonly string keybindingsPath;
     private readonly string localizationPath;
-    private readonly string outputPath;
 
     /// <summary>
     /// The full path of the game's root folder
@@ -27,24 +27,30 @@ public class FileHandler
     public string ModdingFolder => Path.GetFullPath("Modding/");
 
     /// <summary>
-    /// The full path of the output folder for this mod
+    /// The full path of this mod's content folder
     /// </summary>
-    public string OutputFolder
+    public string ContentFolder
     {
         get
         {
-            EnsureDirectoryExists(outputPath);
-            return outputPath;
+            EnsureDirectoryExists(contentPath);
+            return contentPath;
         }
     }
+
+    /// <summary>
+    /// The output folder for this mod
+    /// </summary>
+    [Obsolete("Use the 'content' folder instead")]
+    public string OutputFolder => ContentFolder;
 
     internal FileHandler(BlasMod mod)
     {
         configPath = Path.GetFullPath($"Modding/config/{mod.Name}.cfg");
+        contentPath = Path.GetFullPath($"Modding/content/{mod.Name}/");
         dataPath = Path.GetFullPath($"Modding/data/{mod.Name}/");
         keybindingsPath = Path.GetFullPath($"Modding/keybindings/{mod.Name}.txt");
         localizationPath = Path.GetFullPath($"Modding/localization/{mod.Name}.txt");
-        outputPath = Path.GetFullPath($"Modding/output/{mod.Name}/");
     }
 
     // General
