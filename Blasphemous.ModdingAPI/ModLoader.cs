@@ -22,7 +22,7 @@ internal class ModLoader
     public ModLoader()
     {
         _mods = [];
-        _logger = Logger.CreateLogSource("Mod Loader");
+        _logger = BepInEx.Logging.Logger.CreateLogSource("Mod Loader");
     }
 
     /// <summary>

@@ -226,7 +226,7 @@ public abstract class BlasMod
         if (Main.ModLoader.RegisterMod(this))
         {
             new Harmony(id).PatchAll(GetType().Assembly);
-            _logger = Logger.CreateLogSource(name);
+            _logger = BepInEx.Logging.Logger.CreateLogSource(name);
         }
     }
 
