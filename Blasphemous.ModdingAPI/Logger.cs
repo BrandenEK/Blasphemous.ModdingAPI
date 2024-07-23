@@ -1,4 +1,5 @@
 ﻿using BepInEx.Logging;
+using Gameplay.UI;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -24,11 +25,11 @@ public static class Logger
     }
 
     /// <summary>
-    /// Logs a message using the caller's assembly to determine the mod name
+    /// Logs a message using an assembly to determine the mod name
     /// </summary>
-    private static void Log(object message, LogLevel level)
+    internal static void LogInternal(object message, LogLevel level, Assembly assembly)
     {
-        ManualLogSource source = _loggers.TryGetValue(Assembly.GetCallingAssembly(), out var logger) ? logger : _unknownLogger;
+        ManualLogSource source = _loggers.TryGetValue(assembly, out var logger) ? logger : _unknownLogger;
         source.Log(level, message);
     }
 
@@ -37,7 +38,7 @@ public static class Logger
     /// </summary>
     public static void Info(object message)
     {
-        Log(message, LogLevel.Message);
+        LogInternal(message, LogLevel.Message, Assembly.GetCallingAssembly());
     }
 
     /// <summary>
@@ -45,7 +46,7 @@ public static class Logger
     /// </summary>
     public static void Warn(object message)
     {
-        Log(message, LogLevel.Warning);
+        LogInternal(message, LogLevel.Warning, Assembly.GetCallingAssembly());
     }
 
     /// <summary>
@@ -53,7 +54,7 @@ public static class Logger
     /// </summary>
     public static void Error(object message)
     {
-        Log(message, LogLevel.Error);
+        LogInternal(message, LogLevel.Error, Assembly.GetCallingAssembly());
     }
 
     /// <summary>
@@ -61,7 +62,7 @@ public static class Logger
     /// </summary>
     public static void Fatal(object message)
     {
-        Log(message, LogLevel.Fatal);
+        LogInternal(message, LogLevel.Fatal, Assembly.GetCallingAssembly());
     }
 
     /// <summary>
@@ -69,15 +70,22 @@ public static class Logger
     /// </summary>
     public static void Debug(object message)
     {
-        Log(message, LogLevel.Debug);
+        LogInternal(message, LogLevel.Debug, Assembly.GetCallingAssembly());
     }
 
     /// <summary>
-    /// Logs a message when given an assembly.  This is only used for backwards compatability
+    /// Logs a message to the in-game UI
     /// </summary>
-    internal static void LogArchive(object message, LogLevel level, Assembly assembly)
+    public static void Display(object message)
     {
-        ManualLogSource source = _loggers.TryGetValue(assembly, out var logger) ? logger : _unknownLogger;
-        source.Log(level, message);
+        try
+        {
+            LogInternal(message, LogLevel.Message, Assembly.GetCallingAssembly());
+            UIController.instance.ShowPopUp(message?.ToString(), "", 0, false);
+        }
+        catch
+        {
+            LogInternal("Tried to call 'LogDisplay' before the UIController was initialized", LogLevel.Error, Assembly.GetCallingAssembly());
+        }
     }
 }

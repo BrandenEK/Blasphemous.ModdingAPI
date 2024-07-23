@@ -3,7 +3,6 @@ using Blasphemous.ModdingAPI.Config;
 using Blasphemous.ModdingAPI.Files;
 using Blasphemous.ModdingAPI.Input;
 using Blasphemous.ModdingAPI.Localization;
-using Gameplay.UI;
 using HarmonyLib;
 
 namespace Blasphemous.ModdingAPI;
@@ -140,40 +139,37 @@ public abstract class BlasMod
     /// <summary>
     /// Logs a message in white to the console
     /// </summary>
-    public void Log(object message) => Logger.LogArchive(message, LogLevel.Message, System.Reflection.Assembly.GetCallingAssembly());
+    [System.Obsolete("Use the Logger class instead")]
+    public void Log(object message) => Logger.LogInternal(message, LogLevel.Message, System.Reflection.Assembly.GetCallingAssembly());
 
     /// <summary>
     /// Logs a message in yellow to the console
     /// </summary>
-    public void LogWarning(object message) => Logger.LogArchive(message, LogLevel.Warning, System.Reflection.Assembly.GetCallingAssembly());
+    [System.Obsolete("Use the Logger class instead")]
+    public void LogWarning(object message) => Logger.LogInternal(message, LogLevel.Warning, System.Reflection.Assembly.GetCallingAssembly());
 
     /// <summary>
     /// Logs a message in red to the console
     /// </summary>
-    public void LogError(object message) => Logger.LogArchive(message, LogLevel.Error, System.Reflection.Assembly.GetCallingAssembly());
+    [System.Obsolete("Use the Logger class instead")]
+    public void LogError(object message) => Logger.LogInternal(message, LogLevel.Error, System.Reflection.Assembly.GetCallingAssembly());
 
     /// <summary>
     /// Displays a message with a UI text box
     /// </summary>
+    [System.Obsolete("Use the Logger class instead")]
     public void LogDisplay(object message)
     {
-        try
-        {
-            Log(message);
-            UIController.instance.ShowPopUp(message?.ToString(), "", 0, false);
-        }
-        catch
-        {
-            LogError("Tried to call 'LogDisplay' before the UIController was initialized");
-        }
+        Logger.Display(message);
     }
 
     /// <summary>
     /// Displays a message with a UI text box
     /// </summary>
+    [System.Obsolete("Use the Logger class instead")]
     public void LogDisplay(string message)
     {
-        LogDisplay(message as object);
+        Logger.Display(message);
     }
 
     // Constructor
