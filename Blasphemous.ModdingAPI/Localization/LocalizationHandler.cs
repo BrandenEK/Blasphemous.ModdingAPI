@@ -35,7 +35,7 @@ public class LocalizationHandler
             return _textByLanguage[_defaultLanguage][key];
         }
 
-        _mod.LogError($"Failed to localize '{key}' to any language.");
+        Logger.Error($"Failed to localize '{key}' to any language.", _mod);
         return ERROR_TEXT;
     }
 
@@ -46,7 +46,7 @@ public class LocalizationHandler
     {
         if (_registered)
         {
-            _mod.LogWarning("LocalizationHandler has already been registered!");
+            Logger.Warn("LocalizationHandler has already been registered!", _mod);
             return;
         }
         _registered = true;
