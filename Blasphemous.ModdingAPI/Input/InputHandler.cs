@@ -106,7 +106,7 @@ public class InputHandler
     {
         if (_registered)
         {
-            _mod.LogWarning("InputHandler has already been registered!");
+            Logger.Warn("InputHandler has already been registered!", _mod);
             return;
         }
         _registered = true;
@@ -167,7 +167,7 @@ public class InputHandler
             catch
             {
                 // If the keybinding was not a valid type, skip
-                _mod.LogError($"Keybinding '{key}' is invalid.  Using default instead.");
+                Logger.Error($"Keybinding '{key}' is invalid.  Using default instead.", _mod);
                 continue;
             }
         }

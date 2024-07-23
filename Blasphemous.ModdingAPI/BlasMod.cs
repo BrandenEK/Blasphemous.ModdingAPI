@@ -3,9 +3,7 @@ using Blasphemous.ModdingAPI.Config;
 using Blasphemous.ModdingAPI.Files;
 using Blasphemous.ModdingAPI.Input;
 using Blasphemous.ModdingAPI.Localization;
-using Gameplay.UI;
 using HarmonyLib;
-using System.Text;
 
 namespace Blasphemous.ModdingAPI;
 
@@ -141,61 +139,37 @@ public abstract class BlasMod
     /// <summary>
     /// Logs a message in white to the console
     /// </summary>
-    public void Log(object message) => _logger.LogMessage(message);
+    [System.Obsolete("Use the Logger class instead")]
+    public void Log(object message) => Logger.Info(message, this);
 
     /// <summary>
     /// Logs a message in yellow to the console
     /// </summary>
-    public void LogWarning(object warning) => _logger.LogWarning(warning);
+    [System.Obsolete("Use the Logger class instead")]
+    public void LogWarning(object message) => Logger.Warn(message, this);
 
     /// <summary>
     /// Logs a message in red to the console
     /// </summary>
-    public void LogError(object error) => _logger.LogError(error);
+    [System.Obsolete("Use the Logger class instead")]
+    public void LogError(object message) => Logger.Error(message, this);
 
     /// <summary>
     /// Displays a message with a UI text box
     /// </summary>
+    [System.Obsolete("Use the Logger class instead")]
     public void LogDisplay(object message)
     {
-        try
-        {
-            Log(message);
-            UIController.instance.ShowPopUp(message?.ToString(), "", 0, false);
-        }
-        catch
-        {
-            LogError("Tried to call 'LogDisplay' before the UIController was initialized");
-        }
+        Logger.Display(message, this);
     }
 
     /// <summary>
     /// Displays a message with a UI text box
     /// </summary>
+    [System.Obsolete("Use the Logger class instead")]
     public void LogDisplay(string message)
     {
-        LogDisplay(message as object);
-    }
-
-    /// <summary>
-    /// Formats the message for scene loading
-    /// </summary>
-    internal void LogSpecial(string message)
-    {
-        StringBuilder sb = new();
-        int length = message.Length;
-        while (length > 0)
-        {
-            sb.Append('=');
-            length--;
-        }
-        string line = sb.ToString();
-
-        _logger.LogMessage("");
-        _logger.LogMessage(line);
-        _logger.LogMessage(message);
-        _logger.LogMessage(line);
-        _logger.LogMessage("");
+        Logger.Display(message, this);
     }
 
     // Constructor
@@ -221,7 +195,7 @@ public abstract class BlasMod
         if (Main.ModLoader.RegisterMod(this))
         {
             new Harmony(id).PatchAll(GetType().Assembly);
-            _logger = Logger.CreateLogSource(name);
+            Logger.Register(this);
         }
     }
 
@@ -234,6 +208,4 @@ public abstract class BlasMod
     /// Checks whether a mod is loaded, and returns it if so
     /// </summary>
     public bool IsModLoadedName(string name, out BlasMod mod) => Main.ModLoader.IsModLoadedName(name, out mod);
-
-    private readonly ManualLogSource _logger;
 }

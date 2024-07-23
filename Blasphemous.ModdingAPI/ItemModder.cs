@@ -26,7 +26,7 @@ public static class ItemModder
                 case "CO": return InventoryManager.ItemType.Collectible;
             }
         }
-        Main.ModdingAPI.LogError("Could not determine item type for " + id);
+        Logger.Error("Could not determine item type for " + id);
         return InventoryManager.ItemType.Bead;
     }
 

@@ -4,6 +4,7 @@ using Framework.FrameworkCore;
 using Framework.Managers;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Blasphemous.ModdingAPI;
 
@@ -22,7 +23,7 @@ internal class ModLoader
     public ModLoader()
     {
         _mods = [];
-        _logger = Logger.CreateLogSource("Mod Loader");
+        _logger = BepInEx.Logging.Logger.CreateLogSource("Mod Loader");
     }
 
     /// <summary>
@@ -38,7 +39,7 @@ internal class ModLoader
             }
             catch (System.Exception e)
             {
-                mod.LogError($"Encountered error: {e.Message}\n{e.CleanStackTrace()}");
+                Logger.Error($"Encountered error: {e.Message}\n{e.CleanStackTrace()}", mod);
             }
         }
     }
@@ -50,17 +51,17 @@ internal class ModLoader
     {
         if (_initialized) return;
 
-        Main.ModdingAPI.LogSpecial("Initialization");
+        LogSpecial("Initialization");
         LevelManager.OnLevelPreLoaded += LevelPreLoaded;
         LevelManager.OnLevelLoaded += LevelLoaded;
         LevelManager.OnBeforeLevelLoad += LevelUnloaded;
 
-        Main.ModdingAPI.Log("Initializing mods...");
+        Logger.Info("Initializing mods...");
         ProcessModFunction(mod => mod.OnInitialize());
 
         ProcessModFunction(mod => mod.OnRegisterServices(new ModServiceProvider(mod)));
 
-        Main.ModdingAPI.Log("All mods initialized!");
+        Logger.Info("All mods initialized!");
         ProcessModFunction(mod => mod.OnAllInitialized());
 
         ProcessModFunction(mod =>
@@ -81,7 +82,7 @@ internal class ModLoader
         LevelManager.OnLevelPreLoaded -= LevelPreLoaded;
         LevelManager.OnLevelLoaded -= LevelLoaded;
         LevelManager.OnBeforeLevelLoad -= LevelUnloaded;
-        Main.ModdingAPI.Log("All mods disposed!");
+        Logger.Info("All mods disposed!");
     }
 
     /// <summary>
@@ -130,7 +131,7 @@ internal class ModLoader
             _loadedMenu = true;
         }
 
-        Main.ModdingAPI.LogSpecial("Loaded level " + nLevel);
+        LogSpecial("Loaded level " + nLevel);
 
         _currentScene = nLevel;
         ProcessModFunction(mod => mod.OnLevelLoaded(oLevel, nLevel));
@@ -178,5 +179,26 @@ internal class ModLoader
     public bool IsModLoadedName(string name, out BlasMod mod)
     {
         return (mod = _mods.FirstOrDefault(m => m.Name == name)) != null;
+    }
+
+    /// <summary>
+    /// Formats the message for scene loading
+    /// </summary>
+    internal void LogSpecial(string message)
+    {
+        StringBuilder sb = new();
+        int length = message.Length;
+        while (length > 0)
+        {
+            sb.Append('=');
+            length--;
+        }
+        string line = sb.ToString();
+
+        Logger.Info("");
+        Logger.Info(line);
+        Logger.Info(message);
+        Logger.Info(line);
+        Logger.Info("");
     }
 }
