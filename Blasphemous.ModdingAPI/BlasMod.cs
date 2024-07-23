@@ -5,7 +5,6 @@ using Blasphemous.ModdingAPI.Input;
 using Blasphemous.ModdingAPI.Localization;
 using Gameplay.UI;
 using HarmonyLib;
-using System.Text;
 
 namespace Blasphemous.ModdingAPI;
 
@@ -141,22 +140,17 @@ public abstract class BlasMod
     /// <summary>
     /// Logs a message in white to the console
     /// </summary>
-    public void Log(object message) => _logger.LogMessage(message);
+    public void Log(object message) => Logger.LogArchive(message, LogLevel.Message, System.Reflection.Assembly.GetCallingAssembly());
 
     /// <summary>
     /// Logs a message in yellow to the console
     /// </summary>
-    public void LogWarning(object message) => _logger.LogWarning(message);
+    public void LogWarning(object message) => Logger.LogArchive(message, LogLevel.Warning, System.Reflection.Assembly.GetCallingAssembly());
 
     /// <summary>
     /// Logs a message in red to the console
     /// </summary>
-    public void LogError(object message) => _logger.LogError(message);
-
-    /// <summary>
-    /// Logs a message in gray to the console
-    /// </summary>
-    public void LogDebug(object message) => _logger.LogDebug(message);
+    public void LogError(object message) => Logger.LogArchive(message, LogLevel.Error, System.Reflection.Assembly.GetCallingAssembly());
 
     /// <summary>
     /// Displays a message with a UI text box
@@ -180,27 +174,6 @@ public abstract class BlasMod
     public void LogDisplay(string message)
     {
         LogDisplay(message as object);
-    }
-
-    /// <summary>
-    /// Formats the message for scene loading
-    /// </summary>
-    internal void LogSpecial(string message)
-    {
-        StringBuilder sb = new();
-        int length = message.Length;
-        while (length > 0)
-        {
-            sb.Append('=');
-            length--;
-        }
-        string line = sb.ToString();
-
-        _logger.LogMessage("");
-        _logger.LogMessage(line);
-        _logger.LogMessage(message);
-        _logger.LogMessage(line);
-        _logger.LogMessage("");
     }
 
     // Constructor
@@ -227,7 +200,6 @@ public abstract class BlasMod
         {
             new Harmony(id).PatchAll(GetType().Assembly);
             Logger.Register(this);
-            _logger = BepInEx.Logging.Logger.CreateLogSource(name);
         }
     }
 
@@ -240,6 +212,4 @@ public abstract class BlasMod
     /// Checks whether a mod is loaded, and returns it if so
     /// </summary>
     public bool IsModLoadedName(string name, out BlasMod mod) => Main.ModLoader.IsModLoadedName(name, out mod);
-
-    private readonly ManualLogSource _logger;
 }

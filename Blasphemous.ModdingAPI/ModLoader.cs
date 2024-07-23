@@ -4,6 +4,7 @@ using Framework.FrameworkCore;
 using Framework.Managers;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Blasphemous.ModdingAPI;
 
@@ -50,7 +51,7 @@ internal class ModLoader
     {
         if (_initialized) return;
 
-        Main.ModdingAPI.LogSpecial("Initialization");
+        LogSpecial("Initialization");
         LevelManager.OnLevelPreLoaded += LevelPreLoaded;
         LevelManager.OnLevelLoaded += LevelLoaded;
         LevelManager.OnBeforeLevelLoad += LevelUnloaded;
@@ -130,7 +131,7 @@ internal class ModLoader
             _loadedMenu = true;
         }
 
-        Main.ModdingAPI.LogSpecial("Loaded level " + nLevel);
+        LogSpecial("Loaded level " + nLevel);
 
         _currentScene = nLevel;
         ProcessModFunction(mod => mod.OnLevelLoaded(oLevel, nLevel));
@@ -178,5 +179,26 @@ internal class ModLoader
     public bool IsModLoadedName(string name, out BlasMod mod)
     {
         return (mod = _mods.FirstOrDefault(m => m.Name == name)) != null;
+    }
+
+    /// <summary>
+    /// Formats the message for scene loading
+    /// </summary>
+    internal void LogSpecial(string message)
+    {
+        StringBuilder sb = new();
+        int length = message.Length;
+        while (length > 0)
+        {
+            sb.Append('=');
+            length--;
+        }
+        string line = sb.ToString();
+
+        Logger.Info("");
+        Logger.Info(line);
+        Logger.Info(message);
+        Logger.Info(line);
+        Logger.Info("");
     }
 }

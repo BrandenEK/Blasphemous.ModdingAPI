@@ -71,4 +71,13 @@ public static class Logger
     {
         Log(message, LogLevel.Debug);
     }
+
+    /// <summary>
+    /// Logs a message when given an assembly.  This is only used for backwards compatability
+    /// </summary>
+    internal static void LogArchive(object message, LogLevel level, Assembly assembly)
+    {
+        ManualLogSource source = _loggers.TryGetValue(assembly, out var logger) ? logger : _unknownLogger;
+        source.Log(level, message);
+    }
 }
