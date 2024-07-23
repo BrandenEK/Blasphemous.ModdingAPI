@@ -146,12 +146,17 @@ public abstract class BlasMod
     /// <summary>
     /// Logs a message in yellow to the console
     /// </summary>
-    public void LogWarning(object warning) => _logger.LogWarning(warning);
+    public void LogWarning(object message) => _logger.LogWarning(message);
 
     /// <summary>
     /// Logs a message in red to the console
     /// </summary>
-    public void LogError(object error) => _logger.LogError(error);
+    public void LogError(object message) => _logger.LogError(message);
+
+    /// <summary>
+    /// Logs a message in gray to the console
+    /// </summary>
+    public void LogDebug(object message) => _logger.LogDebug(message);
 
     /// <summary>
     /// Displays a message with a UI text box
