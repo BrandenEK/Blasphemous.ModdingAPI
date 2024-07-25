@@ -39,7 +39,7 @@ internal class ModLoader
             }
             catch (System.Exception e)
             {
-                Logger.Error($"Encountered error: {e.Message}\n{e.CleanStackTrace()}", mod);
+                ModLog.Error($"Encountered error: {e.Message}\n{e.CleanStackTrace()}", mod);
             }
         }
     }
@@ -56,12 +56,12 @@ internal class ModLoader
         LevelManager.OnLevelLoaded += LevelLoaded;
         LevelManager.OnBeforeLevelLoad += LevelUnloaded;
 
-        Logger.Info("Initializing mods...");
+        ModLog.Info("Initializing mods...");
         ProcessModFunction(mod => mod.OnInitialize());
 
         ProcessModFunction(mod => mod.OnRegisterServices(new ModServiceProvider(mod)));
 
-        Logger.Info("All mods initialized!");
+        ModLog.Info("All mods initialized!");
         ProcessModFunction(mod => mod.OnAllInitialized());
 
         ProcessModFunction(mod =>
@@ -82,7 +82,7 @@ internal class ModLoader
         LevelManager.OnLevelPreLoaded -= LevelPreLoaded;
         LevelManager.OnLevelLoaded -= LevelLoaded;
         LevelManager.OnBeforeLevelLoad -= LevelUnloaded;
-        Logger.Info("All mods disposed!");
+        ModLog.Info("All mods disposed!");
     }
 
     /// <summary>
@@ -195,10 +195,10 @@ internal class ModLoader
         }
         string line = sb.ToString();
 
-        Logger.Info("");
-        Logger.Info(line);
-        Logger.Info(message);
-        Logger.Info(line);
-        Logger.Info("");
+        ModLog.Info("");
+        ModLog.Info(line);
+        ModLog.Info(message);
+        ModLog.Info(line);
+        ModLog.Info("");
     }
 }

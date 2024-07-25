@@ -8,10 +8,10 @@ namespace Blasphemous.ModdingAPI;
 /// <summary>
 /// Useful methods for logging data
 /// </summary>
-public static class Logger
+public static class ModLog
 {
     private static readonly Dictionary<Assembly, ManualLogSource> _loggers = new();
-    private static readonly ManualLogSource _unknownLogger = BepInEx.Logging.Logger.CreateLogSource("Unknown mod");
+    private static readonly ManualLogSource _unknownLogger = Logger.CreateLogSource("Unknown mod");
 
     /// <summary>
     /// Registers a new mod to be able to log, based on its assembly
@@ -21,7 +21,7 @@ public static class Logger
         if (mod == null)
             return;
 
-        _loggers.Add(mod.GetType().Assembly, BepInEx.Logging.Logger.CreateLogSource(mod.Name));
+        _loggers.Add(mod.GetType().Assembly, Logger.CreateLogSource(mod.Name));
     }
 
     private static void LogInternal(object message, LogLevel level, Assembly assembly)

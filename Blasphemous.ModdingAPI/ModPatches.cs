@@ -77,7 +77,7 @@ class Stats_Load_Patch
         EntityStats.StatsPersistenceData statsData = data as EntityStats.StatsPersistenceData;
         float fervourAmount = statsData.currentValues[EntityStats.StatsTypes.Fervour];
 
-        Logger.Info($"Storing {fervourAmount} fervour to be restored after loading the game");
+        ModLog.Info($"Storing {fervourAmount} fervour to be restored after loading the game");
         Main.ModdingAPI.UnsavedFervourAmount = fervourAmount;
     }
 }
