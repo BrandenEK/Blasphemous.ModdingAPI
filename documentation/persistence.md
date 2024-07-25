@@ -1,4 +1,4 @@
-# Console
+# Persistence
 
 Every mod can define custom save data that will be stored with the game's save file
 

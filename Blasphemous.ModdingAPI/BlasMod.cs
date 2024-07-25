@@ -140,19 +140,19 @@ public abstract class BlasMod
     /// Logs a message in white to the console
     /// </summary>
     [System.Obsolete("Use the Logger class instead")]
-    public void Log(object message) => Logger.Info(message, this);
+    public void Log(object message) => ModLog.Info(message, this);
 
     /// <summary>
     /// Logs a message in yellow to the console
     /// </summary>
     [System.Obsolete("Use the Logger class instead")]
-    public void LogWarning(object message) => Logger.Warn(message, this);
+    public void LogWarning(object message) => ModLog.Warn(message, this);
 
     /// <summary>
     /// Logs a message in red to the console
     /// </summary>
     [System.Obsolete("Use the Logger class instead")]
-    public void LogError(object message) => Logger.Error(message, this);
+    public void LogError(object message) => ModLog.Error(message, this);
 
     /// <summary>
     /// Displays a message with a UI text box
@@ -160,7 +160,7 @@ public abstract class BlasMod
     [System.Obsolete("Use the Logger class instead")]
     public void LogDisplay(object message)
     {
-        Logger.Display(message, this);
+        ModLog.Display(message, this);
     }
 
     /// <summary>
@@ -169,7 +169,7 @@ public abstract class BlasMod
     [System.Obsolete("Use the Logger class instead")]
     public void LogDisplay(string message)
     {
-        Logger.Display(message, this);
+        ModLog.Display(message, this);
     }
 
     // Constructor
@@ -195,7 +195,7 @@ public abstract class BlasMod
         if (Main.ModLoader.RegisterMod(this))
         {
             new Harmony(id).PatchAll(GetType().Assembly);
-            Logger.Register(this);
+            ModLog.Register(this);
         }
     }
 
