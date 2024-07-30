@@ -38,15 +38,6 @@ public abstract class BlasMod
     public string Version => version;
     private readonly string version;
 
-    // Helpers
-
-    /// <summary>
-    /// Handles scene loading, such as checking if on main menu
-    /// </summary>
-    [System.Obsolete("Use the new SceneHelper instead")]
-    public LoadStatus LoadStatus => loadStatus;
-    private readonly LoadStatus loadStatus = new();
-
     // Handlers
 
     /// <summary>
@@ -135,7 +126,41 @@ public abstract class BlasMod
     /// </summary>
     protected internal virtual void OnRegisterServices(ModServiceProvider provider) { }
 
-    // Logging
+    // Constructor
+
+    /// <summary>
+    /// Initializes and registers a new Blasphemous mod
+    /// </summary>
+    public BlasMod(string id, string name, string author, string version)
+    {
+        // Set data
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.version = version;
+
+        // Set handlers
+        _configHandler = new ConfigHandler(this);
+        _fileHandler = new FileHandler(this);
+        _inputHandler = new InputHandler(this);
+        _localizationHandler = new LocalizationHandler(this);
+
+        // Register and patch mod
+        if (Main.ModLoader.RegisterMod(this))
+        {
+            new Harmony(id).PatchAll(GetType().Assembly);
+            ModLog.Register(this);
+        }
+    }
+
+    // Obsolete members
+
+    /// <summary>
+    /// Handles scene loading, such as checking if on main menu
+    /// </summary>
+    [System.Obsolete("Use the new SceneHelper instead")]
+    public LoadStatus LoadStatus => loadStatus;
+    private readonly LoadStatus loadStatus = new();
 
     /// <summary>
     /// Logs a message in white to the console
@@ -171,33 +196,6 @@ public abstract class BlasMod
     public void LogDisplay(string message)
     {
         ModLog.Display(message, this);
-    }
-
-    // Constructor
-
-    /// <summary>
-    /// Initializes and registers a new BlasII mod
-    /// </summary>
-    public BlasMod(string id, string name, string author, string version)
-    {
-        // Set data
-        this.id = id;
-        this.name = name;
-        this.author = author;
-        this.version = version;
-
-        // Set handlers
-        _configHandler = new ConfigHandler(this);
-        _fileHandler = new FileHandler(this);
-        _inputHandler = new InputHandler(this);
-        _localizationHandler = new LocalizationHandler(this);
-
-        // Register and patch mod
-        if (Main.ModLoader.RegisterMod(this))
-        {
-            new Harmony(id).PatchAll(GetType().Assembly);
-            ModLog.Register(this);
-        }
     }
 
     /// <summary>
