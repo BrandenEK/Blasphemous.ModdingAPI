@@ -68,7 +68,7 @@ internal class ModdingAPI : BlasMod
         // Create text for mod list
         StringBuilder fullText = new();
         StringBuilder shadowText = new();
-        foreach (var mod in Main.ModLoader.AllMods.OrderBy(GetModPriority).ThenBy(x => x.Name))
+        foreach (var mod in ModHelper.LoadedMods.OrderBy(GetModPriority).ThenBy(x => x.Name))
         {
             fullText.AppendLine(GetModText(mod, true));
             shadowText.AppendLine(GetModText(mod, false));

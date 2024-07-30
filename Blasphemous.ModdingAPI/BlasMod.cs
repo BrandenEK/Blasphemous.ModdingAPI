@@ -1,5 +1,6 @@
 ﻿using Blasphemous.ModdingAPI.Config;
 using Blasphemous.ModdingAPI.Files;
+using Blasphemous.ModdingAPI.Helpers;
 using Blasphemous.ModdingAPI.Input;
 using Blasphemous.ModdingAPI.Localization;
 using HarmonyLib;
@@ -36,15 +37,6 @@ public abstract class BlasMod
     /// </summary>
     public string Version => version;
     private readonly string version;
-
-    // Helpers
-
-    /// <summary>
-    /// Handles scene loading, such as checking if on main menu
-    /// </summary>
-    [System.Obsolete("Use the new SceneHelper instead")]
-    public LoadStatus LoadStatus => loadStatus;
-    private readonly LoadStatus loadStatus = new();
 
     // Handlers
 
@@ -134,7 +126,41 @@ public abstract class BlasMod
     /// </summary>
     protected internal virtual void OnRegisterServices(ModServiceProvider provider) { }
 
-    // Logging
+    // Constructor
+
+    /// <summary>
+    /// Initializes and registers a new Blasphemous mod
+    /// </summary>
+    public BlasMod(string id, string name, string author, string version)
+    {
+        // Set data
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.version = version;
+
+        // Set handlers
+        _configHandler = new ConfigHandler(this);
+        _fileHandler = new FileHandler(this);
+        _inputHandler = new InputHandler(this);
+        _localizationHandler = new LocalizationHandler(this);
+
+        // Register and patch mod
+        if (Main.ModLoader.RegisterMod(this))
+        {
+            new Harmony(id).PatchAll(GetType().Assembly);
+            ModLog.Register(this);
+        }
+    }
+
+    // Obsolete members
+
+    /// <summary>
+    /// Handles scene loading, such as checking if on main menu
+    /// </summary>
+    [System.Obsolete("Use the new SceneHelper instead")]
+    public LoadStatus LoadStatus => loadStatus;
+    private readonly LoadStatus loadStatus = new();
 
     /// <summary>
     /// Logs a message in white to the console
@@ -172,40 +198,15 @@ public abstract class BlasMod
         ModLog.Display(message, this);
     }
 
-    // Constructor
-
     /// <summary>
-    /// Initializes and registers a new BlasII mod
+    /// Checks whether a mod is loaded, and returns it if so
     /// </summary>
-    public BlasMod(string id, string name, string author, string version)
-    {
-        // Set data
-        this.id = id;
-        this.name = name;
-        this.author = author;
-        this.version = version;
-
-        // Set handlers
-        _configHandler = new ConfigHandler(this);
-        _fileHandler = new FileHandler(this);
-        _inputHandler = new InputHandler(this);
-        _localizationHandler = new LocalizationHandler(this);
-
-        // Register and patch mod
-        if (Main.ModLoader.RegisterMod(this))
-        {
-            new Harmony(id).PatchAll(GetType().Assembly);
-            ModLog.Register(this);
-        }
-    }
+    [System.Obsolete("Use new ModHelper instead")]
+    public bool IsModLoadedId(string id, out BlasMod mod) => ModHelper.TryGetModById(id, out mod);
 
     /// <summary>
     /// Checks whether a mod is loaded, and returns it if so
     /// </summary>
-    public bool IsModLoadedId(string id, out BlasMod mod) => Main.ModLoader.IsModLoadedId(id, out mod);
-
-    /// <summary>
-    /// Checks whether a mod is loaded, and returns it if so
-    /// </summary>
-    public bool IsModLoadedName(string name, out BlasMod mod) => Main.ModLoader.IsModLoadedName(name, out mod);
+    [System.Obsolete("Use new ModHelper instead")]
+    public bool IsModLoadedName(string name, out BlasMod mod) => ModHelper.TryGetModByName(name, out mod);
 }

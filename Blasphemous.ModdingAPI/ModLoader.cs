@@ -12,18 +12,15 @@ namespace Blasphemous.ModdingAPI;
 
 internal class ModLoader
 {
-    private readonly List<BlasMod> _mods;
-    private readonly ManualLogSource _logger;
+    private readonly List<BlasMod> _mods = new();
+    private readonly ManualLogSource _logger = Logger.CreateLogSource("Mod Loader");
 
     private bool _initialized = false;
     private bool _loadedMenu = false;
 
-    public IEnumerable<BlasMod> AllMods => _mods;
-
     public ModLoader()
     {
-        _mods = [];
-        _logger = Logger.CreateLogSource("Mod Loader");
+        ModHelper.LoadedMods = _mods;
     }
 
     /// <summary>
@@ -163,22 +160,6 @@ internal class ModLoader
         _logger.LogMessage($"Registering mod: {mod.Id} ({mod.Version})");
         _mods.Add(mod);
         return true;
-    }
-
-    /// <summary>
-    /// Checks whether a mod is already loaded
-    /// </summary>
-    public bool IsModLoadedId(string Id, out BlasMod mod)
-    {
-        return (mod = _mods.FirstOrDefault(m => m.Id == Id)) != null;
-    }
-
-    /// <summary>
-    /// Checks whether a mod is already loaded
-    /// </summary>
-    public bool IsModLoadedName(string name, out BlasMod mod)
-    {
-        return (mod = _mods.FirstOrDefault(m => m.Name == name)) != null;
     }
 
     /// <summary>
