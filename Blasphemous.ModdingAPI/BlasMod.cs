@@ -1,5 +1,4 @@
-﻿using BepInEx.Logging;
-using Blasphemous.ModdingAPI.Config;
+﻿using Blasphemous.ModdingAPI.Config;
 using Blasphemous.ModdingAPI.Files;
 using Blasphemous.ModdingAPI.Input;
 using Blasphemous.ModdingAPI.Localization;
@@ -43,6 +42,7 @@ public abstract class BlasMod
     /// <summary>
     /// Handles scene loading, such as checking if on main menu
     /// </summary>
+    [System.Obsolete("Use the new SceneHelper instead")]
     public LoadStatus LoadStatus => loadStatus;
     private readonly LoadStatus loadStatus = new();
 

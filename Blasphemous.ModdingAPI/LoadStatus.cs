@@ -1,4 +1,5 @@
-﻿
+﻿using Blasphemous.ModdingAPI.Helpers;
+
 namespace Blasphemous.ModdingAPI;
 
 /// <summary>
@@ -9,20 +10,24 @@ public class LoadStatus
     /// <summary>
     /// Whether an actual in-game scene is loaded
     /// </summary>
-    public bool GameSceneLoaded => AnySceneLoaded && !MenuSceneLoaded;
+    [System.Obsolete("Use the new SceneHelper instead")]
+    public bool GameSceneLoaded => SceneHelper.GameSceneLoaded;
 
     /// <summary>
     /// Whether the main menu scene is loaded
     /// </summary>
-    public bool MenuSceneLoaded => Main.ModLoader.CurrentScene == "MainMenu";
+    [System.Obsolete("Use the new SceneHelper instead")]
+    public bool MenuSceneLoaded => SceneHelper.MenuSceneLoaded;
 
     /// <summary>
     /// Whether the main menu or an in-game scene is loaded
     /// </summary>
-    public bool AnySceneLoaded => Main.ModLoader.CurrentScene.Length > 0;
+    [System.Obsolete("Use the new SceneHelper instead")]
+    public bool AnySceneLoaded => SceneHelper.AnySceneLoaded;
 
     /// <summary>
     /// The name of the currently loaded scene, or ""
     /// </summary>
-    public string CurrentScene => Main.ModLoader.CurrentScene;
+    [System.Obsolete("Use the new SceneHelper instead")]
+    public string CurrentScene => SceneHelper.CurrentScene;
 }

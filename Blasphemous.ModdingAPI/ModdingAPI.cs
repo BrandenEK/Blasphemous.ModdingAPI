@@ -1,4 +1,5 @@
-﻿using Framework.Managers;
+﻿using Blasphemous.ModdingAPI.Helpers;
+using Framework.Managers;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -43,7 +44,7 @@ internal class ModdingAPI : BlasMod
     {
         set
         {
-            if (value && _loadedMenu && LoadStatus.CurrentScene == "MainMenu")
+            if (value && _loadedMenu && SceneHelper.MenuSceneLoaded)
             {
                 if (_modList == null)
                     CreateModList();
