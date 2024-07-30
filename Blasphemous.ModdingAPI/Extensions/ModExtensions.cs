@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Blasphemous.ModdingAPI;
+namespace Blasphemous.ModdingAPI.Extensions;
 
 internal static class ModExtensions
 {

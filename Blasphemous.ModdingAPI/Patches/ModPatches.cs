@@ -7,7 +7,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Blasphemous.ModdingAPI;
+namespace Blasphemous.ModdingAPI.Patches;
 
 [HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.AllInitialized))]
 class Mod_AllInitialized_Patch

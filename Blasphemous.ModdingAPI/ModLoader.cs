@@ -1,4 +1,5 @@
 ﻿using BepInEx.Logging;
+using Blasphemous.ModdingAPI.Extensions;
 using Blasphemous.ModdingAPI.Persistence;
 using Framework.FrameworkCore;
 using Framework.Managers;
