@@ -44,7 +44,7 @@ internal class ModdingAPI : BlasMod
     {
         set
         {
-            if (value && _loadedMenu && SceneHelper.CurrentScene == "MainMenu")
+            if (value && _loadedMenu && SceneHelper.MenuSceneLoaded)
             {
                 if (_modList == null)
                     CreateModList();

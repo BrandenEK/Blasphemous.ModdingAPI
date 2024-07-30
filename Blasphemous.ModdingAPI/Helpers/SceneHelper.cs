@@ -7,22 +7,22 @@ namespace Blasphemous.ModdingAPI.Helpers;
 public static class SceneHelper
 {
     /// <summary>
-    /// Whether an actual in-game scene is loaded
+    /// The name of the currently loaded scene, or ""
     /// </summary>
-    public static bool GameSceneLoaded => AnySceneLoaded && !MenuSceneLoaded;
+    public static string CurrentScene { get; internal set; } = string.Empty;
+
+    /// <summary>
+    /// Whether the main menu or a gameplay scene is loaded
+    /// </summary>
+    public static bool AnySceneLoaded => CurrentScene.Length > 0;
 
     /// <summary>
     /// Whether the main menu scene is loaded
     /// </summary>
-    public static bool MenuSceneLoaded => Main.ModLoader.CurrentScene == "MainMenu";
+    public static bool MenuSceneLoaded => CurrentScene == "MainMenu";
 
     /// <summary>
-    /// Whether the main menu or an in-game scene is loaded
+    /// Whether a gameplay scene is loaded
     /// </summary>
-    public static bool AnySceneLoaded => Main.ModLoader.CurrentScene.Length > 0;
-
-    /// <summary>
-    /// The name of the currently loaded scene, or ""
-    /// </summary>
-    public static string CurrentScene => Main.ModLoader.CurrentScene;
+    public static bool GameSceneLoaded => AnySceneLoaded && !MenuSceneLoaded;
 }
