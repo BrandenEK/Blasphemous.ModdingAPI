@@ -1,5 +1,6 @@
 ﻿using Blasphemous.ModdingAPI.Config;
 using Blasphemous.ModdingAPI.Files;
+using Blasphemous.ModdingAPI.Helpers;
 using Blasphemous.ModdingAPI.Input;
 using Blasphemous.ModdingAPI.Localization;
 using HarmonyLib;
@@ -202,10 +203,12 @@ public abstract class BlasMod
     /// <summary>
     /// Checks whether a mod is loaded, and returns it if so
     /// </summary>
-    public bool IsModLoadedId(string id, out BlasMod mod) => Main.ModLoader.IsModLoadedId(id, out mod);
+    [System.Obsolete("Use new ModHelper instead")]
+    public bool IsModLoadedId(string id, out BlasMod mod) => ModHelper.TryGetModById(id, out mod);
 
     /// <summary>
     /// Checks whether a mod is loaded, and returns it if so
     /// </summary>
-    public bool IsModLoadedName(string name, out BlasMod mod) => Main.ModLoader.IsModLoadedName(name, out mod);
+    [System.Obsolete("Use new ModHelper instead")]
+    public bool IsModLoadedName(string name, out BlasMod mod) => ModHelper.TryGetModByName(name, out mod);
 }
