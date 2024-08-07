@@ -21,7 +21,7 @@ class Mod_Dispose_Patch
     public static void Postfix() => Main.ModLoader.Dispose();
 }
 
-[HarmonyPatch(typeof(NewMainMenu), "InternalPlay")]
+[HarmonyPatch(typeof(NewMainMenu), nameof(NewMainMenu.InternalPlay))]
 class Mod_NewLoad_Patch
 {
     public static void Postfix(bool ___isContinue, bool ___mustConvertToNewgamePlus)
@@ -38,7 +38,7 @@ class Mod_NewLoad_Patch
 /// <summary>
 /// Store the blasphemous font when game is started
 /// </summary>
-[HarmonyPatch(typeof(VersionNumber), "Start")]
+[HarmonyPatch(typeof(VersionNumber), nameof(VersionNumber.Start))]
 internal class VersionNumber_Patch
 {
     public static void Postfix(VersionNumber __instance)
@@ -54,7 +54,7 @@ internal class VersionNumber_Patch
 /// <summary>
 /// Show the mod list if any of the menu buttons are selected
 /// </summary>
-[HarmonyPatch(typeof(NewMainMenu), "Update")]
+[HarmonyPatch(typeof(NewMainMenu), nameof(NewMainMenu.Update))]
 class Menu_Update_Patch
 {
     public static void Postfix(List<Button> ___AllButtons)
