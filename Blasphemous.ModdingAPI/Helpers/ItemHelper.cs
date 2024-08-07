@@ -14,20 +14,19 @@ public static class ItemHelper
     /// </summary>
     public static InventoryManager.ItemType GetItemTypeFromId(string id)
     {
-        if (id != null && id.Length >= 2)
+        if (id == null || id.Length < 2)
+            throw new System.ArgumentException("Invalid item id");
+
+        return id.Substring(0, 2) switch
         {
-            switch (id.Substring(0, 2))
-            {
-                case "RB": return InventoryManager.ItemType.Bead;
-                case "PR": return InventoryManager.ItemType.Prayer;
-                case "RE": return InventoryManager.ItemType.Relic;
-                case "HE": return InventoryManager.ItemType.Sword;
-                case "QI": return InventoryManager.ItemType.Quest;
-                case "CO": return InventoryManager.ItemType.Collectible;
-            }
-        }
-        ModLog.Error("Could not determine item type for " + id);
-        return InventoryManager.ItemType.Bead;
+            "RB" => InventoryManager.ItemType.Bead,
+            "PR" => InventoryManager.ItemType.Prayer,
+            "RE" => InventoryManager.ItemType.Relic,
+            "HE" => InventoryManager.ItemType.Sword,
+            "QI" => InventoryManager.ItemType.Quest,
+            "CO" => InventoryManager.ItemType.Collectible,
+            _ => throw new System.ArgumentException("Invalid item id"),
+        };
     }
 
     /// <summary>
@@ -37,7 +36,8 @@ public static class ItemHelper
     {
         InventoryManager.ItemType itemType = GetItemTypeFromId(itemId);
         BaseInventoryObject obj = Core.InventoryManager.GetBaseObject(itemId, itemType);
-        if (obj == null) return;
+        if (obj == null)
+            return;
 
         obj = Core.InventoryManager.AddBaseObjectOrTears(obj);
         UIController.instance.ShowObjectPopUp(UIController.PopupItemAction.GetObejct, obj.caption, obj.picture, itemType, 3f, true);
@@ -50,7 +50,8 @@ public static class ItemHelper
     {
         InventoryManager.ItemType itemType = GetItemTypeFromId(itemId);
         BaseInventoryObject obj = Core.InventoryManager.GetBaseObject(itemId, itemType);
-        if (obj == null) return;
+        if (obj == null)
+            return;
 
         bool removed = Core.InventoryManager.RemoveBaseObject(obj);
         if (removed)
