@@ -24,4 +24,4 @@
 
 ## Development
 
-Full documentation, along with examples can be found here: [Blasphemous Modding API Documentation](documentation/main.md)
+Full documentation, along with examples can be found here: [Blasphemous Modding API Documentation](docs/development/main.md)
