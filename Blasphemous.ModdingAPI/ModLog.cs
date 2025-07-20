@@ -30,19 +30,6 @@ public static class ModLog
         source.Log(level, message);
     }
 
-    private static void DisplayInternal(object message, Assembly assembly)
-    {
-        try
-        {
-            LogInternal(message, LogLevel.Message, assembly);
-            UIController.instance.ShowPopUp(message?.ToString(), "", 0, false);
-        }
-        catch
-        {
-            LogInternal("Tried to call 'LogDisplay' before the UIController was initialized", LogLevel.Error, assembly);
-        }
-    }
-
     /// <summary>
     /// Logs an information message
     /// </summary>
@@ -87,13 +74,4 @@ public static class ModLog
     /// Logs a debug message through the specified mod
     /// </summary>
     public static void Debug(object message, BlasMod mod) => LogInternal(message, LogLevel.Debug, mod.GetType().Assembly);
-
-    /// <summary>
-    /// Logs a message to the in-game UI
-    /// </summary>
-    public static void Display(object message) => DisplayInternal(message, Assembly.GetCallingAssembly());
-    /// <summary>
-    /// Logs a message to the in-game UI through the specified mod
-    /// </summary>
-    public static void Display(object message, BlasMod mod) => DisplayInternal(message, mod.GetType().Assembly);
 }

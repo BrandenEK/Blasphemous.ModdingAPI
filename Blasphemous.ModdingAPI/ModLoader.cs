@@ -1,7 +1,6 @@
 ﻿using BepInEx.Logging;
 using Blasphemous.ModdingAPI.Extensions;
 using Blasphemous.ModdingAPI.Helpers;
-using Blasphemous.ModdingAPI.Persistence;
 using Framework.FrameworkCore;
 using Framework.Managers;
 using System.Collections.Generic;
@@ -49,23 +48,13 @@ internal class ModLoader
         if (_initialized) return;
 
         LogSpecial("Initialization");
-        LevelManager.OnLevelPreLoaded += LevelPreLoaded;
-        LevelManager.OnLevelLoaded += LevelLoaded;
-        LevelManager.OnBeforeLevelLoad += LevelUnloaded;
 
         ModLog.Info("Initializing mods...");
         ProcessModFunction(mod => mod.OnInitialize());
 
-        ProcessModFunction(mod => mod.OnRegisterServices(new ModServiceProvider(mod)));
-
         ModLog.Info("All mods initialized!");
         ProcessModFunction(mod => mod.OnAllInitialized());
 
-        ProcessModFunction(mod =>
-        {
-            if (mod is IPersistentMod pmod)
-                Core.Persistence.AddPersistentManager(new ModPersistentSystem(pmod));
-        });
         _initialized = true;
     }
 
@@ -76,9 +65,6 @@ internal class ModLoader
     {
         ProcessModFunction(mod => mod.OnDispose());
 
-        LevelManager.OnLevelPreLoaded -= LevelPreLoaded;
-        LevelManager.OnLevelLoaded -= LevelLoaded;
-        LevelManager.OnBeforeLevelLoad -= LevelUnloaded;
         ModLog.Info("All mods disposed!");
     }
 
@@ -102,49 +88,6 @@ internal class ModLoader
         ProcessModFunction(mod => mod.OnLateUpdate());
     }
 
-    /// <summary>
-    /// Processes a PreloadScene event for all mods
-    /// </summary>
-    public void LevelPreLoaded(Level oldLevel, Level newLevel)
-    {
-        string oLevel = oldLevel?.LevelName ?? string.Empty;
-        string nLevel = newLevel?.LevelName ?? string.Empty;
-
-        ProcessModFunction(mod => mod.OnLevelPreloaded(oLevel, nLevel));
-    }
-
-    /// <summary>
-    /// Processes a LoadScene event for all mods
-    /// </summary>
-    public void LevelLoaded(Level oldLevel, Level newLevel)
-    {
-        string oLevel = oldLevel?.LevelName ?? string.Empty;
-        string nLevel = newLevel?.LevelName ?? string.Empty;
-
-        if (nLevel == "MainMenu")
-        {
-            if (_loadedMenu)
-                ProcessModFunction(mod => mod.OnExitGame());
-            _loadedMenu = true;
-        }
-
-        LogSpecial("Loaded level " + nLevel);
-
-        SceneHelper.CurrentScene = nLevel;
-        ProcessModFunction(mod => mod.OnLevelLoaded(oLevel, nLevel));
-    }
-
-    /// <summary>
-    /// Processes an UnloadScene event for all mods
-    /// </summary>
-    public void LevelUnloaded(Level oldLevel, Level newLevel)
-    {
-        string oLevel = oldLevel?.LevelName ?? string.Empty;
-        string nLevel = newLevel?.LevelName ?? string.Empty;
-
-        SceneHelper.CurrentScene = string.Empty;
-        ProcessModFunction(mod => mod.OnLevelUnloaded(oLevel, nLevel));
-    }
 
     /// <summary>
     /// Registers a new mod whenever it is first created
