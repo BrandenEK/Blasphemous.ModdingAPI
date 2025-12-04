@@ -20,7 +20,7 @@
 - If corruption does happen, strange effects may take place, such as rosary beads being randomly equipped.  Removing all existing save files should fix this problem
 
 ## Development
-- Full documentation, along with examples can be found here: [Blasphemous Modding API Documentation](docs/development/main.md)
+- Full documentation, along with examples can be found here: [Blasphemous Modding API Documentation](development/main.md)
 
 ## Installation
 This mod is available for download through the [Blasphemous Mod Installer](https://github.com/BrandenEK/Blasphemous.Modding.Installer)
