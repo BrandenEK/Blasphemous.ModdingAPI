@@ -161,25 +161,6 @@ public abstract class SlotSaveData
         }
     }
 
-    ///// <summary>
-    ///// Copies the slot's save file
-    ///// </summary>
-    //internal static void Copy(int slotSrc, int slotDest)
-    //{
-    //    ModLog.Custom($"Copying data for slot {slotSrc} to slot {slotDest}", Color.Blue);
-
-    //    try
-    //    {
-    //        string pathSrc = GetSlotDataPath(slotSrc);
-    //        string pathDest = GetSlotDataPath(slotDest);
-    //        File.Copy(pathSrc, pathDest, true);
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        ModLog.Error($"Failed to copy data for slot {slotSrc} to slot {slotDest}: {e.GetType()}");
-    //    }
-    //}
-
     /// <summary>
     /// Returns the interface type if the mod implements it
     /// </summary>
