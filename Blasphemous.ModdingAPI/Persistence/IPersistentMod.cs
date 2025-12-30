@@ -4,6 +4,7 @@ namespace Blasphemous.ModdingAPI.Persistence;
 /// <summary>
 /// Allows a mod to save and load persistent data with the game files
 /// </summary>
+[System.Obsolete("Use the new ISlotPersistentMod instead")]
 public interface IPersistentMod
 {
     /// <summary>
