@@ -1,7 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using Framework.Managers;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -72,7 +75,7 @@ public class GlobalSaveData
     /// </summary>
     internal static void Load()
     {
-        ModLog.Custom($"Loading global data", Color.Blue);
+        ModLog.Debug($"Loading global data");
 
         var datas = LoadFile();
 
@@ -126,7 +129,7 @@ public class GlobalSaveData
     /// </summary>
     internal static void Delete()
     {
-        ModLog.Custom($"Deleting global data", Color.Blue);
+        ModLog.Debug($"Deleting global data");
 
         try
         {
@@ -142,7 +145,7 @@ public class GlobalSaveData
     /// <summary>
     /// Returns the interface type if the mod implements it
     /// </summary>
-    private static Type GetInterfaceType(BlasIIMod mod)
+    private static Type GetInterfaceType(BlasMod mod)
     {
         return mod.GetType().GetInterfaces()
             .Where(i => i.IsGenericType)
@@ -154,6 +157,6 @@ public class GlobalSaveData
     /// </summary>
     private static string GetGlobalDataPath()
     {
-        return CoreCache.StorageManager.BuildPath("GlobalData_modded.data");
+        return PersistentManager.GetPathAppSettings("app_settings_modded");
     }
 }
