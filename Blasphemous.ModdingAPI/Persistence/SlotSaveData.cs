@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Framework.Managers;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ public abstract class SlotSaveData
     /// </summary>
     internal static void Reset()
     {
-        ModLog.Custom($"Resetting data for all slots", Color.Blue);
+        ModLog.Debug($"Resetting data for all slots");
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
@@ -38,7 +39,7 @@ public abstract class SlotSaveData
     /// </summary>
     internal static void Save(int slot)
     {
-        ModLog.Custom($"Saving data for slot {slot}", Color.Blue);
+        ModLog.Debug($"Saving data for slot {slot}");
 
         var datas = LoadFile(slot);
         var settings = new JsonSerializerSettings()
@@ -84,7 +85,7 @@ public abstract class SlotSaveData
         }
         catch (Exception e)
         {
-            ModLog.Error($"Failed to save data for slot {slot}: {e.GetType()}");
+            ModLog.Error($"Failed to save data for slot {slot}: {e.Message} ({e.GetType()})");
         }
     }
 
@@ -93,7 +94,7 @@ public abstract class SlotSaveData
     /// </summary>
     internal static void Load(int slot)
     {
-        ModLog.Custom($"Loading data for slot {slot}", Color.Blue);
+        ModLog.Debug($"Loading data for slot {slot}");
 
         var datas = LoadFile(slot);
 
@@ -136,7 +137,7 @@ public abstract class SlotSaveData
         }
         catch (Exception e)
         {
-            ModLog.Error($"Failed to load data for slot {slot}: {e.GetType()}");
+            ModLog.Error($"Failed to load data for slot {slot}: {e.Message} ({e.GetType()})");
         }
 
         return datas;
@@ -147,7 +148,7 @@ public abstract class SlotSaveData
     /// </summary>
     internal static void Delete(int slot)
     {
-        ModLog.Custom($"Deleting data for slot {slot}", Color.Blue);
+        ModLog.Debug($"Deleting data for slot {slot}");
 
         try
         {
@@ -156,33 +157,33 @@ public abstract class SlotSaveData
         }
         catch (Exception e)
         {
-            ModLog.Error($"Failed to delete data for slot {slot}: {e.GetType()}");
+            ModLog.Error($"Failed to delete data for slot {slot}: {e.Message} ({e.GetType()})");
         }
     }
 
-    /// <summary>
-    /// Copies the slot's save file
-    /// </summary>
-    internal static void Copy(int slotSrc, int slotDest)
-    {
-        ModLog.Custom($"Copying data for slot {slotSrc} to slot {slotDest}", Color.Blue);
+    ///// <summary>
+    ///// Copies the slot's save file
+    ///// </summary>
+    //internal static void Copy(int slotSrc, int slotDest)
+    //{
+    //    ModLog.Custom($"Copying data for slot {slotSrc} to slot {slotDest}", Color.Blue);
 
-        try
-        {
-            string pathSrc = GetSlotDataPath(slotSrc);
-            string pathDest = GetSlotDataPath(slotDest);
-            File.Copy(pathSrc, pathDest, true);
-        }
-        catch (Exception e)
-        {
-            ModLog.Error($"Failed to copy data for slot {slotSrc} to slot {slotDest}: {e.GetType()}");
-        }
-    }
+    //    try
+    //    {
+    //        string pathSrc = GetSlotDataPath(slotSrc);
+    //        string pathDest = GetSlotDataPath(slotDest);
+    //        File.Copy(pathSrc, pathDest, true);
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        ModLog.Error($"Failed to copy data for slot {slotSrc} to slot {slotDest}: {e.GetType()}");
+    //    }
+    //}
 
     /// <summary>
     /// Returns the interface type if the mod implements it
     /// </summary>
-    private static Type GetInterfaceType(BlasIIMod mod)
+    private static Type GetInterfaceType(BlasMod mod)
     {
         return mod.GetType().GetInterfaces()
             .Where(i => i.IsGenericType)
@@ -194,6 +195,6 @@ public abstract class SlotSaveData
     /// </summary>
     private static string GetSlotDataPath(int slot)
     {
-        return Path.Combine(Main.ModdingAPI.FileHandler.SavegamesFolder, $"savegame_{slot}_modded.bin");
+        return PersistentManager.GetPathAppSettings($"savegame_{slot}_modded.save");
     }
 }
