@@ -61,6 +61,8 @@ internal class ModLoader
         ModLog.Info("All mods initialized!");
         ProcessModFunction(mod => mod.OnAllInitialized());
 
+        GlobalSaveData.Load();
+
         ProcessModFunction(mod =>
         {
             if (mod is IPersistentMod pmod)
@@ -75,6 +77,8 @@ internal class ModLoader
     public void Dispose()
     {
         ProcessModFunction(mod => mod.OnDispose());
+
+        GlobalSaveData.Save();
 
         LevelManager.OnLevelPreLoaded -= LevelPreLoaded;
         LevelManager.OnLevelLoaded -= LevelLoaded;
