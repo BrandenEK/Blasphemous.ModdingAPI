@@ -66,7 +66,7 @@ public class GlobalSaveData
         }
         catch (Exception e)
         {
-            ModLog.Error($"Failed to save global data: {e.GetType()}");
+            ModLog.Error($"Failed to save global data: {e.Message} ({e.GetType()})");
         }
     }
 
@@ -118,7 +118,7 @@ public class GlobalSaveData
         }
         catch (Exception e)
         {
-            ModLog.Error($"Failed to load global data: {e.GetType()}");
+            ModLog.Error($"Failed to load global data: {e.Message} ({e.GetType()})");
         }
 
         return datas;
@@ -138,7 +138,7 @@ public class GlobalSaveData
         }
         catch (Exception e)
         {
-            ModLog.Error($"Failed to delete global data: {e.GetType()}");
+            ModLog.Error($"Failed to delete global data: {e.Message} ({e.GetType()})");
         }
     }
 

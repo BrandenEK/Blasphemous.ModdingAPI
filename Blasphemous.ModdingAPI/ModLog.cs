@@ -82,11 +82,11 @@ public static class ModLog
     /// <summary>
     /// Logs a debug message
     /// </summary>
-    public static void Debug(object message) => LogInternal(message, LogLevel.Debug, Assembly.GetCallingAssembly());
+    public static void Debug(object message) => LogInternal(message, LogLevel.Info, Assembly.GetCallingAssembly());
     /// <summary>
     /// Logs a debug message through the specified mod
     /// </summary>
-    public static void Debug(object message, BlasMod mod) => LogInternal(message, LogLevel.Debug, mod.GetType().Assembly);
+    public static void Debug(object message, BlasMod mod) => LogInternal(message, LogLevel.Info, mod.GetType().Assembly);
 
     /// <summary>
     /// Logs a message to the in-game UI
