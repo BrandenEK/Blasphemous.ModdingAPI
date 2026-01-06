@@ -15,10 +15,8 @@ internal class ModLoader
     private readonly List<BlasMod> _mods = new();
     private readonly ManualLogSource _logger = Logger.CreateLogSource("Mod Loader");
 
-    private bool _initialized = false;
+    public bool IsInitialized { get; private set; }
     private bool _loadedMenu = false;
-
-    public bool IsInitialized => _initialized;
 
     public ModLoader()
     {
@@ -48,7 +46,8 @@ internal class ModLoader
     /// </summary>
     public void Initialize()
     {
-        if (_initialized) return;
+        if (IsInitialized)
+            return;
 
         LogSpecial("Initialization");
         LevelManager.OnLevelPreLoaded += LevelPreLoaded;
@@ -70,7 +69,7 @@ internal class ModLoader
             if (mod is IPersistentMod pmod)
                 Core.Persistence.AddPersistentManager(new ModPersistentSystem(pmod));
         });
-        _initialized = true;
+        IsInitialized = true;
     }
 
     /// <summary>
@@ -93,7 +92,8 @@ internal class ModLoader
     /// </summary>
     public void Update()
     {
-        if (!_initialized) return;
+        if (!IsInitialized)
+            return;
 
         ProcessModFunction(mod => mod.OnUpdate());
     }
@@ -103,7 +103,8 @@ internal class ModLoader
     /// </summary>
     public void LateUpdate()
     {
-        if (!_initialized) return;
+        if (!IsInitialized)
+            return;
 
         ProcessModFunction(mod => mod.OnLateUpdate());
     }
