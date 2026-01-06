@@ -4,6 +4,8 @@ using Blasphemous.ModdingAPI.Helpers;
 using Blasphemous.ModdingAPI.Input;
 using Blasphemous.ModdingAPI.Localization;
 using HarmonyLib;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Blasphemous.ModdingAPI;
 
@@ -37,6 +39,11 @@ public abstract class BlasMod
     /// </summary>
     public string Version => version;
     private readonly string version;
+
+    /// <summary>
+    /// Whether the mod is a developer build
+    /// </summary>
+    public bool IsDebug { get; }
 
     // Handlers
 
@@ -138,6 +145,7 @@ public abstract class BlasMod
         this.name = name;
         this.author = author;
         this.version = version;
+        IsDebug = GetType().Assembly.GetCustomAttributes(false).OfType<DebuggableAttribute>().Any(x => x.IsJITTrackingEnabled);
 
         // Set handlers
         _configHandler = new ConfigHandler(this);
