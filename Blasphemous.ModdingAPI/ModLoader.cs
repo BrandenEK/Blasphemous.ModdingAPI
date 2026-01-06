@@ -18,6 +18,8 @@ internal class ModLoader
     private bool _initialized = false;
     private bool _loadedMenu = false;
 
+    public bool IsInitialized => _initialized;
+
     public ModLoader()
     {
         ModHelper.LoadedMods = _mods;
