@@ -19,26 +19,22 @@ public abstract class BlasMod
     /// <summary>
     /// The unique id of the mod
     /// </summary>
-    public string Id => id;
-    private readonly string id;
+    public string Id { get; }
 
     /// <summary>
     /// The display name of the mod
     /// </summary>
-    public string Name => name;
-    private readonly string name;
+    public string Name { get; }
 
     /// <summary>
     /// The developer of the mod
     /// </summary>
-    public string Author => author;
-    private readonly string author;
+    public string Author { get; }
 
     /// <summary>
     /// The file version of the mod
     /// </summary>
-    public string Version => version;
-    private readonly string version;
+    public string Version { get; }
 
     /// <summary>
     /// Whether the mod is a developer build
@@ -141,10 +137,10 @@ public abstract class BlasMod
     public BlasMod(string id, string name, string author, string version)
     {
         // Set data
-        this.id = id;
-        this.name = name;
-        this.author = author;
-        this.version = version;
+        Id = id;
+        Name = name;
+        Author = author;
+        Version = version;
         IsDebug = GetType().Assembly.GetCustomAttributes(false).OfType<DebuggableAttribute>().Any(x => x.IsJITTrackingEnabled);
 
         // Set handlers
