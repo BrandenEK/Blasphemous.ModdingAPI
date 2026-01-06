@@ -1,6 +1,5 @@
 ﻿using Blasphemous.ModdingAPI.Config;
 using Blasphemous.ModdingAPI.Files;
-using Blasphemous.ModdingAPI.Helpers;
 using Blasphemous.ModdingAPI.Input;
 using Blasphemous.ModdingAPI.Localization;
 using HarmonyLib;
@@ -152,61 +151,4 @@ public abstract class BlasMod
             ModLog.Register(this);
         }
     }
-
-    // Obsolete members
-
-    /// <summary>
-    /// Handles scene loading, such as checking if on main menu
-    /// </summary>
-    [System.Obsolete("Use the new SceneHelper instead")]
-    public LoadStatus LoadStatus => loadStatus;
-    private readonly LoadStatus loadStatus = new();
-
-    /// <summary>
-    /// Logs a message in white to the console
-    /// </summary>
-    [System.Obsolete("Use the Logger class instead")]
-    public void Log(object message) => ModLog.Info(message, this);
-
-    /// <summary>
-    /// Logs a message in yellow to the console
-    /// </summary>
-    [System.Obsolete("Use the Logger class instead")]
-    public void LogWarning(object message) => ModLog.Warn(message, this);
-
-    /// <summary>
-    /// Logs a message in red to the console
-    /// </summary>
-    [System.Obsolete("Use the Logger class instead")]
-    public void LogError(object message) => ModLog.Error(message, this);
-
-    /// <summary>
-    /// Displays a message with a UI text box
-    /// </summary>
-    [System.Obsolete("Use the Logger class instead")]
-    public void LogDisplay(object message)
-    {
-        ModLog.Display(message, this);
-    }
-
-    /// <summary>
-    /// Displays a message with a UI text box
-    /// </summary>
-    [System.Obsolete("Use the Logger class instead")]
-    public void LogDisplay(string message)
-    {
-        ModLog.Display(message, this);
-    }
-
-    /// <summary>
-    /// Checks whether a mod is loaded, and returns it if so
-    /// </summary>
-    [System.Obsolete("Use new ModHelper instead")]
-    public bool IsModLoadedId(string id, out BlasMod mod) => ModHelper.TryGetModById(id, out mod);
-
-    /// <summary>
-    /// Checks whether a mod is loaded, and returns it if so
-    /// </summary>
-    [System.Obsolete("Use new ModHelper instead")]
-    public bool IsModLoadedName(string name, out BlasMod mod) => ModHelper.TryGetModByName(name, out mod);
 }
