@@ -63,11 +63,6 @@ internal class ModLoader
 
         GlobalSaveData.Load();
 
-        ProcessModFunction(mod =>
-        {
-            if (mod is IPersistentMod pmod)
-                Core.Persistence.AddPersistentManager(new ModPersistentSystem(pmod));
-        });
         _initialized = true;
     }
 
