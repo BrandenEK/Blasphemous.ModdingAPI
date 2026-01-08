@@ -15,7 +15,7 @@ internal class ModLoader
     private readonly List<BlasMod> _mods = new();
     private readonly ManualLogSource _logger = Logger.CreateLogSource("Mod Loader");
 
-    private bool _initialized = false;
+    public bool IsInitialized { get; private set; }
     private bool _loadedMenu = false;
 
     public ModLoader()
@@ -46,7 +46,8 @@ internal class ModLoader
     /// </summary>
     public void Initialize()
     {
-        if (_initialized) return;
+        if (IsInitialized)
+            return;
 
         LogSpecial("Initialization");
         LevelManager.OnLevelPreLoaded += LevelPreLoaded;
@@ -61,9 +62,9 @@ internal class ModLoader
         ModLog.Info("All mods initialized!");
         ProcessModFunction(mod => mod.OnAllInitialized());
 
-        GlobalSaveData.Load();
+        IsInitialized = true;
 
-        _initialized = true;
+        GlobalSaveData.Load();
     }
 
     /// <summary>
@@ -86,7 +87,8 @@ internal class ModLoader
     /// </summary>
     public void Update()
     {
-        if (!_initialized) return;
+        if (!IsInitialized)
+            return;
 
         ProcessModFunction(mod => mod.OnUpdate());
     }
@@ -96,7 +98,8 @@ internal class ModLoader
     /// </summary>
     public void LateUpdate()
     {
-        if (!_initialized) return;
+        if (!IsInitialized)
+            return;
 
         ProcessModFunction(mod => mod.OnLateUpdate());
     }
