@@ -1,6 +1,7 @@
 ﻿using Framework.Managers;
 using Gameplay.GameControllers.Entities;
 using Gameplay.UI.Others.MenuLogic;
+using Gameplay.UI.Widgets;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,4 +81,11 @@ class Stats_Load_Patch
         ModLog.Info($"Storing {fervourAmount} fervour to be restored after loading the game");
         Main.ModdingAPI.UnsavedFervourAmount = fervourAmount;
     }
+}
+
+// Always allow cursor visibility
+[HarmonyPatch(typeof(DebugInformation), "Update")]
+class DebugInformation_Update_Patch
+{
+    public static bool Prefix() => false;
 }
