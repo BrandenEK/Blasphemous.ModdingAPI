@@ -20,6 +20,9 @@ public class GlobalSaveData
     /// </summary>
     internal static void Save()
     {
+        if (!Main.ModLoader.IsInitialized)
+            return;
+
         ModLog.Debug($"Saving global data");
 
         var datas = LoadFile();
@@ -75,6 +78,9 @@ public class GlobalSaveData
     /// </summary>
     internal static void Load()
     {
+        if (!Main.ModLoader.IsInitialized)
+            return;
+
         ModLog.Debug($"Loading global data");
 
         var datas = LoadFile();

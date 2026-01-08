@@ -20,6 +20,9 @@ public abstract class SlotSaveData
     /// </summary>
     internal static void Reset()
     {
+        if (!Main.ModLoader.IsInitialized)
+            return;
+
         ModLog.Debug($"Resetting data for all slots");
 
         Main.ModLoader.ProcessModFunction(mod =>
@@ -39,6 +42,9 @@ public abstract class SlotSaveData
     /// </summary>
     internal static void Save(int slot)
     {
+        if (!Main.ModLoader.IsInitialized)
+            return;
+
         ModLog.Debug($"Saving data for slot {slot}");
 
         var datas = LoadFile(slot);
@@ -94,6 +100,9 @@ public abstract class SlotSaveData
     /// </summary>
     internal static void Load(int slot)
     {
+        if (!Main.ModLoader.IsInitialized)
+            return;
+
         ModLog.Debug($"Loading data for slot {slot}");
 
         var datas = LoadFile(slot);
