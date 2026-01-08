@@ -38,12 +38,6 @@ public class FileHandler
         }
     }
 
-    /// <summary>
-    /// The output folder for this mod
-    /// </summary>
-    [Obsolete("Use the 'content' folder instead")]
-    public string OutputFolder => ContentFolder;
-
     internal FileHandler(BlasMod mod)
     {
         configPath = Path.GetFullPath($"Modding/config/{mod.Name}.cfg");

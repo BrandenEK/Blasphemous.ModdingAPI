@@ -62,14 +62,9 @@ internal class ModLoader
         ModLog.Info("All mods initialized!");
         ProcessModFunction(mod => mod.OnAllInitialized());
 
-        GlobalSaveData.Load();
-
-        ProcessModFunction(mod =>
-        {
-            if (mod is IPersistentMod pmod)
-                Core.Persistence.AddPersistentManager(new ModPersistentSystem(pmod));
-        });
         IsInitialized = true;
+
+        GlobalSaveData.Load();
     }
 
     /// <summary>
