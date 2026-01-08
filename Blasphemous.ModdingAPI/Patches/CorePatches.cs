@@ -8,12 +8,12 @@ class Core_PreInit_Patch
 {
     public static void Prefix()
     {
-        ModLog.Warn("PreInit prefix");
+        ModLog.Error("PreInit prefix");
     }
 
     public static void Postfix()
     {
-        ModLog.Warn("PreInit postfix");
+        ModLog.Error("PreInit postfix");
     }
 }
 
@@ -22,12 +22,12 @@ class Core_Initialize_Patch
 {
     public static void Prefix()
     {
-        ModLog.Warn("Initialize prefix");
+        ModLog.Error("Initialize prefix");
     }
 
     public static void Postfix()
     {
-        ModLog.Warn("Initialize postfix");
+        ModLog.Error("Initialize postfix");
     }
 }
 
@@ -36,11 +36,29 @@ class Core_OnDestroy_Patch
 {
     public static void Prefix()
     {
-        ModLog.Warn("OnDestroy prefix");
+        ModLog.Error("OnDestroy prefix");
     }
 
     public static void Postfix()
     {
-        ModLog.Warn("OnDestroy postfix");
+        ModLog.Error("OnDestroy postfix");
+    }
+}
+
+[HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.Initialize))]
+class t1
+{
+    public static void Postfix()
+    {
+        ModLog.Error("AchievementsManager Initialize postfix");
+    }
+}
+
+[HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.AllInitialized))]
+class t2
+{
+    public static void Postfix()
+    {
+        ModLog.Error("AchievementsManager AllInitialized postfix");
     }
 }

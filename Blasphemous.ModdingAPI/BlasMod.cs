@@ -69,7 +69,12 @@ public abstract class BlasMod
     // Events
 
     /// <summary>
-    /// Called when starting the game, at the same time as other managers
+    /// Called when starting the game, before managers have initialized
+    /// </summary>
+    protected internal virtual void OnPreInitialize() { }
+
+    /// <summary>
+    /// Called when starting the game, after managers have initialized
     /// </summary>
     protected internal virtual void OnInitialize() { }
 
@@ -79,7 +84,7 @@ public abstract class BlasMod
     protected internal virtual void OnAllInitialized() { }
 
     /// <summary>
-    /// Called when exiting the game, at the same time as other managers
+    /// Called when exiting the game, before managers have disposed
     /// </summary>
     protected internal virtual void OnDispose() { }
 
