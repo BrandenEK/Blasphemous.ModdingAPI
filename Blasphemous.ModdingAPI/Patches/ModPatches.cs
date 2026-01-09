@@ -9,17 +9,17 @@ using UnityEngine.UI;
 
 namespace Blasphemous.ModdingAPI.Patches;
 
-[HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.AllInitialized))]
-class Mod_AllInitialized_Patch
-{
-    public static void Postfix() => Main.ModLoader.Initialize();
-}
+//[HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.AllInitialized))]
+//class Mod_AllInitialized_Patch
+//{
+//    public static void Postfix() => Main.ModLoader.Initialize();
+//}
 
-[HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.Dispose))]
-class Mod_Dispose_Patch
-{
-    public static void Postfix() => Main.ModLoader.Dispose();
-}
+//[HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.Dispose))]
+//class Mod_Dispose_Patch
+//{
+//    public static void Postfix() => Main.ModLoader.Dispose();
+//}
 
 [HarmonyPatch(typeof(NewMainMenu), nameof(NewMainMenu.InternalPlay))]
 class Mod_NewLoad_Patch

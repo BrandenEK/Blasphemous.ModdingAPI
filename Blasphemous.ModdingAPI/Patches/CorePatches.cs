@@ -9,11 +9,13 @@ class Core_PreInit_Patch
     public static void Prefix()
     {
         ModLog.Error("PreInit prefix");
+        Main.ModLoader.PreInitialize();
     }
 
     public static void Postfix()
     {
         ModLog.Error("PreInit postfix");
+        Main.ModLoader.Initialize();
     }
 }
 
@@ -28,6 +30,7 @@ class Core_Initialize_Patch
     public static void Postfix()
     {
         ModLog.Error("Initialize postfix");
+        Main.ModLoader.PostInitialize();
     }
 }
 
@@ -37,6 +40,7 @@ class Core_OnDestroy_Patch
     public static void Prefix()
     {
         ModLog.Error("OnDestroy prefix");
+        Main.ModLoader.Dispose();
     }
 
     public static void Postfix()
