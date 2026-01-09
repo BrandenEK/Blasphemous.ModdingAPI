@@ -17,7 +17,7 @@ graph TD
     F([Manager - AllInitialized])
     G[Mod - OnAllInitialized]
     H(GlobalData - Load)
-    
+
     A-->B
     B-->C
     C-->D
@@ -25,6 +25,10 @@ graph TD
     E-->F
     F-->G
     G-->H
+
+mermaid.flowchartConfig = {
+    width: 50%
+}
 ```
 
 ```mermaid
@@ -38,4 +42,8 @@ graph TD
 
     A-->B
     B-->C
+
+mermaid.flowchartConfig = {
+    width: 50%
+}
 ```
