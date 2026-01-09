@@ -26,3 +26,16 @@ graph TD
     F-->G
     G-->H
 ```
+
+```mermaid
+---
+title: Shutdown
+---
+graph TD
+    A(GlobalData - Save)
+    B[Mod - OnDispose]
+    C([Manager - Dispose])
+
+    A-->B
+    B-->C
+```
