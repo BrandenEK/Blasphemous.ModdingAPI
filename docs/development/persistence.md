@@ -1,8 +1,10 @@
 # Persistence
 
-Every mod can define custom save data that will be stored with the game's save file
+Every mod can define custom save data that can be saved globally or with a single save slot
 
 ---
+
+Slot data is stored at ```APPDATA_LOCAL_LOW\TheGameKitchen\Blasphemous\Savegames\STEAM_ID\savegame_x_modded.save```
 
 ```cs
 using Blasphemous.ModdingAPI;
@@ -10,24 +12,20 @@ using Blasphemous.ModdingAPI.Persistence;
 
 namespace Blasphemous.Example;
 
-public class ExampleMod : BlasMod, IPersistentMod
+public class ExampleMod : BlasMod, ISlotPersistentMod<ExampleSlotData>
 {
     public ExampleMod() : base(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION) { }
-
-    public string PersistentID => "ID_EXAMPLE";
 
     public int Amount { get; private set; }
     public string[] Values { get; private set; }
 
-    public void LoadGame(SaveData data)
+    public void LoadSlot(ExampleSlotData data)
     {
-        var exampleData = data as ExampleSaveData;
-
-        Amount = exampleData.saveAmount;
-        Values = exampleData.saveValues;
+        Amount = data.saveAmount;
+        Values = data.saveValues;
     }
 
-    public SaveData SaveGame()
+    public ExampleSaveData SaveSlot()
     {
         return new ExampleSaveData()
         {
@@ -36,17 +34,53 @@ public class ExampleMod : BlasMod, IPersistentMod
         };
     }
 
-    public void ResetGame()
+    public void ResetSlot()
     {
         Amount = 0;
         Values = [];
     }
 }
 
-public class ExampleSaveData : SaveData
+public class ExampleSlotData : SlotSaveData
 {
-    public ExampleSaveData() : base("ID_EXAMPLE") { }
+    public int saveAmount;
+    public string[] saveValues;
+}
+```
 
+Global data is stored at ```APPDATA_LOCAL_LOW\TheGameKitchen\Blasphemous\Savegames\app_settings_modded```
+
+```cs
+using Blasphemous.ModdingAPI;
+using Blasphemous.ModdingAPI.Persistence;
+
+namespace Blasphemous.Example;
+
+public class ExampleMod : BlasMod, IGlobalPersistentMod<ExampleGlobalData>
+{
+    public ExampleMod() : base(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION) { }
+
+    public int Amount { get; private set; }
+    public string[] Values { get; private set; }
+
+    public void LoadGlobal(ExampleGlobalData data)
+    {
+        Amount = data.saveAmount;
+        Values = data.saveValues;
+    }
+
+    public ExampleGlobalData SaveGlobal()
+    {
+        return new ExampleGlobalData()
+        {
+            saveAmount = Amount,
+            saveValues = Values
+        };
+    }
+}
+
+public class ExampleGlobalData : GlobalSaveData
+{
     public int saveAmount;
     public string[] saveValues;
 }
