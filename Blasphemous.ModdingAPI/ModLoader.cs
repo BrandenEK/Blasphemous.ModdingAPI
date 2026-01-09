@@ -12,7 +12,7 @@ namespace Blasphemous.ModdingAPI;
 
 internal class ModLoader
 {
-    private readonly List<BlasMod> _mods = new();
+    private readonly List<BlasMod> _mods = [];
     private readonly ManualLogSource _logger = Logger.CreateLogSource("Mod Loader");
 
     public bool IsInitialized { get; private set; }
