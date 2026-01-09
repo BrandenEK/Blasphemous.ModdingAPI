@@ -17,7 +17,11 @@ graph TD
     F([Manager - AllInitialized])
     G[Mod - OnAllInitialized]
     H(GlobalData - Load)
+    X(GlobalData - Save)
+    Y[Mod - OnDispose]
+    Z([Manager - Dispose])
 
+    subgraph Startup
     A-->B
     B-->C
     C-->D
@@ -25,10 +29,11 @@ graph TD
     E-->F
     F-->G
     G-->H
-
-mermaid.flowchartConfig = {
-    width: 50%
-}
+    end
+    subgraph Shutdown
+    X-->Y
+    Y-->Z
+    end
 ```
 
 ```mermaid
@@ -36,14 +41,10 @@ mermaid.flowchartConfig = {
 title: Shutdown
 ---
 graph TD
-    A(GlobalData - Save)
-    B[Mod - OnDispose]
-    C([Manager - Dispose])
+    X(GlobalData - Save)
+    Y[Mod - OnDispose]
+    Z([Manager - Dispose])
 
-    A-->B
-    B-->C
-
-mermaid.flowchartConfig = {
-    width: 50%
-}
+    X-->Y
+    Y-->Z
 ```
