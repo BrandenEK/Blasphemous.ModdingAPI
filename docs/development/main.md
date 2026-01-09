@@ -3,6 +3,7 @@
 - Main
   - [Project setup](setup.md)
   - [Mod class](mod.md)
+  - [Order of Execution](execution.md)
   - [Persistence](persistence.md)
   - [Logging](logging.md)
 - Modules
