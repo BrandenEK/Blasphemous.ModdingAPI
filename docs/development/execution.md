@@ -5,8 +5,10 @@ A mod's core event methods are called at the same time as the game manager's cor
 ---
 
 ```mermaid
-graph TD;
+---
 title: Startup
+---
+graph TD
     A[Mod - OnPreInitialize]
     B([Manager - Initialize])
     C[Mod - OnInitialize]
