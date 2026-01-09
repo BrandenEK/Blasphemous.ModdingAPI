@@ -9,18 +9,9 @@ using UnityEngine.UI;
 
 namespace Blasphemous.ModdingAPI.Patches;
 
-[HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.AllInitialized))]
-class Mod_AllInitialized_Patch
-{
-    public static void Postfix() => Main.ModLoader.Initialize();
-}
-
-[HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.Dispose))]
-class Mod_Dispose_Patch
-{
-    public static void Postfix() => Main.ModLoader.Dispose();
-}
-
+/// <summary>
+/// Call the new/load game methods and then save the game, since it is loaded right afterwards
+/// </summary>
 [HarmonyPatch(typeof(NewMainMenu), nameof(NewMainMenu.InternalPlay))]
 class Mod_NewLoad_Patch
 {

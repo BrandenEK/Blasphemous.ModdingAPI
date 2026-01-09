@@ -12,7 +12,7 @@ namespace Blasphemous.ModdingAPI;
 
 internal class ModLoader
 {
-    private readonly List<BlasMod> _mods = new();
+    private readonly List<BlasMod> _mods = [];
     private readonly ManualLogSource _logger = Logger.CreateLogSource("Mod Loader");
 
     public bool IsInitialized { get; private set; }
@@ -42,6 +42,18 @@ internal class ModLoader
     }
 
     /// <summary>
+    /// Preinitializes all mods
+    /// </summary>
+    public void PreInitialize()
+    {
+        if (IsInitialized)
+            return;
+
+        ModLog.Info("Preinitializing mods...");
+        ProcessModFunction(mod => mod.OnPreInitialize());
+    }
+
+    /// <summary>
     /// Initializes all mods
     /// </summary>
     public void Initialize()
@@ -49,15 +61,18 @@ internal class ModLoader
         if (IsInitialized)
             return;
 
-        LogSpecial("Initialization");
-        LevelManager.OnLevelPreLoaded += LevelPreLoaded;
-        LevelManager.OnLevelLoaded += LevelLoaded;
-        LevelManager.OnBeforeLevelLoad += LevelUnloaded;
-
         ModLog.Info("Initializing mods...");
         ProcessModFunction(mod => mod.OnInitialize());
-
         ProcessModFunction(mod => mod.OnRegisterServices(new ModServiceProvider(mod)));
+    }
+
+    /// <summary>
+    /// Postinitializes all mods
+    /// </summary>
+    public void PostInitialize()
+    {
+        if (IsInitialized)
+            return;
 
         ModLog.Info("All mods initialized!");
         ProcessModFunction(mod => mod.OnAllInitialized());
@@ -65,6 +80,10 @@ internal class ModLoader
         IsInitialized = true;
 
         GlobalSaveData.Load();
+
+        LevelManager.OnLevelPreLoaded += LevelPreLoaded;
+        LevelManager.OnLevelLoaded += LevelLoaded;
+        LevelManager.OnBeforeLevelLoad += LevelUnloaded;
     }
 
     /// <summary>
@@ -72,14 +91,14 @@ internal class ModLoader
     /// </summary>
     public void Dispose()
     {
-        ProcessModFunction(mod => mod.OnDispose());
-
         GlobalSaveData.Save();
+
+        ProcessModFunction(mod => mod.OnDispose());
+        ModLog.Info("All mods disposed!");
 
         LevelManager.OnLevelPreLoaded -= LevelPreLoaded;
         LevelManager.OnLevelLoaded -= LevelLoaded;
         LevelManager.OnBeforeLevelLoad -= LevelUnloaded;
-        ModLog.Info("All mods disposed!");
     }
 
     /// <summary>
