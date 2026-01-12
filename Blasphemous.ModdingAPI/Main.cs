@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using Blasphemous.ModdingAPI.Persistence;
 using System;
 using System.IO;
 using System.Reflection;
@@ -30,6 +31,8 @@ internal class Main : BaseUnityPlugin
     private void Update() => ModLoader.Update();
 
     private void LateUpdate() => ModLoader.LateUpdate();
+
+    private void OnApplicationQuit() => GlobalSaveData.Save();
 
     private Assembly LoadMissingAssemblies(object send, ResolveEventArgs args)
     {

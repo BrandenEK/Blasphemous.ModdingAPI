@@ -91,8 +91,6 @@ internal class ModLoader
     /// </summary>
     public void Dispose()
     {
-        GlobalSaveData.Save();
-
         ProcessModFunction(mod => mod.OnDispose());
         ModLog.Info("All mods disposed!");
 
