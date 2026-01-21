@@ -9,14 +9,14 @@ class PersistentManager_ResetPersistence_Patch
     public static void Postfix() => SlotSaveData.Reset();
 }
 
-[HarmonyPatch(typeof(PersistentManager), nameof(PersistentManager.SaveGame), typeof(int), typeof(bool))]
-class PersistentManager_SaveGame_Patch
+[HarmonyPatch(typeof(PersistentManager), nameof(PersistentManager.SaveGame_Internal))]
+class PersistentManager_SaveGame_Internal_Patch
 {
     public static void Postfix(int slot) => SlotSaveData.Save(slot);
 }
 
-[HarmonyPatch(typeof(PersistentManager), nameof(PersistentManager.LoadGame))]
-class PersistentManager_LoadGame_Patch
+[HarmonyPatch(typeof(PersistentManager), nameof(PersistentManager.LoadGameWithOutRespawn))]
+class PersistentManager_LoadGameWithOutRespawn_Patch
 {
     public static void Postfix(int slot) => SlotSaveData.Load(slot);
 }
